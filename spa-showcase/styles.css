@@ -165,6 +165,57 @@ h1 {
   line-height: 1.7;
 }
 
+.intro p {
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+/* Conceptual Index */
+.conceptual-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.concept-pill {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  padding: 0.4rem 0.8rem;
+  border-radius: 9999px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.concept-pill:hover {
+  border-color: var(--color-text-secondary);
+  color: var(--color-text-primary);
+}
+
+.concept-pill.active {
+  background-color: var(--color-text-primary);
+  color: var(--color-bg-primary);
+  border-color: var(--color-text-primary);
+}
+
+.concept-pill .count {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
+.concept-pill.active .count {
+  opacity: 0.8;
+}
+
 /* Project Grid */
 .project-grid {
   display: grid;

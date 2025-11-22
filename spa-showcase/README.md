@@ -2,31 +2,60 @@
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# My Experimental Portfolio
+# Meu Portfólio Experimental
 
-A collection of interactive summaries and Single Page Applications generated via AI. These are experimental prototypes exploring new ways to visualize complex information.
+Uma coleção de resumos interativos e aplicações de página única (SPA) geradas via IA. Estes são protótipos experimentais que exploram novas formas de visualizar informações complexas.
 
-## Architecture
+---
 
-This is a lightweight, pure HTML/JavaScript application. No build steps or complex dependencies required.
+## 📘 Guia de Uso e Atualização
 
-- **index.html**: Main entry point.
-- **viewer.html**: Project viewer.
-- **scripts/sync-projects.js**: Node.js script to sync projects from `CORPUS/` to `projects/`.
+Para manter o site organizado e funcionando, siga esta **Regra de Ouro**:
+> **Sempre mexa na pasta `CORPUS`, nunca na pasta `projects`.**
 
-## How to Run
+A pasta `projects` é gerada automaticamente. Se você mudar algo lá, perderá as alterações na próxima sincronização.
 
-1.  **View the Portfolio:**
-    Simply open `index.html` in your web browser.
+### 1. Como Adicionar um Novo Projeto
+1.  Copie a pasta do seu projeto para dentro de `CORPUS/`.
+2.  Abra o terminal na pasta raiz do portfólio.
+3.  Rode o comando de sincronização:
+    ```bash
+    node scripts/sync-projects.js
+    ```
+4.  Pronto! O script vai copiar o projeto para o lugar certo, identificar o tema (IA, Neurociência, etc.) e atualizar o site.
 
-2.  **Add New Projects:**
-    - Add your project folder to the `CORPUS/` directory.
-    - Run the sync script:
-      ```bash
-      node scripts/sync-projects.js
-      ```
-    - Refresh `index.html`.
+### 2. Como Remover um Projeto
+1.  Apague a pasta do projeto de dentro de `CORPUS/`.
+2.  Rode o comando de sincronização novamente:
+    ```bash
+    node scripts/sync-projects.js
+    ```
+3.  O projeto sumirá do site e da pasta pública.
 
-## Requirements
+### 3. Como Editar um Projeto Existente
+1.  Faça as alterações nos arquivos dentro de `CORPUS/SeuProjeto/`.
+2.  Rode o comando de sincronização:
+    ```bash
+    node scripts/sync-projects.js
+    ```
+    *(Isso garante que suas edições sejam publicadas corretamente)*.
 
-- **Node.js**: Only required if you need to run the `sync-projects.js` script to add new projects. The site itself is static and requires no runtime.
+---
+
+## 🏗️ Arquitetura Simples
+
+Este é um site estático leve. Não precisa de "build" complexo.
+
+- **index.html**: A página principal (Vitrine).
+- **viewer.html**: O visualizador seguro para os projetos.
+- **CORPUS/**: Onde seus projetos originais vivem.
+- **projects/**: Pasta gerada automaticamente para o site.
+- **scripts/sync-projects.js**: O "robô" que organiza tudo para você.
+
+## 🚀 Como Rodar Localmente
+
+1.  **Apenas Visualizar:**
+    Abra o arquivo `index.html` no seu navegador (Chrome, Edge, etc.).
+
+2.  **Para Atualizar (Requer Node.js):**
+    Você precisa do Node.js instalado apenas para rodar o script de sincronização.

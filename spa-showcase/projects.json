@@ -2,445 +2,590 @@
   {
     "id": "7-protocolos",
     "title": "Manual de Engenharia da Respiração",
-    "description": "Experiment: Manual de Engenharia da Respiração",
+    "description": "Experimento: Manual de Engenharia da Respiração",
     "folderName": "7-protocolos",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "abolition-work",
     "title": "A Jornada do Trabalho: Uma Análise Interativa",
-    "description": "Experiment: A Jornada do Trabalho: Uma Análise Interativa",
+    "description": "Experimento: A Jornada do Trabalho: Uma Análise Interativa",
     "folderName": "abolition-work",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Metodologia & Ferramentas",
+      "Sociedade & Futuro"
     ],
-    "emoji": "🔬",
+    "emoji": "🤖",
+    "concepts": [
+      "Metodologia & Ferramentas",
+      "Sociedade & Futuro"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "ai-2027",
     "title": "Explorador: AI Futures Project & Cenário AI 2027",
-    "description": "Experiment: Explorador: AI Futures Project & Cenário AI 2027",
+    "description": "Experimento: Explorador: AI Futures Project & Cenário AI 2027",
     "folderName": "ai-2027",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
+    "date": "2025-11-22"
+  },
+  {
+    "id": "AI-ECCO",
+    "title": "Infográfico: IA, Ética e Autenticidade Acadêmica",
+    "description": "Experimento: Infográfico: IA, Ética e Autenticidade Acadêmica",
+    "folderName": "AI-ECCO",
+    "entryFile": "index.html",
+    "tags": [
+      "Inteligência Artificial",
+      "Sociedade & Futuro"
+    ],
+    "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial",
+      "Sociedade & Futuro"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "ANEXADO-PROMPT2",
     "title": "Analisador de Livros Densos — NotebookLM RAG-Aware",
-    "description": "Experiment: Analisador de Livros Densos — NotebookLM RAG-Aware",
+    "description": "Experimento: Analisador de Livros Densos — NotebookLM RAG-Aware",
     "folderName": "ANEXADO-PROMPT2",
     "entryFile": "analisador-livros-densos.html",
     "tags": [
-      "Experiment"
+      "NotebookLM & Prompts",
+      "Humanidades Digitais"
     ],
     "emoji": "📚",
+    "concepts": [
+      "NotebookLM & Prompts",
+      "Humanidades Digitais"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "auditoria-git",
     "title": "Manual de Auditoria Git - Transparência Processual em Dissertações",
-    "description": "Experiment: Manual de Auditoria Git - Transparência Processual em Dissertações",
+    "description": "Experimento: Manual de Auditoria Git - Transparência Processual em Dissertações",
     "folderName": "auditoria-git",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "autocompaixao",
     "title": "Infográfico: A Arquitetura da Resiliência",
-    "description": "Experiment: Infográfico: A Arquitetura da Resiliência",
+    "description": "Experimento: Infográfico: A Arquitetura da Resiliência",
     "folderName": "autocompaixao",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "bike-cba",
     "title": "Infográfico: A Eficiência da Bicicleta em Cuiabá",
-    "description": "Experiment: Infográfico: A Eficiência da Bicicleta em Cuiabá",
+    "description": "Experimento: Infográfico: A Eficiência da Bicicleta em Cuiabá",
     "folderName": "bike-cba",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "bohm-krishnamurti",
     "title": "A Confluência do Pensamento: Bohm & Krishnamurti",
-    "description": "Experiment: A Confluência do Pensamento: Bohm & Krishnamurti",
+    "description": "Experimento: A Confluência do Pensamento: Bohm & Krishnamurti",
     "folderName": "bohm-krishnamurti",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "cannabis-cold-turkey",
     "title": "Guia Interativo sobre a Dependência de Cannabis",
-    "description": "Experiment: Guia Interativo sobre a Dependência de Cannabis",
+    "description": "Experimento: Guia Interativo sobre a Dependência de Cannabis",
     "folderName": "cannabis-cold-turkey",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "cannabis-et-motivacao",
     "title": "Infográfico: Cannabis, Dopamina e o Cérebro",
-    "description": "Experiment: Infográfico: Cannabis, Dopamina e o Cérebro",
+    "description": "Experimento: Infográfico: Cannabis, Dopamina e o Cérebro",
     "folderName": "cannabis-et-motivacao",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Neurociência & Psicologia"
     ],
-    "emoji": "🔬",
+    "emoji": "🧠",
+    "concepts": [
+      "Neurociência & Psicologia"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "chants-of-seenar",
     "title": "Guia Interativo: Chants of Sennaar e Jogos de Dedução",
-    "description": "Experiment: Guia Interativo: Chants of Sennaar e Jogos de Dedução",
+    "description": "Experimento: Guia Interativo: Chants of Sennaar e Jogos de Dedução",
     "folderName": "chants-of-seenar",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "chequelista-nootropicos",
     "title": "Protocolo Nootrópico - Guia Rápido",
-    "description": "Experiment: Protocolo Nootrópico - Guia Rápido",
+    "description": "Experimento: Protocolo Nootrópico - Guia Rápido",
     "folderName": "chequelista-nootropicos",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "cognitive-freedom-and-ia",
     "title": "Interactive Report: Cognitive Freedom in the Age of AI",
-    "description": "Experiment: Interactive Report: Cognitive Freedom in the Age of AI",
+    "description": "Experimento: Interactive Report: Cognitive Freedom in the Age of AI",
     "folderName": "cognitive-freedom-and-ia",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🧠",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "curadoria-livros",
     "title": "Panorama da Excelência Literária Global (2015-2024)",
-    "description": "Experiment: Panorama da Excelência Literária Global (2015-2024)",
+    "description": "Experimento: Panorama da Excelência Literária Global (2015-2024)",
     "folderName": "curadoria-livros",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "escrever-com-ia-pesquisa",
     "title": "Cérebro, IA e a Dívida Cognitiva",
-    "description": "Experiment: Cérebro, IA e a Dívida Cognitiva",
+    "description": "Experimento: Cérebro, IA e a Dívida Cognitiva",
     "folderName": "escrever-com-ia-pesquisa",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Neurociência & Psicologia",
+      "Inteligência Artificial"
     ],
-    "emoji": "🤖",
+    "emoji": "🧠",
+    "concepts": [
+      "Neurociência & Psicologia",
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "flashcards-notebooklm",
     "title": "Gerador de Flashcards para NotebookLM",
-    "description": "Experiment: Gerador de Flashcards para NotebookLM",
+    "description": "Ferramenta para gerar prompts otimizados que criam flashcards baseados em repetição espaçada no Google NotebookLM",
     "folderName": "flashcards-notebooklm",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "NotebookLM & Prompts",
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
     ],
     "emoji": "📚",
+    "concepts": [
+      "NotebookLM & Prompts",
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "geertz-ia",
     "title": "Tecnologias Digitais e Teias de Significado no Sul Global",
-    "description": "Experiment: Tecnologias Digitais e Teias de Significado no Sul Global",
+    "description": "Experimento: Tecnologias Digitais e Teias de Significado no Sul Global",
     "folderName": "geertz-ia",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "historiagit",
     "title": "A Gênese e o Impacto Sistêmico do Git",
-    "description": "Experiment: A Gênese e o Impacto Sistêmico do Git",
+    "description": "Experimento: A Gênese e o Impacto Sistêmico do Git",
     "folderName": "historiagit",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Metodologia & Ferramentas"
     ],
-    "emoji": "🔬",
+    "emoji": "🤖",
+    "concepts": [
+      "Metodologia & Ferramentas"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "humanidades-digitais",
     "title": "IA para Acadêmicos de Humanidades: Guia Interativo",
-    "description": "Experiment: IA para Acadêmicos de Humanidades: Guia Interativo",
+    "description": "Experimento: IA para Acadêmicos de Humanidades: Guia Interativo",
     "folderName": "humanidades-digitais",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "ia-e-neurodivergencia",
     "title": "Cognição e Código: Neurodivergência e IA",
-    "description": "Experiment: Cognição e Código: Neurodivergência e IA",
+    "description": "Experimento: Cognição e Código: Neurodivergência e IA",
     "folderName": "ia-e-neurodivergencia",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Neurociência & Psicologia",
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
     ],
     "emoji": "🧠",
+    "concepts": [
+      "Neurociência & Psicologia",
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "ia-e-vc",
     "title": "IA na Educação: Risco ou Oportunidade?",
-    "description": "Experiment: IA na Educação: Risco ou Oportunidade?",
+    "description": "Experimento: IA na Educação: Risco ou Oportunidade?",
     "folderName": "ia-e-vc",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial",
+      "Sociedade & Futuro"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial",
+      "Sociedade & Futuro"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "l-tirosina",
     "title": "Infografia Estratégica: L-Tirosina",
-    "description": "Experiment: Infografia Estratégica: L-Tirosina",
+    "description": "Experimento: Infografia Estratégica: L-Tirosina",
     "folderName": "l-tirosina",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "left-hand-git",
     "title": "Metodologia Híbrida para Escrita Acadêmica em Humanidades",
-    "description": "Experiment: Metodologia Híbrida para Escrita Acadêmica em Humanidades",
+    "description": "Experimento: Metodologia Híbrida para Escrita Acadêmica em Humanidades",
     "folderName": "left-hand-git",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial",
+      "Humanidades Digitais"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial",
+      "Humanidades Digitais"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "manual-integrado-tecnicas-regulacao-emocional",
     "title": "Manual Interativo: TCC e ACT para Regulação Emocional",
-    "description": "Experiment: Manual Interativo: TCC e ACT para Regulação Emocional",
+    "description": "Experimento: Manual Interativo: TCC e ACT para Regulação Emocional",
     "folderName": "manual-integrado-tecnicas-regulacao-emocional",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Outros Experimentos"
     ],
     "emoji": "🔬",
+    "concepts": [
+      "Outros Experimentos"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "microficcao",
     "title": "Plano de Pesquisa Interativo: Manual de Micro Ficção",
-    "description": "Experiment: Plano de Pesquisa Interativo: Manual de Micro Ficção",
+    "description": "Experimento: Plano de Pesquisa Interativo: Manual de Micro Ficção",
     "folderName": "microficcao",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Outros Experimentos"
     ],
     "emoji": "🔬",
+    "concepts": [
+      "Outros Experimentos"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "moutainhead-analise",
     "title": "Análise Interativa: The Mountainhead (2025)",
-    "description": "Experiment: Análise Interativa: The Mountainhead (2025)",
+    "description": "Experimento: Análise Interativa: The Mountainhead (2025)",
     "folderName": "moutainhead-analise",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "notebooklm-academico",
     "title": "Análise Interativa do NotebookLM para Humanidades",
-    "description": "Experiment: Análise Interativa do NotebookLM para Humanidades",
+    "description": "Experimento: Análise Interativa do NotebookLM para Humanidades",
     "folderName": "notebooklm-academico",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "NotebookLM & Prompts",
+      "Metodologia & Ferramentas"
     ],
     "emoji": "📚",
+    "concepts": [
+      "NotebookLM & Prompts",
+      "Metodologia & Ferramentas"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "notebooklm-can-quote",
     "title": "Análise Interativa: Confiabilidade do NotebookLM em Citações",
-    "description": "Experiment: Análise Interativa: Confiabilidade do NotebookLM em Citações",
+    "description": "Experimento: Análise Interativa: Confiabilidade do NotebookLM em Citações",
     "folderName": "notebooklm-can-quote",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "NotebookLM & Prompts",
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
     ],
     "emoji": "📚",
+    "concepts": [
+      "NotebookLM & Prompts",
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "obsidian-mcp",
     "title": "Análise Interativa: PKM com Claude e Obsidian",
-    "description": "Experiment: Análise Interativa: PKM com Claude e Obsidian",
+    "description": "Experimento: Análise Interativa: PKM com Claude e Obsidian",
     "folderName": "obsidian-mcp",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial",
+      "Metodologia & Ferramentas"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "padroes-respiratorios",
     "title": "Breathwork - Guia de Padrões",
-    "description": "Experiment: Breathwork - Guia de Padrões",
+    "description": "Experimento: Breathwork - Guia de Padrões",
     "folderName": "padroes-respiratorios",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "progresso-pesquisa",
     "title": "Gerenciador de Pesquisa Bibliográfica",
-    "description": "Experiment: Gerenciador de Pesquisa Bibliográfica",
+    "description": "Experimento: Gerenciador de Pesquisa Bibliográfica",
     "folderName": "progresso-pesquisa",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Inteligência Artificial"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "prompt-relatorios",
     "title": "Gerador de Prompts para NotebookLM",
-    "description": "Experiment: Gerador de Prompts para NotebookLM",
+    "description": "Experimento: Gerador de Prompts para NotebookLM",
     "folderName": "prompt-relatorios",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "NotebookLM & Prompts"
     ],
     "emoji": "📚",
+    "concepts": [
+      "NotebookLM & Prompts"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "rock-en-argentina-deep-research",
     "title": "Rock Argentino: Uma Exploração Interativa",
-    "description": "Experiment: Rock Argentino: Uma Exploração Interativa",
+    "description": "Experimento: Rock Argentino: Uma Exploração Interativa",
     "folderName": "rock-en-argentina-deep-research",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Outros Experimentos"
     ],
     "emoji": "🎸",
+    "concepts": [
+      "Outros Experimentos"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "roda-emocoes",
     "title": "Análise Interativa da Roda de Plutchik",
-    "description": "Experiment: Análise Interativa da Roda de Plutchik",
+    "description": "Experimento: Análise Interativa da Roda de Plutchik",
     "folderName": "roda-emocoes",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
-    ],
-    "emoji": "🔬",
-    "date": "2025-11-22"
-  },
-  {
-    "id": "rotina-ufmt",
-    "title": "Painel Pessoal — Ciclo de Campus e Mestrado (2025/1–2025/2)",
-    "description": "Experiment: Painel Pessoal — Ciclo de Campus e Mestrado (2025/1–2025/2)",
-    "folderName": "rotina-ufmt",
-    "entryFile": "site/index.html",
-    "tags": [
-      "Experiment"
+      "Metodologia & Ferramentas"
     ],
     "emoji": "🤖",
+    "concepts": [
+      "Metodologia & Ferramentas"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "supercolonias",
     "title": "Infográfico: O Império Subterrâneo das Formigas no Brasil Central",
-    "description": "Experiment: Infográfico: O Império Subterrâneo das Formigas no Brasil Central",
+    "description": "Experimento: Infográfico: O Império Subterrâneo das Formigas no Brasil Central",
     "folderName": "supercolonias",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Sociedade & Futuro"
     ],
-    "emoji": "🔬",
+    "emoji": "📊",
+    "concepts": [
+      "Sociedade & Futuro"
+    ],
     "date": "2025-11-22"
   },
   {
     "id": "work-life-balance",
     "title": "Infográfico: A Jornada do Trabalho",
-    "description": "Experiment: Infográfico: A Jornada do Trabalho",
+    "description": "Experimento: Infográfico: A Jornada do Trabalho",
     "folderName": "work-life-balance",
     "entryFile": "site/index.html",
     "tags": [
-      "Experiment"
+      "Sociedade & Futuro"
     ],
-    "emoji": "🔬",
+    "emoji": "📊",
+    "concepts": [
+      "Sociedade & Futuro"
+    ],
     "date": "2025-11-22"
   }
 ]

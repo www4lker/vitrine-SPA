@@ -137,18 +137,28 @@ function syncAndScan() {
             if (entryFile) {
                 const fullPath = path.join(destPath, entryFile);
                 const title = getTitleFromHtml(fullPath) || folderName;
-                const projectTags = ['Experiment'];
+                const projectTags = ['Experimento'];
 
-                const emoji = getEmojiForProject(title, projectTags);
+                // Extract description if possible (simple regex)
+                let description = '';
+                try {
+                    const content = fs.readFileSync(fullPath, 'utf-8');
+                    const metaDesc = content.match(/<meta name="description" content="(.*?)">/i);
+                    if (metaDesc) description = metaDesc[1];
+                } catch (e) { }
+
+                // Semantic Analysis
+                const concepts = analyzeContent(title + ' ' + description + ' ' + projectTags.join(' '));
 
                 projects.push({
                     id: folderName,
                     title: title,
-                    description: `Experiment: ${title}`,
+                    description: description || `Experimento: ${title}`,
                     folderName: folderName,
-                    entryFile: entryFile, // Store relative path to index.html
-                    tags: projectTags,
-                    emoji: emoji,
+                    entryFile: entryFile,
+                    tags: concepts, // Use semantic concepts as tags
+                    emoji: getEmojiForProject(title, concepts), // Update emoji based on concepts
+                    concepts: concepts,
                     date: new Date().toISOString().split('T')[0]
                 });
             } else {
@@ -160,6 +170,33 @@ function syncAndScan() {
     // Write projects.json
     fs.writeFileSync(OUTPUT_JSON, JSON.stringify(projects, null, 2));
     console.log(`✅ Synced ${projects.length} projects to projects.json`);
+}
+
+function analyzeContent(text) {
+    const content = text.toLowerCase();
+    const concepts = new Set();
+
+    const taxonomy = {
+        'NotebookLM & Prompts': ['notebooklm', 'prompt', 'rag', 'flashcard', 'resumo', 'estudo', 'fichamento'],
+        'Neurociência & Psicologia': ['cérebro', 'brain', 'neuro', 'dopamina', 'ansiedade', 'emoção', 'psicologia', 'cognitivo', 'mente', 'mental', 'terapia', 'comportamento'],
+        'Inteligência Artificial': ['ia', 'ai', 'gpt', 'llm', 'neural', 'inteligência', 'artificial', 'model', 'bot', 'chat'],
+        'Humanidades Digitais': ['livro', 'leitura', 'escrita', 'história', 'cultura', 'arte', 'filosofia', 'texto', 'narrativa', 'biblioteca'],
+        'Metodologia & Ferramentas': ['git', 'código', 'dev', 'ferramenta', 'obsidian', 'zettelkasten', 'nota', 'organização', 'produtividade', 'análise'],
+        'Sociedade & Futuro': ['futuro', 'trabalho', 'cidade', 'política', 'brasil', 'mundo', 'tendência', 'social', 'comunidade', 'educação']
+    };
+
+    for (const [category, keywords] of Object.entries(taxonomy)) {
+        if (keywords.some(keyword => content.includes(keyword))) {
+            concepts.add(category);
+        }
+    }
+
+    // Default concept if none found
+    if (concepts.size === 0) {
+        concepts.add('Outros Experimentos');
+    }
+
+    return Array.from(concepts);
 }
 
 syncAndScan();
