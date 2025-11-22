@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisador de Livros Densos — NotebookLM RAG-Aware</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            color: #202124;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+        
+        .header p {
+            font-size: 1rem;
+            opacity: 0.95;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+        
+        .header .subtitle {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            margin-bottom: 1.5rem;
+            transition: box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+        }
+        
+        .card h2 {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: #202124;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card h2 .emoji {
+            font-size: 1.5rem;
+        }
+        
+        .input-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #202124;
+            font-size: 0.9rem;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            background: #fff;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .templates-label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            color: #202124;
+            font-size: 0.9rem;
+        }
+        
+        .templates {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .template-btn {
+            background: #f8f9fa;
+            border: 2px solid #dadce0;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-size: 0.85rem;
+            color: #202124;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        
+        .template-btn:hover {
+            background: #f1f3f4;
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .template-btn.active {
+            background: linear-gradient(135deg, #e8eeff 0%, #dce4ff 100%);
+            border-color: #667eea;
+            color: #4c5fd5;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+        
+        .template-btn .emoji {
+            font-size: 1.5rem;
+        }
+        
+        .template-btn .title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .template-btn .desc {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            line-height: 1.3;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ff9800;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .warning-box strong {
+            color: #f57c00;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .checklist {
+            background: #f1f8ff;
+            border-left: 4px solid #1a73e8;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .checklist h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            color: #1557b0;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.2rem;
+            cursor: pointer;
+        }
+        
+        .generate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+        
+        .output-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .output-header h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #202124;
+        }
+        
+        .copy-btn {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .copy-btn:hover {
+            background: #1765cc;
+        }
+        
+        .copy-btn.copied {
+            background: #34a853;
+        }
+        
+        .output-box {
+            background: #f8f9fa;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: 'Roboto Mono', 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            max-height: 600px;
+            overflow-y: auto;
+            color: #202124;
+        }
+        
+        .char-count {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #5f6368;
+            margin-top: 0.5rem;
+        }
+        
+        .char-count .warning {
+            color: #d93025;
+            font-weight: 500;
+        }
+        
+        .audit-section {
+            background: #fef7e0;
+            border-left: 4px solid #f9ab00;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+        
+        .audit-section h4 {
+            color: #ea8600;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        
+        .audit-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        
+        .audit-item strong {
+            color: #ea8600;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .templates {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Analisador de Livros Densos</h1>
+            <p>Sistema de Prompts Estratificados para NotebookLM — RAG-Aware</p>
+            <div class="subtitle">Baseado na estrutura clássica de produção livreira + Protocolos de verificação para limitações RAG</div>
+        </div>
+        
+        <!-- CONFIGURAÇÃO BÁSICA -->
+        <div class="card">
+            <h2><span class="emoji">⚙️</span> Configuração Básica</h2>
+            
+            <div class="input-section">
+                <label>Título da Obra/Corpus</label>
+                <input type="text" id="bookTitle" placeholder="Ex: Vigiar e Punir (Foucault, 1975)">
+            </div>
+            
+            <div class="input-section">
+                <label>Tipo de Análise</label>
+                <select id="analysisType">
+                    <option value="individual">Livro Individual (análise holística)</option>
+                    <option value="comparative">Corpus Temático (2-5 obras)</option>
+                    <option value="extensive">Corpus Extenso (6-30 obras)</option>
+                </select>
+            </div>
+            
+            <div class="input-section">
+                <label>Contexto de Pesquisa (opcional)</label>
+                <textarea id="researchContext" placeholder="Ex: Analisando concepção de poder disciplinar para tese sobre dispositivos de vigilância algorítmica"></textarea>
+            </div>
+        </div>
+        
+        <!-- MODO DE ANÁLISE ESTRUTURAL -->
+        <div class="card">
+            <h2><span class="emoji">🏗️</span> Modo de Análise Estrutural</h2>
+            <p style="margin-bottom: 1.5rem; color: #5f6368; font-size: 0.9rem;">Baseado na arquitetura clássica de produção de livros acadêmicos</p>
+            
+            <div class="templates-label">Selecione o componente estrutural para análise:</div>
+            <div class="templates" id="structuralModes"></div>
+            
+            <div class="warning-box">
+                <strong>⚠️ Limitação RAG Crítica: Fragmentação de Leitura</strong>
+                NotebookLM não lê o livro integralmente — processa via chunks semânticos. Análises de "arco argumentativo completo" são tecnicamente impossíveis sem múltiplas queries. Use estratégia multi-prompt para reconstruir estrutura.
+            </div>
+        </div>
+        
+        <!-- PROMPTS COMPENSATÓRIOS PARA VIÉS RAG -->
+        <div class="card">
+            <h2><span class="emoji">🔍</span> Prompts Compensatórios (Anti-Viés RAG)</h2>
+            <p style="margin-bottom: 1.5rem; color: #5f6368; font-size: 0.9rem;">Estratégias para combater travamento semântico e path dependency</p>
+            
+            <div class="templates-label">Selecione estratégia de verificação:</div>
+            <div class="templates" id="compensatoryModes"></div>
+            
+            <div class="checklist">
+                <h4>✓ Checklist de Verificação Manual (Researcher-in-the-Loop)</h4>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check1">
+                    <label for="check1">Realizei refresh do navegador antes desta sessão crítica?</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check2">
+                    <label for="check2">Confirmei que não há "ghost summaries" de fontes deletadas?</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check3">
+                    <label for="check3">Identifiquei quais passagens são citadas vs. quais foram omitidas?</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check4">
+                    <label for="check4">Verifiquei se respostas não estão repetindo chunks da query anterior?</label>
+                </div>
+                <div class="checklist-item">
+                    <input type="checkbox" id="check5">
+                    <label for="check5">Auditei se os "20% Pareto" são os mais IMPORTANTES (não apenas os mais SIMILARES)?</label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FOCO CUSTOMIZADO -->
+        <div class="card">
+            <h2><span class="emoji">🎯</span> Foco Customizado</h2>
+            <div class="input-section">
+                <label>Direcionamento Específico (opcional)</label>
+                <textarea id="customFocus" placeholder="Ex: Enfatize conceito de 'panoptismo' e suas relações com tecnologias contemporâneas de vigilância"></textarea>
+            </div>
+        </div>
+        
+        <!-- BOTÃO GERAR -->
+        <div class="card">
+            <button class="generate-btn" onclick="generatePrompt()">
+                🚀 Gerar Prompt Estratificado
+            </button>
+        </div>
+        
+        <!-- OUTPUT -->
+        <div class="card output-section" id="outputSection">
+            <div class="output-header">
+                <h3>📋 Prompt Gerado</h3>
+                <button class="copy-btn" onclick="copyToClipboard()">
+                    <span id="copyIcon">📋</span>
+                    <span id="copyText">Copiar</span>
+                </button>
+            </div>
+            <div class="output-box" id="promptOutput"></div>
+            <div class="char-count" id="charCount"></div>
+            
+            <div class="audit-section">
+                <h4>🔬 Protocolo de Auditoria Pós-Resposta</h4>
+                <div class="audit-item">
+                    <strong>1. Verificação de Chunks:</strong> Compare citações inline com passagens originais. O modelo usou os segmentos mais representativos ou houve "semantic locking" em trechos periféricos?
+                </div>
+                <div class="audit-item">
+                    <strong>2. Teste de Contradição:</strong> Reformule a query de forma semanticamente distante (ex: se perguntou sobre "poder", pergunte sobre "resistência"). Respostas idênticas indicam travamento semântico.
+                </div>
+                <div class="audit-item">
+                    <strong>3. Auditoria de Omissões:</strong> Liste 3 conceitos-chave que você SABE estarem no livro. NotebookLM os mencionou? Se não, eles podem estar em chunks não-recuperados.
+                </div>
+                <div class="audit-item">
+                    <strong>4. Validação Cross-Corpus:</strong> Se análise multi-livro, verifique se todos os livros foram genuinamente considerados ou se apenas os primeiros carregados dominaram a resposta (bug Centrestage).
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Templates de Modos Estruturais
+        const structuralModes = [
+            {
+                id: 'introducao',
+                emoji: '🎯',
+                title: 'Introdução',
+                desc: 'Problema, objetivos, tese central',
+                prompt: `**ANÁLISE DE INTRODUÇÃO**
+
+Extraia e analise elementos introdutórios da obra:
+
+**1. PROBLEMA DE PESQUISA**
+- Qual questão central/puzzle intelectual o autor busca resolver?
+- Que lacuna na literatura/prática a obra pretende preencher?
+- Contexto histórico/teórico que motiva a investigação
+
+**2. OBJETIVOS E ESCOPO**
+- Objetivos declarados (explícitos) vs. objetivos implícitos
+- Delimitações: o que a obra SE PROPÕE a fazer vs. o que NÃO faz
+- População/fenômeno estudado, período temporal, recorte geográfico
+
+**3. TESE/ARGUMENTO CENTRAL**
+- Enunciação precisa da tese principal (1-2 frases)
+- Claims centrais que sustentam a tese
+- Originalidade/contribuição declarada pelo autor
+
+**4. ESTRUTURA ANUNCIADA**
+- Organização dos capítulos/seções
+- Lógica de progressão argumentativa
+- Justificativa para sequência escolhida
+
+**COMPENSAÇÃO PARA CHUNKING**: Como introduções são relativamente curtas, NotebookLM tende a recuperá-las bem. MAS: se autor distribui objetivos ao longo do texto, solicite explicitamente: "Identifique objetivos TANTO na introdução formal QUANTO em prefácios, notas iniciais e primeiro capítulo."`
+            },
+            {
+                id: 'desenvolvimento',
+                emoji: '🔬',
+                title: 'Desenvolvimento',
+                desc: 'Argumentação principal, evidências',
+                prompt: `**ANÁLISE DE DESENVOLVIMENTO ARGUMENTATIVO**
+
+Mapeie a construção do argumento ao longo da obra:
+
+**1. ARQUITETURA ARGUMENTATIVA**
+- Identifique sub-argumentos principais (3-7 tipicamente)
+- Para cada sub-argumento: tese, evidências mobilizadas, conclusão parcial
+- Como sub-argumentos se conectam (sequencial, cumulativo, dialético)
+
+**2. TIPOS DE EVIDÊNCIA**
+- Empírica: dados quantitativos, estudos de caso, observações etnográficas
+- Teórica: frameworks aplicados, conceitos operacionalizados
+- Textual: análise de fontes primárias, close reading
+- Histórica: arquivos, documentos de época
+- Classifique por capítulo/seção
+
+**3. MOMENTOS DE VIRADA**
+- Identifique 2-3 "pontos de inflexão" onde argumento muda de direção
+- O que desencadeia a virada (nova evidência, crítica antecipada, contradição resolvida)
+- Como viradas afetam tese central
+
+**4. ESTRATÉGIA RETÓRICA**
+- Ordem de apresentação (dedutiva/indutiva, cronológica/temática)
+- Uso de exemplos paradigmáticos
+- Antecipação de objeções
+
+**⚠️ LIMITAÇÃO RAG CRÍTICA**: Esta é a análise MAIS AFETADA por chunking. NotebookLM verá "momentos" argumentativos, não progressões. 
+
+**ESTRATÉGIA COMPENSATÓRIA OBRIGATÓRIA**:
+1. Solicite análise POR CAPÍTULO (queries separadas)
+2. Depois, solicite: "Como argumentos dos Capítulos X, Y, Z se conectam?"
+3. Finalmente: "Liste transições argumentativas QUE NÃO FORAM MENCIONADAS mas que conectam seções"
+
+Isto força o sistema a explorar múltiplos clusters semânticos.`
+            },
+            {
+                id: 'metodologia',
+                emoji: '⚗️',
+                title: 'Metodologia',
+                desc: 'Métodos, corpus, procedimentos',
+                prompt: `**ANÁLISE METODOLÓGICA**
+
+Extraia e avalie procedimentos metodológicos:
+
+**1. DESENHO DE PESQUISA**
+- Abordagem: qualitativa, quantitativa, mista, teórico-especulativa
+- Justificativa: por que essa abordagem para essa pergunta?
+- Limitações reconhecidas pelo autor
+
+**2. CORPUS/DADOS**
+- Descrição precisa: que textos/dados/fenômenos foram analisados
+- Critérios de seleção/inclusão
+- Tamanho e representatividade
+- Período de coleta (se aplicável)
+
+**3. PROCEDIMENTOS ANALÍTICOS**
+- Técnicas específicas: análise de discurso, regressão estatística, genealogia, etc.
+- Operacionalização de conceitos-chave
+- Software/ferramentas utilizadas
+- Processo de codificação/categorização (se qualitativo)
+
+**4. VALIDAÇÃO E RIGOR**
+- Estratégias de triangulação
+- Tratamento de casos desviantes
+- Reflexividade metodológica
+- Limitações e vieses reconhecidos
+
+**PROMPT ANTI-VIÉS**: "Identifique passagens metodológicas MESMO SE não rotuladas explicitamente como 'metodologia'. Busque em: prefácios, notas de rodapé, apêndices, e discussões sobre 'como este livro foi feito'."`
+            },
+            {
+                id: 'conclusao',
+                emoji: '🎓',
+                title: 'Conclusão',
+                desc: 'Síntese, implicações, limitações',
+                prompt: `**ANÁLISE DE CONCLUSÃO**
+
+Extraia fechamento argumentativo e projeções:
+
+**1. SÍNTESE DO ARGUMENTO**
+- Recapitulação da tese central
+- Principais achados/contribuições (listados)
+- Como evidência sustentou claims iniciais
+
+**2. IMPLICAÇÕES**
+- Teóricas: que frameworks foram validados/desafiados/refinados
+- Práticas: aplicações, políticas públicas, intervenções
+- Metodológicas: que abordagens se mostraram frutíferas
+- Epistemológicas: o que isso revela sobre natureza do conhecimento neste campo
+
+**3. LIMITAÇÕES E AUTOCRÍTICA**
+- Limitações reconhecidas pelo autor
+- O que a pesquisa NÃO pôde responder
+- Casos que desafiam a tese
+- Generalizabilidade vs. particularidade
+
+**4. AGENDAS FUTURAS**
+- Questões não-resolvidas
+- Extensões possíveis da pesquisa
+- Novos puzzles que emergiram
+
+**COMPENSAÇÃO PARA PATH DEPENDENCY**: Conclusões frequentemente referenciam conceitos da introdução. NotebookLM pode "travar" nessas citações. FORCE novo frame: "Identifique implicações INESPERADAS — aquelas que não decorrem diretamente da tese inicial mas emergiram durante a pesquisa."`
+            },
+            {
+                id: 'estrutura-retorica',
+                emoji: '🎭',
+                title: 'Estrutura Retórica',
+                desc: 'Estratégias persuasivas, estilo',
+                prompt: `**ANÁLISE DA ESTRUTURA RETÓRICA**
+
+Examine estratégias persuasivas e arquitetura discursiva:
+
+**1. MOVIMENTOS RETÓRICOS**
+- Abertura: como autor estabelece credibilidade/autoridade
+- Desenvolvimento: estratégias de persuasão (logos, ethos, pathos)
+- Fechamento: técnicas de consolidação da tese
+
+**2. ARQUITETURA DISCURSIVA**
+- Estrutura de superfície vs. estrutura profunda
+- Repetições estratégicas (conceitos/imagens que reaparecem)
+- Progressão: linear, cíclica, espiralada, rizomática
+
+**3. ESTRATÉGIAS DE EXEMPLIFICAÇÃO**
+- Tipos de exemplos: paradigmáticos, ilustrativos, contra-exemplos
+- Função: demonstração, clarificação, provocação
+- Recorrência: há um "caso central" que ancora a análise?
+
+**4. REGISTRO E TOM**
+- Nível de formalidade
+- Posicionamento autoral: neutro, engajado, polêmico
+- Uso de metáforas/analogias estruturantes
+- Pressupostos sobre o leitor (expertise assumida)
+
+**5. INTERTEXTUALIDADE**
+- Com quem o autor dialoga explicitamente
+- Referências implícitas (alusões, paródias, inversões)
+- Tradição intelectual na qual se insere
+
+**⚠️ ESTE MODO É ALTAMENTE VULNERÁVEL A CHUNKING**: Estruturas retóricas são globais, não locais.
+
+**ESTRATÉGIA**: Após resposta, solicite: "Que padrões retóricos podem ter sido PERDIDOS porque não aparecem em segmentos individuais mas apenas na obra completa?" Isto força meta-análise.`
+            },
+            {
+                id: 'conceitos-chave',
+                emoji: '💡',
+                title: 'Conceitos-Chave',
+                desc: 'Termos técnicos, definições',
+                prompt: `**GLOSSÁRIO DE CONCEITOS-CHAVE**
+
+Extraia 10-20 conceitos centrais com definições contextuais:
+
+**ESTRUTURA POR CONCEITO**:
+
+**[TERMO]**
+
+*Definição Contextual* (2-4 frases):
+- Como o autor define/usa este termo especificamente
+- Nuances que o distinguem de usos cotidianos ou de outros autores
+
+*Operacionalização* (1-2 parágrafos):
+- Como o conceito funciona na argumentação
+- Exemplos paradigmáticos de aplicação
+- Relações com outros conceitos-chave
+- Críticas ou tensões internas ao conceito
+
+*Genealogia* (se relevante):
+- Origem do termo (autor cunhou? adaptou de quem?)
+- Evolução ao longo da obra (se conceito é redefinido)
+
+**CRITÉRIOS DE SELEÇÃO**:
+- Conceitos que aparecem em múltiplos capítulos
+- Termos técnicos/neologismos
+- Conceitos que estruturam o argumento
+- Termos que o autor define explicitamente
+
+**ANTI-VIÉS RAG**: "Para cada conceito, identifique passagens em que ele é DEFINIDO vs. passagens em que é APLICADO. Se NotebookLM privilegiou aplicações, solicite explicitamente: 'Onde autor DEFINE [conceito] pela primeira vez?'"`
+            },
+            {
+                id: 'debates',
+                emoji: '⚔️',
+                title: 'Debates e Críticas',
+                desc: 'Posicionamentos, controvérsias',
+                prompt: `**MAPEAMENTO DE DEBATES E POSICIONAMENTO**
+
+Identifique interlocuções críticas e posicionamento no campo:
+
+**1. ADVERSÁRIOS INTELECTUAIS**
+- Liste autores/teorias criticados explicitamente
+- Natureza da crítica: empírica, teórica, metodológica, política
+- Generosidade vs. hostilidade da crítica
+- Força dos argumentos contra adversários
+
+**2. ALIADOS E PRECURSORES**
+- Quem o autor cita favoravelmente
+- Que frameworks são adotados/adaptados
+- Como autor se posiciona em relação a tradições (continuidade/ruptura)
+
+**3. CONTROVÉRSIAS DO CAMPO**
+- Identifique 2-4 debates centrais na literatura que a obra engaja
+- Posicionamento do autor em cada debate
+- Evidência mobilizada para sustentar posição
+- Silêncios: debates relevantes que a obra NÃO engaja
+
+**4. RECEPÇÃO CRÍTICA (se obra é clássica)**
+- Principais linhas de crítica recebidas
+- Apropriações/distorções comuns
+- Legado e influência
+
+**COMPENSAÇÃO PARA DISTRACTING EFFECT**: Debates tendem a gerar alta densidade semântica (muitas menções a nomes/conceitos). RAG pode "travar" em passagens polêmicas.
+
+**VERIFICAÇÃO**: Após resposta, pergunte: "Liste autores mencionados na obra que NÃO foram discutidos na resposta anterior." Isto revela viés de recuperação.`
+            },
+            {
+                id: 'lacunas',
+                emoji: '🕳️',
+                title: 'Lacunas e Silêncios',
+                desc: 'O que não foi abordado',
+                prompt: `**IDENTIFICAÇÃO DE LACUNAS E SILÊNCIOS**
+
+Mapeie ausências significativas:
+
+**1. LACUNAS TEMÁTICAS**
+- Tópicos relacionados que não foram abordados
+- Casos/fenômenos que deveriam ter sido considerados mas não foram
+- Contextos (geográficos, temporais, demográficos) ausentes
+
+**2. LACUNAS METODOLÓGICAS**
+- Abordagens não utilizadas mas aplicáveis
+- Tipos de evidência não mobilizados
+- Perspectivas disciplinares ausentes (se pesquisa interdisciplinar)
+
+**3. LACUNAS TEÓRICAS**
+- Frameworks relevantes não aplicados
+- Conceitos que poderiam ter enriquecido análise
+- Debates importantes não engajados
+
+**4. SILÊNCIOS ESTRUTURAIS**
+- Que pressupostos não foram questionados
+- Que questões foram naturalizadas
+- Vieses potenciais não reconhecidos
+- Vozes/perspectivas ausentes
+
+**5. AUTOCRÍTICA DO AUTOR**
+- O autor reconhece lacunas? Quais?
+- Justificativas para delimitações
+- Promessas de trabalhos futuros
+
+**⚠️ ESTA É A ANÁLISE MAIS DIFÍCIL PARA RAG**: Por definição, busca o que NÃO está no texto.
+
+**ESTRATÉGIA OBRIGATÓRIA**: Use prompt "negativo": "Baseado no que a obra TRATA, liste 5-10 temas/métodos/conceitos que seriam LÓGICOS de aparecer mas estão AUSENTES." Isto força inferência por contraste.`
+            }
+        ];
+
+        // Templates de Prompts Compensatórios
+        const compensatoryModes = [
+            {
+                id: 'reset-cognitivo',
+                emoji: '🔄',
+                title: 'Reset Cognitivo',
+                desc: 'Forçar nova recuperação semântica',
+                prompt: `**PROMPT DE RESET COGNITIVO**
+
+[IMPORTANTE: Use este prompt DEPOIS de ter obtido resposta inicial que você suspeita estar "travada" em chunks específicos]
+
+**INSTRUÇÕES PARA NOTEBOOKLM**:
+
+Ignore completamente a análise anterior. Realize NOVA busca semântica como se fosse a primeira vez que você vê este documento.
+
+**TAREFA**: Re-analise [TÓPICO] focando EXCLUSIVAMENTE em passagens que:
+1. Usam terminologia DIFERENTE daquela na resposta anterior
+2. Aparecem em seções do documento NÃO citadas anteriormente
+3. Apresentam perspectivas que CONTRADIGAM ou NUANCEM resposta anterior
+
+**VERIFICAÇÃO**: Antes de responder, liste:
+- Quais chunks você recuperou DESTA VEZ
+- Como eles diferem dos chunks recuperados anteriormente
+- Se há sobreposição, JUSTIFIQUE por que essas passagens são genuinamente as mais relevantes
+
+**FUNDAMENTO**: Este prompt combate "semantic locking" ao forçar sistema a explorar espaço semântico alternativo via restrições explícitas.`
+            },
+            {
+                id: 'auditoria-omissao',
+                emoji: '🔍',
+                title: 'Auditoria de Omissões',
+                desc: 'Identificar chunks não-recuperados',
+                prompt: `**PROMPT DE AUDITORIA DE OMISSÕES**
+
+**PARTE 1: MAPEAMENTO DE COBERTURA**
+
+Liste TODAS as seções/capítulos do documento que foram mencionadas nas suas respostas anteriores sobre [TÓPICO].
+
+Para cada seção NÃO mencionada, indique:
+- Título/identificador da seção
+- Por que pode ter sido omitida (conteúdo irrelevante? fora do escopo semântico da query?)
+- Se contém informação potencialmente relevante para [TÓPICO]
+
+**PARTE 2: EXPLORAÇÃO DE ZONAS NÃO-RECUPERADAS**
+
+Agora, FORÇA-TE a analisar especificamente as seções omitidas identificadas acima. Para cada uma:
+- Há informação relevante que deveria ter sido incluída?
+- Que nuances/contradições essas seções trazem?
+- Como mudam/complementam resposta anterior?
+
+**FUNDAMENTO**: Este prompt compensa FP2 (Missed Top Ranked) ao forçar análise de material que não alcançou ranking alto mas pode ser substantivamente relevante.`
+            },
+            {
+                id: 'diversidade-semantica',
+                emoji: '🌈',
+                title: 'Diversidade Semântica',
+                desc: 'Explorar múltiplos clusters',
+                prompt: `**PROMPT DE DIVERSIDADE SEMÂNTICA**
+
+Para analisar [TÓPICO] sob múltiplas perspectivas:
+
+**TAREFA MULTI-FRAME**:
+Analise o tópico através de 4 "lentes" semânticas distintas. Para cada lente, recupere chunks DIFERENTES:
+
+**Lente 1 — Definicional**: Passagens que DEFINEM conceitos-chave
+**Lente 2 — Aplicativa**: Passagens que APLICAM conceitos a casos
+**Lente 3 — Crítica**: Passagens que QUESTIONAM ou PROBLEMATIZAM conceitos
+**Lente 4 — Metodológica**: Passagens que explicam COMO autor chegou a conclusões
+
+Para cada lente:
+- Cite 2-3 passagens específicas recuperadas
+- Explicite COMO essa lente muda o enquadramento do tópico
+- Identifique tensões/contradições entre lentes
+
+**VERIFICAÇÃO**: Se múltiplas lentes citaram as MESMAS passagens, isto indica travamento semântico. Neste caso, reformule lentes para forçar maior divergência.
+
+**FUNDAMENTO**: Combate path dependency ao exigir exploração de múltiplos clusters semânticos.`
+            },
+            {
+                id: 'validacao-pareto',
+                emoji: '📊',
+                title: 'Validação Pareto',
+                desc: 'Auditoria dos 20% essenciais',
+                prompt: `**PROMPT DE VALIDAÇÃO PARETO (20% ESSENCIAL)**
+
+**OBJETIVO**: Verificar se chunks recuperados capturam verdadeiramente os 20% mais IMPORTANTES (não apenas mais SIMILARES).
+
+**PARTE 1: RANKING DE IMPORTÂNCIA**
+
+Liste os 10 conceitos/argumentos/evidências que você considerou MAIS IMPORTANTES para [TÓPICO], classificados por:
+- Centralidade para tese principal
+- Frequência de menção ao longo do texto
+- Novidade/originalidade da contribuição
+
+**PARTE 2: VERIFICAÇÃO DE COBERTURA**
+
+Para cada item do ranking:
+- Foi mencionado na resposta anterior? Sim/Não
+- Se SIM: com que profundidade (superficial/adequada/exaustiva)?
+- Se NÃO: por que pode ter sido omitido? Em que seção do documento se encontra?
+
+**PARTE 3: RE-ANÁLISE DIRECIONADA**
+
+Para itens NÃO cobertos ou superficialmente cobertos:
+- Analise-os agora explicitamente
+- Explique como mudam/enriquecem compreensão do tópico
+- Avalie se são genuinamente periféricos OU se foram vítimas de viés de recuperação
+
+**FUNDAMENTO**: Este protocolo distingue "importância" de "similaridade semântica", permitindo auditoria manual dos 20% críticos.`
+            },
+            {
+                id: 'verificacao-cruzada',
+                emoji: '✅',
+                title: 'Verificação Cruzada',
+                desc: 'Comparar múltiplas formulações',
+                prompt: `**PROMPT DE VERIFICAÇÃO CRUZADA**
+
+**INSTRUÇÕES**: Analise [TÓPICO] através de 3 formulações semanticamente DISTINTAS da mesma pergunta.
+
+**Formulação A** (Terminologia Técnica):
+[Sua pergunta usando jargão técnico/conceitos especializados]
+
+**Formulação B** (Terminologia Coloquial):
+[Mesma pergunta em linguagem não-técnica]
+
+**Formulação C** (Frame Invertido):
+[Pergunte sobre AUSÊNCIA ou CONTRÁRIO do que você busca]
+Ex: Se pergunta é "Como autor define poder?", Frame C seria "Como autor define resistência ao poder?"
+
+**ANÁLISE DE CONSISTÊNCIA**:
+Após obter respostas às três formulações:
+1. Identifique sobreposições (conceitos que apareceram nas 3)
+2. Identifique divergências (conceitos únicos a cada formulação)
+3. Avalie: divergências revelam nuances genuínas OU viés de recuperação?
+
+**SÍNTESE**: Integre insights das 3 formulações, explicitando:
+- O que é consenso robusto (aparece nas 3)
+- O que é perspectiva-dependente (varia por formulação)
+- Que aspectos foram provavelmente PERDIDOS em todas as 3
+
+**FUNDAMENTO**: Triangulação semântica para detectar e compensar viés de recuperação.`
+            },
+            {
+                id: 'teste-contradicao',
+                emoji: '⚡',
+                title: 'Teste de Contradição',
+                desc: 'Detectar travamento semântico',
+                prompt: `**TESTE DE CONTRADIÇÃO (Diagnóstico de Semantic Locking)**
+
+**HIPÓTESE**: Se NotebookLM está "travado" em certos chunks, ele retornará respostas similares mesmo para queries contraditórias.
+
+**PROTOCOLO DE TESTE**:
+
+**Query Original**: [Sua pergunta inicial sobre TÓPICO]
+[Obtenha resposta, anote chunks citados]
+
+**Query Contraditória**: Reformule para buscar OPOSTO do que perguntou originalmente.
+Exemplos:
+- Se perguntou sobre "poder", pergunte sobre "impotência"
+- Se perguntou "vantagens", pergunte "desvantagens"
+- Se perguntou "continuidades", pergunte "rupturas"
+
+**ANÁLISE COMPARATIVA**:
+1. As duas respostas citam chunks COMPLETAMENTE DIFERENTES? ✓ (Bom - sem travamento)
+2. As duas respostas citam ALGUNS chunks idênticos mas os interpretam diferentemente? ~ (Aceitável)
+3. As duas respostas citam MESMOS chunks com interpretações quase idênticas? ✗ (Travamento confirmado)
+
+**AÇÃO CORRETIVA SE TRAVAMENTO DETECTADO**:
+- Execute refresh do navegador
+- Reformule usando terminologia semanticamente distante
+- Use prompt de "Reset Cognitivo" acima
+
+**FUNDAMENTO**: Teste adversarial para detectar path dependency antes de confiar em análise.`
+            }
+        ];
+
+        // Renderizar templates
+        function renderTemplates() {
+            const structuralContainer = document.getElementById('structuralModes');
+            const compensatoryContainer = document.getElementById('compensatoryModes');
+            
+            structuralModes.forEach(mode => {
+                const btn = document.createElement('button');
+                btn.className = 'template-btn';
+                btn.onclick = () => selectTemplate('structural', mode.id);
+                btn.innerHTML = `
+                    <div class="emoji">${mode.emoji}</div>
+                    <div class="title">${mode.title}</div>
+                    <div class="desc">${mode.desc}</div>
+                `;
+                structuralContainer.appendChild(btn);
+            });
+            
+            compensatoryModes.forEach(mode => {
+                const btn = document.createElement('button');
+                btn.className = 'template-btn';
+                btn.onclick = () => selectTemplate('compensatory', mode.id);
+                btn.innerHTML = `
+                    <div class="emoji">${mode.emoji}</div>
+                    <div class="title">${mode.title}</div>
+                    <div class="desc">${mode.desc}</div>
+                `;
+                compensatoryContainer.appendChild(btn);
+            });
+        }
+
+        let selectedStructural = null;
+        let selectedCompensatory = null;
+
+        function selectTemplate(type, id) {
+            if (type === 'structural') {
+                selectedStructural = id;
+                document.querySelectorAll('#structuralModes .template-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+            } else {
+                selectedCompensatory = id;
+                document.querySelectorAll('#compensatoryModes .template-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+            }
+            
+            event.currentTarget.classList.add('active');
+        }
+
+        function generatePrompt() {
+            const bookTitle = document.getElementById('bookTitle').value;
+            const analysisType = document.getElementById('analysisType').value;
+            const researchContext = document.getElementById('researchContext').value;
+            const customFocus = document.getElementById('customFocus').value;
+            
+            if (!bookTitle) {
+                alert('Por favor, insira o título da obra/corpus.');
+                return;
+            }
+            
+            if (!selectedStructural && !selectedCompensatory) {
+                alert('Por favor, selecione pelo menos um modo de análise.');
+                return;
+            }
+            
+            let prompt = `# PROMPT ESTRATIFICADO PARA NOTEBOOKLM — RAG-AWARE
+
+## CONFIGURAÇÃO BÁSICA
+
+**Obra/Corpus**: ${bookTitle}
+**Tipo de Análise**: ${analysisType === 'individual' ? 'Livro Individual (análise holística)' : analysisType === 'comparative' ? 'Corpus Temático (2-5 obras)' : 'Corpus Extenso (6-30 obras)'}
+${researchContext ? `**Contexto de Pesquisa**: ${researchContext}` : ''}
+
+---
+
+`;
+
+            if (selectedStructural) {
+                const mode = structuralModes.find(m => m.id === selectedStructural);
+                prompt += `## MODO DE ANÁLISE ESTRUTURAL: ${mode.title}\n\n`;
+                prompt += mode.prompt + '\n\n---\n\n';
+            }
+            
+            if (selectedCompensatory) {
+                const mode = compensatoryModes.find(m => m.id === selectedCompensatory);
+                prompt += `## PROMPT COMPENSATÓRIO ANTI-VIÉS: ${mode.title}\n\n`;
+                prompt += mode.prompt + '\n\n---\n\n';
+            }
+            
+            if (customFocus) {
+                prompt += `## FOCO CUSTOMIZADO\n\n${customFocus}\n\n---\n\n`;
+            }
+            
+            prompt += `## DIRETRIZES GERAIS DE RESPOSTA
+
+**Transparência de Recuperação**: Para cada claim substantivo, cite a seção/página específica do documento.
+
+**Explicitação de Incertezas**: Se informação solicitada não for encontrada nos chunks recuperados, declare explicitamente: "Esta informação não foi localizada nos segmentos analisados" em vez de inferir.
+
+**Densidade Conceitual**: Mantenha rigor analítico apropriado ao nível de densidade da obra. Livros teóricos densos requerem análise conceitual profunda, não simplificações.
+
+**Formato**: Use markdown estruturado (headers, listas, ênfases) para facilitar leitura e extração.
+
+---
+
+## NOTA SOBRE LIMITAÇÕES RAG
+
+Este prompt foi projetado considerando as limitações arquiteturais do NotebookLM:
+- Recuperação probabilística (não determinística)
+- Fragmentação via chunking (leitura não-holística)
+- Path dependency (travamento em chunks inicialmente recuperados)
+- Viés de similaridade semântica sobre relevância factual
+
+O pesquisador DEVE auditar manualmente a resposta usando protocolos indicados.`;
+
+            document.getElementById('promptOutput').textContent = prompt;
+            
+            const charCount = prompt.length;
+            const countElement = document.getElementById('charCount');
+            
+            if (charCount > 5000) {
+                countElement.innerHTML = `<span class="warning">${charCount.toLocaleString()} caracteres (excede limite NotebookLM: 5.000)</span>`;
+            } else {
+                countElement.innerHTML = `${charCount.toLocaleString()} caracteres (dentro do limite NotebookLM: 5.000)`;
+            }
+            
+            document.getElementById('outputSection').style.display = 'block';
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function copyToClipboard() {
+            const promptText = document.getElementById('promptOutput').textContent;
+            navigator.clipboard.writeText(promptText).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const icon = document.getElementById('copyIcon');
+                const text = document.getElementById('copyText');
+                
+                btn.classList.add('copied');
+                icon.textContent = '✓';
+                text.textContent = 'Copiado!';
+                
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    icon.textContent = '📋';
+                    text.textContent = 'Copiar';
+                }, 2000);
+            }).catch(() => {
+                alert('Erro ao copiar. Selecione e copie manualmente o texto.');
+            });
+        }
+        
+        // Inicializar
+        renderTemplates();
+    </script>
+</body>
+</html>

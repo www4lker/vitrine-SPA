@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico: Cannabis, Dopamina e o Cérebro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #0073E6, #3399FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .flowchart-arrow {
+            position: relative;
+            width: 100%;
+            height: 2px;
+            background-color: #99CCFF;
+            margin: 2rem 0;
+        }
+        .flowchart-arrow::after {
+            content: '';
+            position: absolute;
+            right: -1px;
+            top: -5px;
+            border: solid #99CCFF;
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: 5px;
+            transform: rotate(-45deg);
+        }
+        .flowchart-box {
+            border: 2px solid #3399FF;
+            background-color: #ffffff;
+        }
+        .flowchart-text-highlight {
+            color: #0059B3;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-4xl md:text-6xl font-black text-[#004080] mb-4">Cannabis e o Cérebro</h1>
+            <p class="text-lg md:text-xl text-[#0059B3] max-w-3xl mx-auto">Uma análise visual dos efeitos do THC no sistema dopaminérgico, do uso agudo à neuroadaptação crônica.</p>
+        </header>
+
+        <section class="mb-12 md:mb-20">
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-10 grid grid-cols-1 md:grid-cols-3 items-center gap-6 border-t-8 border-[#0073E6]">
+                <div class="md:col-span-1 text-center">
+                    <p class="text-8xl md:text-9xl font-black gradient-text">4x</p>
+                </div>
+                <div class="md:col-span-2">
+                    <h2 class="text-2xl md:text-3xl font-bold text-[#004080] mb-3">Maior Risco de Psicose</h2>
+                    <p class="text-base md:text-lg text-gray-600">Meta-análises de estudos epidemiológicos confirmam que usuários pesados de cannabis apresentam um risco quase quatro vezes maior de desenvolver transtornos psicóticos, como a esquizofrenia, em comparação com não usuários. A relação é dose-dependente: quanto maior a frequência e a potência, maior o risco.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 md:mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#004080] mb-8">Como o THC Altera o Equilíbrio Cerebral</h2>
+            <p class="text-center text-lg text-gray-600 max-w-4xl mx-auto mb-12">O THC, principal componente psicoativo da cannabis, sequestra o sistema de comunicação do cérebro. Ele age indiretamente para aumentar a dopamina, o neurotransmissor da motivação e recompensa, através de um processo de desinibição.</p>
+            
+            <div class="max-w-2xl mx-auto">
+                <div class="flowchart-box rounded-lg p-4 text-center shadow-md">
+                    <p class="font-semibold text-lg">Neurônios Inibitórios (GABA)</p>
+                    <p class="text-sm text-gray-600">Normalmente, estes neurônios atuam como um "freio", controlando a atividade dos neurônios de dopamina.</p>
+                </div>
+                <div class="flowchart-arrow"></div>
+                <div class="flowchart-box rounded-lg p-4 text-center shadow-md">
+                    <p class="font-semibold text-lg">THC se Liga aos Receptores CB1</p>
+                    <p class="text-sm text-gray-600">O THC se liga aos receptores CB1 presentes nos neurônios GABAérgicos, <span class="flowchart-text-highlight">inibindo a liberação de GABA.</span></p>
+                </div>
+                <div class="flowchart-arrow"></div>
+                <div class="flowchart-box rounded-lg p-4 text-center shadow-md">
+                    <p class="font-semibold text-lg">"Freio" é Removido</p>
+                    <p class="text-sm text-gray-600">Com menos inibição (menos GABA), os neurônios de dopamina disparam com mais frequência.</p>
+                </div>
+                <div class="flowchart-arrow"></div>
+                <div class="bg-[#e6f2ff] border-2 border-[#0073E6] rounded-lg p-6 text-center shadow-xl">
+                    <p class="font-bold text-xl text-[#004080]">Surto de Dopamina</p>
+                    <p class="text-md text-gray-700">O resultado é uma liberação acentuada de dopamina no sistema de recompensa, causando a euforia e os efeitos de reforço da cannabis.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 md:mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#004080] mb-12">Uso Ocasional vs. Crônico: Uma Via de Mão Dupla</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-[#0073E6] mb-4 text-center">Uso Ocasional: O Estado Hiper-Dopaminérgico</h3>
+                    <p class="text-gray-600 mb-6 text-center">O uso agudo provoca um aumento acentuado e transitório na liberação de dopamina, levando à euforia, mas também a prejuízos cognitivos e, em vulneráveis, a reações adversas.</p>
+                    <div class="chart-container">
+                        <canvas id="acuteDopamineChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-4">Ilustração do pico de dopamina após o uso agudo de THC, correlacionado com a euforia.</p>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-[#004080] mb-4 text-center">Uso Crônico: O Estado Hipo-Dopaminérgico</h3>
+                    <p class="text-gray-600 mb-6 text-center">A exposição contínua força o cérebro a se adaptar. O sistema de recompensa se torna "embotado", com menor capacidade de liberar dopamina em resposta a estímulos.</p>
+                    <div class="chart-container">
+                        <canvas id="chronicDopamineChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-4">Comparação da liberação de dopamina em resposta a um estímulo em não usuários vs. a resposta diminuída em usuários crônicos.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 md:mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#004080] mb-8">As Consequências da Neuroadaptação Crônica</h2>
+            <p class="text-center text-lg text-gray-600 max-w-4xl mx-auto mb-12">A transição para um estado de baixa dopamina (hipo-dopaminérgico) não é apenas química; manifesta-se em síndromes clínicas e comportamentais significativas.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h4 class="font-bold text-xl text-[#0059B3] mb-2">Síndrome Amotivacional</h4>
+                    <p class="text-gray-600">Caracterizada por apatia, anedonia (incapacidade de sentir prazer) e dificuldade em iniciar tarefas. As recompensas naturais perdem seu valor motivacional devido ao sistema de recompensa "embotado".</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h4 class="font-bold text-xl text-[#0059B3] mb-2">Transtorno por Uso (TUC)</h4>
+                    <p class="text-gray-600">O uso compulsivo continua apesar dos prejuízos. O cérebro, adaptado à droga, gera uma "fissura" intensa para aliviar os sintomas de abstinência e restaurar o déficit de dopamina.</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 md:col-span-2 lg:col-span-1">
+                    <h4 class="font-bold text-xl text-[#0059B3] mb-2">Déficits Cognitivos</h4>
+                    <p class="text-gray-600">Dificuldades persistentes com memória, atenção e funções executivas (planejamento, flexibilidade). O cérebro mostra sinais de processamento neural ineficiente.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-12 md:mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#004080] mb-12">A Janela de Vulnerabilidade: Adolescência</h2>
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 flex flex-col md:flex-row items-center gap-6">
+                <div class="text-6xl text-[#0073E6]">⚠️</div>
+                <div>
+                    <h3 class="text-2xl font-bold text-[#004080] mb-2">Por que o Início Precoce é Mais Arriscado?</h3>
+                    <p class="text-gray-600">O cérebro adolescente está em maturação, um processo guiado pelo sistema endocanabinoide. A introdução de altas doses de THC nesta fase crítica pode interromper permanentemente o desenvolvimento neural. O início na adolescência está associado a um risco muito maior de dependência, déficits cognitivos duradouros e transtornos psicóticos na vida adulta.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 md:mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#004080] mb-8">THC vs. CBD: Uma Questão de Equilíbrio</h2>
+            <p class="text-center text-lg text-gray-600 max-w-4xl mx-auto mb-12">Nem todos os canabinoides são iguais. O Canabidiol (CBD) não é psicoativo e pode, na verdade, moderar alguns dos efeitos negativos do THC, atuando como um fator de "redução de danos" neurobiológico.</p>
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-max bg-white rounded-lg shadow-md text-left">
+                    <thead class="bg-[#0073E6] text-white">
+                        <tr>
+                            <th class="p-4 font-semibold">Característica</th>
+                            <th class="p-4 font-semibold">THC (Δ⁹-tetrahidrocanabinol)</th>
+                            <th class="p-4 font-semibold">CBD (Canabidiol)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-4 font-bold text-[#004080]">Psicoatividade</td>
+                            <td class="p-4">Forte (Euforia)</td>
+                            <td class="p-4">Ausente</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-4 font-bold text-[#004080]">Ansiedade</td>
+                            <td class="p-4">Pode causar/aumentar</td>
+                            <td class="p-4">Ansiolítico (Reduz)</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-4 font-bold text-[#004080]">Psicose</td>
+                            <td class="p-4">Pode induzir sintomas</td>
+                            <td class="p-4">Antipsicótico</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-4 font-bold text-[#004080]">Ação no Receptor CB1</td>
+                            <td class="p-4">Agonista (Ativa)</td>
+                            <td class="p-4">Modulador (Atenua efeito do THC)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer class="text-center pt-8 border-t border-[#99CCFF]">
+            <p class="text-sm text-gray-500">Este infográfico é uma representação visual baseada na pesquisa neurobiológica sobre os efeitos da cannabis. As informações apresentadas são para fins educacionais e não constituem aconselhamento médico. Consulte um profissional de saúde para obter orientação.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const brilliantBlues = {
+            darkest: '#004080',
+            dark: '#0059B3',
+            medium: '#0073E6',
+            light: '#3399FF',
+            lightest: '#99CCFF',
+            background: 'rgba(51, 153, 255, 0.2)'
+        };
+
+        function wrapLabel(str) {
+            const maxLength = 16;
+            if (str.length <= maxLength) {
+                return str;
+            }
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const defaultChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: brilliantBlues.darkest,
+                        font: {
+                            weight: 'bold'
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: brilliantBlues.dark },
+                    grid: { color: '#e0e0e0' }
+                },
+                x: {
+                    ticks: { color: brilliantBlues.dark },
+                    grid: { display: false }
+                }
+            }
+        };
+
+        const acuteDopamineCtx = document.getElementById('acuteDopamineChart').getContext('2d');
+        new Chart(acuteDopamineCtx, {
+            type: 'line',
+            data: {
+                labels: ['Linha de Base', 'Uso de THC', 'Pico de Efeito', 'Pós-Efeito'],
+                datasets: [{
+                    label: 'Nível de Dopamina',
+                    data: [50, 150, 250, 70],
+                    fill: true,
+                    borderColor: brilliantBlues.light,
+                    backgroundColor: brilliantBlues.background,
+                    tension: 0.4,
+                    pointBackgroundColor: brilliantBlues.medium,
+                    pointRadius: 5
+                }]
+            },
+            options: { ...defaultChartOptions }
+        });
+
+        const chronicDopamineCtx = document.getElementById('chronicDopamineChart').getContext('2d');
+        new Chart(chronicDopamineCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Não Usuário', 'Usuário Crônico'],
+                datasets: [{
+                    label: 'Liberação de Dopamina (vs. Estímulo)',
+                    data: [100, 45],
+                    backgroundColor: [brilliantBlues.light, brilliantBlues.darkest],
+                    borderColor: [brilliantBlues.medium, brilliantBlues.dark],
+                    borderWidth: 1
+                }]
+            },
+            options: { ...defaultChartOptions }
+        });
+    </script>
+</body>
+</html>

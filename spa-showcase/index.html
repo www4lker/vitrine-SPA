@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Experiments - Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <div class="logo-icon"></div>
+        <h1>My Experiments <span class="version">v2.0</span></h1>
+      </div>
+      <div class="header-right">
+        <input type="text" id="searchInput" placeholder="Search experiments..." class="search-input">
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="intro">
+      <h2>Experimental Showcase</h2>
+      <p>A collection of interactive summaries and Single Page Applications generated via AI. These are experimental
+        prototypes exploring new ways to visualize complex information.</p>
+    </div>
+
+    <div id="projectGrid" class="project-grid">
+      <!-- Projects will be loaded here by app.js -->
+    </div>
+
+    <div id="noResults" class="no-results" style="display: none;">
+      <p>No experiments found matching your search.</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="currentYear"></span> My Experimental Portfolio. Hosted on Static Pages.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

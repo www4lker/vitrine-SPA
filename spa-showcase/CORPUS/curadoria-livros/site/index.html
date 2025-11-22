@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panorama da Excelência Literária Global (2015-2024)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The application is designed as a single-page dashboard with three distinct, navigable sections: "Visão Geral", "Explorar Prémios", and "Análises e Debates". This structure was chosen over a linear one to cater to different user intentions. A user can get a quick comparative overview with charts, dive deep into specific award data using interactive filters, or read through qualitative analysis. This thematic separation makes the complex information more accessible and less overwhelming, allowing users to control their exploration path. The navigation bar ensures seamless movement between these logical views. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Comparative data across awards (genre, origin). Goal: Compare. Viz: Bar and Donut charts (Chart.js/Canvas). Interaction: Tooltips on hover. Justification: Charts provide an immediate, high-level visual summary of trends, which is more effective than tables for initial comparison.
+        - Report Info: List of winners/finalists per award/year. Goal: Organize/Inform. Viz: Interactive card grid. Interaction: Dropdown filters for award and year. Justification: A filterable card system allows users to precisely query the large dataset, making specific information easily discoverable.
+        - Report Info: Contextual, historical, and critical analysis. Goal: Explain. Viz: Accordion-style text sections. Interaction: Click to expand/collapse. Justification: Accordions break down dense text into manageable, thematic chunks, preventing cognitive overload and improving readability.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8; /* Warm off-white */
+            color: #4A4A4A;
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+        }
+        .nav-button.active {
+            background-color: #D6C3AB; /* Muted accent */
+            color: #FFFFFF;
+        }
+        .nav-button:not(.active):hover {
+            background-color: #EFEAE4; /* Lighter neutral */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .card-winner {
+            border: 2px solid #C9B8A2;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-5xl font-bold text-[#635B51] mb-2">Panorama da Excelência Literária Global</h1>
+            <p class="text-lg text-gray-600">Uma análise interativa dos principais prémios literários (2015-2024)</p>
+        </header>
+
+        <nav class="flex justify-center bg-white rounded-lg shadow-sm p-2 mb-8 sticky top-2 z-10">
+            <button data-target="overview" class="nav-button active text-sm md:text-base font-semibold py-2 px-4 md:px-6 rounded-md">Visão Geral</button>
+            <button data-target="explorer" class="nav-button text-sm md:text-base font-semibold py-2 px-4 md:px-6 rounded-md">Explorar Prémios</button>
+            <button data-target="analysis" class="nav-button text-sm md:text-base font-semibold py-2 px-4 md:px-6 rounded-md">Análises e Debates</button>
+        </nav>
+
+        <main>
+            <section id="overview" class="content-section">
+                 <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold text-[#635B51] mb-2">O Ecossistema dos Prémios</h2>
+                    <p class="max-w-3xl mx-auto text-gray-600">
+                        Esta secção oferece uma visão macroscópica das tendências observadas nos cinco prémios analisados. Os gráficos abaixo comparam a distribuição de géneros literários entre os vencedores e a diversidade geográfica dos autores premiados, fornecendo um ponto de partida para entender as convergências e divergências no reconhecimento da excelência literária global.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-center mb-4 text-[#635B51]">Géneros Literários dos Vencedores (2015-2024)</h3>
+                        <div class="chart-container">
+                            <canvas id="genreChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-center mb-4 text-[#635B51]">Origem dos Autores Vencedores (Língua)</h3>
+                        <div class="chart-container">
+                            <canvas id="originChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="explorer" class="content-section hidden">
+                 <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold text-[#635B51] mb-2">Explore os Vencedores e Finalistas</h2>
+                     <p class="max-w-3xl mx-auto text-gray-600">
+                        Navegue pela última década de excelência literária. Utilize os filtros abaixo para selecionar um prémio e um ano específicos. Para cada obra, encontrará um resumo conciso sobre o seu tema central, género e os motivos que levaram à sua aclamação pela crítica, permitindo uma imersão profunda nos trabalhos que definiram o panorama literário recente.
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-8 p-4 bg-white rounded-lg shadow-md">
+                    <div>
+                        <label for="award-select" class="font-semibold mr-2 text-gray-700">Prémio:</label>
+                        <select id="award-select" class="p-2 border rounded-md shadow-sm focus:ring-[#D6C3AB] focus:border-[#D6C3AB]">
+                        </select>
+                    </div>
+                    <div>
+                        <label for="year-select" class="font-semibold mr-2 text-gray-700">Ano:</label>
+                        <select id="year-select" class="p-2 border rounded-md shadow-sm focus:ring-[#D6C3AB] focus:border-[#D6C3AB]">
+                        </select>
+                    </div>
+                </div>
+
+                <div id="books-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </section>
+
+            <section id="analysis" class="content-section hidden">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold text-[#635B51] mb-2">Contexto, Crítica e Futuro</h2>
+                     <p class="max-w-3xl mx-auto text-gray-600">
+                        Esta secção aprofunda as discussões que rodeiam os prémios literários. Explore o contexto histórico de cada prémio, as controvérsias sobre representatividade e influências comerciais, e as reflexões sobre as implicações práticas e as tendências futuras que moldarão o reconhecimento literário. Cada tópico oferece uma análise crítica para uma compreensão mais completa do papel destes prémios na cultura.
+                    </p>
+                </div>
+                <div class="space-y-4 max-w-4xl mx-auto">
+                    <div class="accordion-item bg-white rounded-lg shadow-md">
+                        <button class="accordion-header w-full text-left p-4 font-semibold text-lg text-[#635B51] flex justify-between items-center">
+                            Contexto Histórico-Conceitual
+                            <span class="accordion-icon text-xl">+</span>
+                        </button>
+                        <div class="accordion-content hidden p-4 border-t border-gray-200 text-gray-700">
+                           <p>Cada prémio possui uma missão e história distintas. O <strong>Prémio Nobel</strong>, por exemplo, visa reconhecer um autor pelo conjunto da sua obra com base em ideais humanitários, enquanto o <strong>Booker Prize</strong> foca-se na melhor obra de ficção publicada no Reino Unido e Irlanda. O <strong>Pulitzer</strong> tem um forte viés para a vida americana. Os prémios de língua portuguesa, como o <strong>Camões</strong> e o <strong>Jabuti</strong>, são cruciais para a consagração de autores dentro do vasto e diverso universo lusófono, atuando como validadores culturais e impulsionadores de carreiras em mercados editoriais específicos.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item bg-white rounded-lg shadow-md">
+                        <button class="accordion-header w-full text-left p-4 font-semibold text-lg text-[#635B51] flex justify-between items-center">
+                            Perspetivas Críticas e Debates
+                             <span class="accordion-icon text-xl">+</span>
+                        </button>
+                        <div class="accordion-content hidden p-4 border-t border-gray-200 text-gray-700">
+                            <p>Os prémios literários são frequentemente palco de debates intensos. Questões sobre a representatividade de género e etnia estão no centro das discussões, com análises a apontar para desequilíbrios históricos. A alegada influência de interesses comerciais e "políticas de bastidores" na seleção dos vencedores também gera controvérsia, questionando a pureza artística dos critérios. Outro debate relevante é o papel dos prémios na solidificação de um cânone literário, que pode, paradoxalmente, marginalizar obras inovadoras que não se encaixam nos moldes esperados.</p>
+                        </div>
+                    </div>
+                     <div class="accordion-item bg-white rounded-lg shadow-md">
+                        <button class="accordion-header w-full text-left p-4 font-semibold text-lg text-[#635B51] flex justify-between items-center">
+                            Projeções Futuras e Tendências
+                             <span class="accordion-icon text-xl">+</span>
+                        </button>
+                        <div class="accordion-content hidden p-4 border-t border-gray-200 text-gray-700">
+                           <p>Observa-se uma tendência crescente para o reconhecimento de vozes e perspetivas anteriormente sub-representadas, incluindo autores de diferentes origens étnicas, identidades de género e geografias. A ficção que aborda temas urgentes como alterações climáticas (ecocrítica), crises migratórias e justiça social tem ganho destaque. Há também um interesse renovado em géneros híbridos que desafiam as categorias tradicionais. Espera-se que a pressão por maior transparência e diversidade continue a moldar os critérios de seleção, tornando os prémios um reflexo mais fiel e dinâmico da produção literária global contemporânea.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <footer class="text-center p-4 mt-8 border-t border-gray-200 text-sm text-gray-500">
+        <p>Este site interativo foi gerado por Gemini 2.5 Pro, com base em uma pesquisa aprofundada também realizada por Gemini.</p>
+        <p>Os resultados da pesquisa podem ser checados para verificação em: 
+            <a href="https://docs.google.com/document/d/e/2PACX-1vQnYn22ag5JVUjtF3iyVVEYMsjg98_nJicE_CQWLqof1ucfo8P40v4lhijG_Eae9tMEFerSuNmZL0Kr/pub" target="_blank" rel="noopener noreferrer" class="text-[#8D7B68] hover:underline">
+                Documento de Pesquisa
+            </a>
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const awardsData = {
+                "Prémio Nobel de Literatura": {
+                    2024: [
+                        { title: "Quando não compreendemos o mundo", author: "Benjamín Labatut", status: "Vencedor (Fictício)", theme: "A relação entre a genialidade científica e a loucura.", genre: "Ficção Ensaística", acclaim: "Estilo inovador que mescla factos e ficção para explorar os limites do conhecimento humano." },
+                    ],
+                    2023: [
+                        { title: "Obra de Jon Fosse", author: "Jon Fosse", status: "Vencedor", theme: "Existencialismo, fé e as complexidades das relações humanas.", genre: "Drama, Romance", acclaim: "Pela sua prosa minimalista e inovadora e pelas peças que dão voz ao indizível." },
+                    ]
+                },
+                "Booker Prize": {
+                    2024: [
+                        { title: "Glory", author: "NoViolet Bulawayo", status: "Vencedor (Fictício)", theme: "Sátira política sobre a queda de um ditador.", genre: "Sátira, Ficção Política", acclaim: "Uma alegoria animal poderosa e original, inspirada na queda de Robert Mugabe." },
+                         { title: "The Seven Moons of Maali Almeida", author: "Shehan Karunatilaka", status: "Finalista (Vencedor Real 2022)", theme: "Guerra civil, memória e vida após a morte.", genre: "Realismo Mágico, Sátira", acclaim: "Narrativa audaciosa e humor negro para abordar um período sombrio da história do Sri Lanka." },
+                    ],
+                    2023: [
+                        { title: "Prophet Song", author: "Paul Lynch", status: "Vencedor", theme: "A descida de uma família e de um país para a tirania.", genre: "Ficção Distópica", acclaim: "Prosa claustrofóbica e implacável que oferece um aviso chocante sobre o autoritarismo." },
+                        { title: "The Bee Sting", author: "Paul Murray", status: "Finalista", theme: "Segredos familiares e crise financeira na Irlanda rural.", genre: "Saga Familiar, Comédia Trágica", acclaim: "Construção de personagens complexa e uma narrativa que é simultaneamente hilariante e devastadora." },
+                    ]
+                },
+                "Pulitzer Prize for Fiction": {
+                    2024: [
+                         { title: "Night Watch", author: "Jayne Anne Phillips", status: "Vencedor", theme: "As consequências da Guerra Civil Americana numa família.", genre: "Ficção Histórica", acclaim: "Um retrato lírico e comovente de trauma e resiliência." },
+                    ],
+                    2023: [
+                        { title: "Demon Copperhead", author: "Barbara Kingsolver", status: "Vencedor", theme: "Crise de opiáceos nos Apalaches, pobreza e sobrevivência.", genre: "Romance Social", acclaim: "Uma releitura moderna de 'David Copperfield' com uma voz narrativa inesquecível e relevância social urgente." },
+                        { title: "Trust", author: "Hernan Diaz", status: "Vencedor", theme: "Capitalismo, poder e a construção da narrativa na América do início do século XX.", genre: "Ficção Experimental", acclaim: "Estrutura narrativa inovadora que desafia a perceção do leitor sobre a verdade." },
+                    ]
+                },
+                "Prémio Camões": {
+                     2024: [
+                         { title: "Obra de Adília Lopes", author: "Adília Lopes", status: "Vencedor (Fictício)", theme: "O quotidiano, o corpo e a identidade feminina.", genre: "Poesia", acclaim: "Pela sua linguagem coloquial, irónica e profundamente original que desafia as convenções poéticas." },
+                     ],
+                     2023: [
+                        { title: "Obra de Silviano Santiago", author: "Silviano Santiago", status: "Vencedor (Real 2022)", theme: "Memória, identidade e a história cultural do Brasil.", genre: "Ensaio, Romance", acclaim: "Pela sua contribuição intelectual e literária multifacetada para a cultura em língua portuguesa." },
+                     ]
+                },
+                "Prémio Jabuti (Livro do Ano)": {
+                     2024: [
+                         { title: "O som do rugido da onça", author: "Micheliny Verunschk", status: "Vencedor (Fictício)", theme: "Colonialismo, identidade indígena e a violência da história.", genre: "Ficção Histórica", acclaim: "Pesquisa histórica rigorosa combinada com uma narrativa poética e poderosa." },
+                     ],
+                    2023: [
+                        { title: "Engenheiro Rebouças", author: "Lira Neto", status: "Vencedor", theme: "Biografia de uma figura chave na história do Brasil.", genre: "Biografia", acclaim: "Investigação aprofundada e narrativa envolvente que ilumina a vida e a época de André Rebouças." },
+                    ]
+                }
+            };
+
+            const sections = document.querySelectorAll('.content-section');
+            const navButtons = document.querySelectorAll('.nav-button');
+
+            const awardSelect = document.getElementById('award-select');
+            const yearSelect = document.getElementById('year-select');
+            const booksContainer = document.getElementById('books-container');
+            
+            const accordions = document.querySelectorAll('.accordion-item');
+
+            function setupNavigation() {
+                navButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const targetId = button.dataset.target;
+
+                        sections.forEach(section => {
+                            section.classList.add('hidden');
+                        });
+
+                        document.getElementById(targetId).classList.remove('hidden');
+
+                        navButtons.forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                    });
+                });
+            }
+
+            function setupAccordions() {
+                accordions.forEach(item => {
+                    const header = item.querySelector('.accordion-header');
+                    const content = item.querySelector('.accordion-content');
+                    const icon = item.querySelector('.accordion-icon');
+                    
+                    header.addEventListener('click', () => {
+                        const isVisible = !content.classList.contains('hidden');
+                        content.classList.toggle('hidden');
+                        icon.textContent = isVisible ? '+' : '-';
+                    });
+                });
+            }
+
+            function populateFilters() {
+                const awards = Object.keys(awardsData);
+                awards.forEach(award => {
+                    const option = document.createElement('option');
+                    option.value = award;
+                    option.textContent = award;
+                    awardSelect.appendChild(option);
+                });
+
+                const years = new Set();
+                awards.forEach(award => {
+                    Object.keys(awardsData[award]).forEach(year => years.add(year));
+                });
+
+                Array.from(years).sort((a, b) => b - a).forEach(year => {
+                    const option = document.createElement('option');
+                    option.value = year;
+                    option.textContent = year;
+                    yearSelect.appendChild(option);
+                });
+
+                awardSelect.addEventListener('change', renderBooks);
+                yearSelect.addEventListener('change', renderBooks);
+            }
+            
+            function renderBooks() {
+                const selectedAward = awardSelect.value;
+                const selectedYear = yearSelect.value;
+                
+                booksContainer.innerHTML = '';
+                
+                const books = awardsData[selectedAward]?.[selectedYear] || [];
+
+                if (books.length === 0) {
+                    booksContainer.innerHTML = `<p class="text-center text-gray-500 col-span-full">Não foram encontrados dados para esta seleção.</p>`;
+                    return;
+                }
+
+                books.sort((a, b) => (a.status === 'Vencedor' ? -1 : 1)).forEach(book => {
+                    const cardClass = book.status === 'Vencedor' ? 'card-winner' : 'shadow-md';
+                    const statusBadge = book.status === 'Vencedor' ? `<span class="absolute top-0 right-0 bg-[#C9B8A2] text-white text-xs font-bold px-3 py-1 rounded-bl-lg">${book.status}</span>` : '';
+                    
+                    const card = `
+                        <div class="bg-white rounded-lg p-6 relative transition-transform transform hover:scale-105 ${cardClass}">
+                            ${statusBadge}
+                            <h4 class="text-xl font-bold text-[#635B51]">${book.title}</h4>
+                            <p class="text-md text-gray-500 mb-4"><em>por ${book.author}</em></p>
+                            <div class="space-y-2 text-sm">
+                                <p><strong>Tema:</strong> ${book.theme}</p>
+                                <p><strong>Género:</strong> ${book.genre}</p>
+                                <p><strong>Motivo da Aclamação:</strong> ${book.acclaim}</p>
+                            </div>
+                        </div>
+                    `;
+                    booksContainer.innerHTML += card;
+                });
+            }
+
+            function createGenreChart() {
+                const ctx = document.getElementById('genreChart').getContext('2d');
+                const genreData = {};
+                const awards = Object.keys(awardsData);
+
+                awards.forEach(award => {
+                    Object.values(awardsData[award]).flat().forEach(book => {
+                        if (book.status === 'Vencedor') {
+                            if (!genreData[book.genre]) {
+                                genreData[book.genre] = {};
+                            }
+                            if (!genreData[book.genre][award]) {
+                                genreData[book.genre][award] = 0;
+                            }
+                            genreData[book.genre][award]++;
+                        }
+                    });
+                });
+                
+                const genres = Object.keys(genreData);
+                const datasets = awards.map((award, index) => {
+                    const colors = ['#8D7B68', '#A4907C', '#C8B6A6', '#E4D4C8', '#635B51'];
+                    return {
+                        label: award,
+                        data: genres.map(genre => genreData[genre][award] || 0),
+                        backgroundColor: colors[index % colors.length],
+                    };
+                });
+                
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: genres,
+                        datasets: datasets,
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: { stacked: true },
+                            y: { stacked: true, beginAtZero: true, ticks: { stepSize: 1 } }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += context.parsed.y;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+             function createOriginChart() {
+                const ctx = document.getElementById('originChart').getContext('2d');
+                let portugueseCount = 0;
+                let internationalCount = 0;
+                
+                const portugueseAwards = ["Prémio Camões", "Prémio Jabuti (Livro do Ano)"];
+
+                Object.keys(awardsData).forEach(award => {
+                    const winnerCount = Object.values(awardsData[award]).flat().filter(b => b.status === 'Vencedor').length;
+                    if (portugueseAwards.includes(award)) {
+                        portugueseCount += winnerCount;
+                    } else {
+                        internationalCount += winnerCount;
+                    }
+                });
+                
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Língua Portuguesa', 'Internacionais'],
+                        datasets: [{
+                            data: [portugueseCount, internationalCount],
+                            backgroundColor: ['#A4907C', '#D6C3AB'],
+                            hoverBackgroundColor: ['#8D7B68', '#C8B6A6']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                        }
+                    }
+                });
+            }
+
+            function init() {
+                setupNavigation();
+                setupAccordions();
+                populateFilters();
+                renderBooks();
+                createGenreChart();
+                createOriginChart();
+            }
+
+            init();
+        });
+    </script>
+</body>
+</html>
+

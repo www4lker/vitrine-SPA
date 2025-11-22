@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolo Nootrópico - Guia Rápido</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px;
+            max-width: 100%;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        
+        .objective {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .objective strong {
+            color: #667eea;
+        }
+        
+        h2 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .period {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid #ccc;
+        }
+        
+        .period.morning { border-left-color: #fbbf24; background: #fffbeb; }
+        .period.noon { border-left-color: #fb923c; background: #fff7ed; }
+        .period.afternoon { border-left-color: #60a5fa; background: #eff6ff; }
+        .period.night { border-left-color: #818cf8; background: #eef2ff; }
+        
+        .period h3 {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 1.2em;
+        }
+        
+        .period ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .period li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .period li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: #10b981;
+        }
+        
+        .warning {
+            background: #fee2e2;
+            border: 2px solid #ef4444;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 0.95em;
+        }
+        
+        .info {
+            background: #dbeafe;
+            border: 2px solid #3b82f6;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+        
+        .supplement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .supplement-card {
+            background: #f3f4f6;
+            border-radius: 8px;
+            padding: 15px;
+            border-top: 3px solid #667eea;
+        }
+        
+        .supplement-card h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .supplement-card p {
+            font-size: 0.9em;
+            margin: 5px 0;
+            color: #555;
+        }
+        
+        .supplement-card .dose {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .alert-box {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .alert-box h3 {
+            color: #b45309;
+            margin-bottom: 10px;
+        }
+        
+        .alert-box ul {
+            list-style: none;
+            padding-left: 20px;
+        }
+        
+        .alert-box li {
+            margin: 8px 0;
+        }
+        
+        .alert-box li:before {
+            content: "⚠️ ";
+            margin-right: 5px;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            h2 {
+                font-size: 1.3em;
+            }
+            
+            .supplement-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Protocolo Nootrópico</h1>
+        <p class="subtitle">Sprint Cognitivo de Alta Performance</p>
+        
+        <div class="objective">
+            <p><strong>Objetivo:</strong> Performance máxima sustentável em período de alta demanda cognitiva (14-21 dias)</p>
+            <p><strong>Princípio:</strong> Estimulação modulada (cafeína + L-teanina) + suporte neurometabólico (magnésio + Lion's Mane) + regulação circadiana</p>
+        </div>
+
+        <h2>📋 Rotina Diária</h2>
+        
+        <div class="period morning">
+            <h3>🌅 MANHÃ (ao acordar ~6h-7h)</h3>
+            <ul>
+                <li>Água 300ml</li>
+                <li>Lion's Mane <strong>2 cápsulas (1g)</strong></li>
+                <li>Magnésio-L-Treonato <strong>1 cápsula (500mg)</strong></li>
+            </ul>
+            <div class="info">
+                ⏱️ <strong>Aguardar 15-20 minutos</strong><br>
+                Depois: café/refeição leve
+            </div>
+            <ul>
+                <li>Guaraná <strong>0,5g</strong> + L-teanina <strong>1 cápsula (400mg)</strong></li>
+            </ul>
+        </div>
+        
+        <div class="period noon">
+            <h3>☀️ MEIO-DIA (11h30-12h)</h3>
+            <div class="warning">
+                <strong>⚠️ ANTES do crash 12h-14h</strong>
+            </div>
+            <ul>
+                <li>Guaraná <strong>0,3g</strong> + L-teanina <strong>1 cápsula (400mg)</strong></li>
+                <li>Refeição leve (proteína + gordura)</li>
+                <li>Ativação indoor (escolher uma):</li>
+            </ul>
+            <div class="info">
+                <strong>A:</strong> 20 polichinelos + 10 agachamentos (2-3min)<br>
+                <strong>B:</strong> Alongamento + gato-vaca (5min)<br>
+                <strong>C:</strong> Olhar horizonte + respiração (3min)
+            </div>
+        </div>
+        
+        <div class="period afternoon">
+            <h3>🌆 TARDE (17h-18h)</h3>
+            <ul>
+                <li>Magnésio Bisglicinato <strong>1 cápsula (500mg)</strong></li>
+                <li>Respiração 4-7-8 (4 ciclos)</li>
+            </ul>
+            <div class="info">
+                <strong>Opcional:</strong> L-teanina 1 cápsula se ansiedade alta
+            </div>
+        </div>
+        
+        <div class="period night">
+            <h3>🌙 NOITE (21h30 - 1h30 antes de dormir)</h3>
+            <ul>
+                <li>Night Calm <strong>1 cápsula</strong><br>
+                    <small>(Melatonina 0,21mg + Triptofano 200mg + B6 + Ácido Fólico + Mg 65mg)</small>
+                </li>
+                <li>Box breathing (3 ciclos) OU 4-7-8 (4 ciclos)</li>
+                <li><strong>Telas OFF</strong></li>
+            </ul>
+            <div class="info">
+                <strong>Opcional:</strong> Banho morno se calor intenso
+            </div>
+        </div>
+
+        <h2>💊 Informações dos Suplementos</h2>
+        
+        <div class="supplement-grid">
+            <div class="supplement-card">
+                <h4>Guaraná</h4>
+                <p class="dose">0,8g/dia (0,5g manhã + 0,3g tarde)</p>
+                <p>Estimulante adenosínico, liberação lenta de cafeína</p>
+                <p><strong>⏰ Última dose até 14h-15h</strong></p>
+            </div>
+            
+            <div class="supplement-card">
+                <h4>L-teanina</h4>
+                <p class="dose">800-1200mg/dia (2-3 cápsulas)</p>
+                <p>Modulação GABAérgica, suaviza efeitos da cafeína</p>
+                <p><strong>⏰ Junto com guaraná/café</strong></p>
+            </div>
+            
+            <div class="supplement-card">
+                <h4>Lion's Mane</h4>
+                <p class="dose">1g/dia (2 cápsulas manhã)</p>
+                <p>Neurotrofismo NGF/BDNF (efeito crônico 2-4 semanas)</p>
+                <p><strong>⏰ Estômago vazio, manhã</strong></p>
+            </div>
+            
+            <div class="supplement-card">
+                <h4>Mg-Treonato</h4>
+                <p class="dose">500mg/dia (1 cápsula manhã)</p>
+                <p>Suporte cognitivo, atravessa barreira hematoencefálica</p>
+                <p><strong>⏰ Com Lion's Mane</strong></p>
+            </div>
+            
+            <div class="supplement-card">
+                <h4>Mg-Bisglicinato</h4>
+                <p class="dose">500mg/dia (1 cápsula tarde)</p>
+                <p>Relaxamento muscular, cofator enzimático</p>
+                <p><strong>⏰ 17h-18h</strong></p>
+            </div>
+            
+            <div class="supplement-card">
+                <h4>Night Calm</h4>
+                <p class="dose">1 cápsula/noite</p>
+                <p>Melatonina 0,21mg + Triptofano 200mg + B6 3,9mg + Ácido Fólico 614mcg + Mg 65mg</p>
+                <p><strong>⏰ 21h30 (1h30 antes de dormir)</strong></p>
+            </div>
+        </div>
+
+        <h2>🎯 Protocolos Especiais</h2>
+        
+        <div class="alert-box">
+            <h3>📅 DOMINGO (trabalho 9h-12h, exige calma)</h3>
+            <ul>
+                <li><strong>8h30:</strong> L-teanina 1 cápsula (SEM guaraná)</li>
+                <li><strong>13h:</strong> Guaraná 0,3g + L-teanina 1 cápsula</li>
+                <li>Resto do protocolo segue igual</li>
+            </ul>
+        </div>
+        
+        <div class="alert-box">
+            <h3>😴 SE ACORDAR CANSADO 3+ DIAS</h3>
+            <ul>
+                <li><strong>Opção A:</strong> Night Calm → 2 cápsulas (melatonina 0,42mg)</li>
+                <li><strong>Opção B:</strong> Adicionar Mg-bisglicinato 1 cápsula às 18h</li>
+                <li><strong>Meta:</strong> 7h30-8h de sono (não 7h mínimas)</li>
+            </ul>
+        </div>
+        
+        <div class="alert-box">
+            <h3>😰 SE ANSIEDADE > 7/10 POR 2+ DIAS</h3>
+            <ul>
+                <li>L-teanina → aumentar para 1600mg/dia (2 cápsulas manhã, 2 meio-dia)</li>
+                <li>Adicionar respiração 4-7-8 também no meio da tarde</li>
+                <li>Considerar reduzir guaraná tarde para 0,2g</li>
+            </ul>
+        </div>
+
+        <h2>⚠️ Lembretes Críticos</h2>
+        
+        <div class="warning">
+            <strong>❌ NÃO tomar cafeína/guaraná após 15h</strong><br>
+            Meia-vida de 5-6h interfere no sono
+        </div>
+        
+        <div class="info">
+            <strong>💧 Hidratação: 2L até 19h</strong><br>
+            Depois apenas goles (evita acordar à noite para urinar)
+        </div>
+        
+        <div class="info">
+            <strong>🧘 Respiração = Ativação Parassimpática</strong><br>
+            Contrabalança hiperativação simpática do guaraná/cafeína
+        </div>
+
+        <h2>✅ Sinais de Sucesso (manter protocolo)</h2>
+        <ul style="padding-left: 20px;">
+            <li>✓ Ansiedade média da semana < 5/10</li>
+            <li>✓ Produção diária consistente (sem grandes oscilações)</li>
+            <li>✓ Sono ≥ 7/10 por 5+ noites</li>
+            <li>✓ Sem crashes energéticos bruscos</li>
+        </ul>
+
+        <h2>📊 Registro Diário Sugerido</h2>
+        <div class="info">
+            <strong>Anote diariamente (quadro branco ou caderno):</strong><br>
+            • Sono: ___/10<br>
+            • Ansiedade (meio da tarde): ___/10<br>
+            • Produção: ___ páginas/horas focadas<br>
+            • Calor atrapalhou sono? (S/N)<br>
+            <br>
+            <strong>Avaliar protocolo após 7 dias</strong>
+        </div>
+
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #eee; text-align: center; color: #888; font-size: 0.9em;">
+            <p>Protocolo baseado em sinergias farmacológicas validadas</p>
+            <p style="font-size: 0.8em; margin-top: 5px;">Eixo: estimulação modulada + suporte neurometabólico + regulação circadiana</p>
+        </div>
+    </div>
+</body>
+</html>

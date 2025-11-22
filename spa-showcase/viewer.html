@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="viewer-body">
+    <header class="viewer-header">
+        <div class="viewer-header-content">
+            <div class="viewer-left">
+                <a href="index.html" class="back-button">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Back to Portfolio
+                </a>
+                <div class="divider"></div>
+                <h1 id="projectTitle" class="project-title">Loading...</h1>
+            </div>
+            <div class="viewer-right">
+                <a id="fullscreenLink" href="#" target="_blank" rel="noreferrer" class="fullscreen-button">
+                    Open Fullscreen ↗
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="iframe-container">
+        <iframe id="projectFrame" title="Project Viewer" sandbox="allow-scripts allow-popups allow-forms"></iframe>
+    </div>
+
+    <script>
+        // Get project ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('id');
+
+        if (!projectId) {
+            document.getElementById('projectTitle').textContent = 'No project specified';
+            document.getElementById('projectFrame').style.display = 'none';
+        } else {
+            // Load projects.json to get project details
+            fetch('projects.json')
+                .then(response => response.json())
+                .then(projects => {
+                    const project = projects.find(p => p.id === projectId);
+
+                    if (project) {
+                        document.getElementById('projectTitle').textContent = project.title;
+                        document.title = project.title + ' - Portfolio';
+
+                        // Construct path - assumes projects are in /projects/ folder at root
+                        const iframeSrc = `projects/${project.folderName}/${project.entryFile || 'index.html'}`;
+                        document.getElementById('projectFrame').src = iframeSrc;
+                        document.getElementById('fullscreenLink').href = iframeSrc;
+                    } else {
+                        document.getElementById('projectTitle').textContent = 'Project not found';
+                        document.getElementById('projectFrame').style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading projects:', error);
+                    document.getElementById('projectTitle').textContent = 'Error loading project';
+                });
+        }
+    </script>
+</body>
+
+</html>

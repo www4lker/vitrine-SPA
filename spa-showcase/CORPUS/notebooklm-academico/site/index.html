@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise Interativa do NotebookLM para Humanidades</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: A thematic, single-page application with a sticky navigation bar for non-linear exploration. The structure is designed to guide the user from a high-level overview to deep-dive sections based on their specific interests (e.g., technical workings, practical workflows, or ethical considerations). This approach prioritizes user-centric discovery over the linear format of the source report. Key interactions include interactive cards for pros/cons, a clickable process diagram for the RAG architecture, tabbed content for workflows, and an interactive radar chart for tool comparison, making complex information digestible and engaging. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Core strengths & weaknesses -> Goal: Inform quickly -> Viz/Method: Interactive cards with toggleable details -> Interaction: Click to expand -> Justification: Provides a fast, scannable summary for immediate understanding. -> Library/Method: HTML/CSS/JS.
+        - Report Info: RAG process explanation -> Goal: Explain a complex process -> Viz/Method: Sequential HTML/CSS diagram -> Interaction: Click on stages to reveal details -> Justification: Breaks down the technical architecture into a simple, interactive flow, enhancing comprehension. -> Library/Method: HTML/CSS/JS.
+        - Report Info: Academic workflows -> Goal: Demonstrate practical application & friction points -> Viz/Method: Tabbed interface -> Interaction: Click tabs to switch between workflow descriptions -> Justification: Organizes practical use-cases cleanly and highlights the critical "Zotero pain point" effectively. -> Library/Method: HTML/CSS/JS.
+        - Report Info: Tool comparison table -> Goal: Compare alternatives -> Viz/Method: Interactive Radar Chart -> Interaction: Click buttons to highlight a specific tool's data on the chart -> Justification: A radar chart offers a powerful visual method for comparing multiple entities across several quantitative/qualitative axes, making relative strengths and weaknesses instantly apparent. -> Library/Method: Chart.js.
+        - Report Info: Ethical & legal guidelines -> Goal: Organize critical warnings -> Viz/Method: Accordion-style collapsible sections -> Interaction: Click to expand/collapse -> Justification: Manages information density, presenting complex rules in a structured, less overwhelming format. -> Library/Method: HTML/CSS/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
+        }
+        .nav-link {
+            transition: color 0.2s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #a16207; /* yellow-700 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .step-connector::after {
+            content: '→';
+            color: #cbd5e1; /* slate-300 */
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+        }
+        .step-connector:last-child::after {
+            content: '';
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-slate-50/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-slate-900">Análise do NotebookLM</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div id="nav-menu" class="ml-10 flex items-baseline space-x-4">
+                        <a href="#overview" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Visão Geral</a>
+                        <a href="#tech" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Como Funciona</a>
+                        <a href="#workflows" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Workflows</a>
+                        <a href="#comparison" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Comparativo</a>
+                        <a href="#ethics" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Riscos & Ética</a>
+                        <a href="#conclusion" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-slate-600">Conclusão</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                     <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-500 hover:text-slate-700 hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-100 focus:ring-yellow-600">
+                        <span class="sr-only">Abrir menu principal</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+             <div id="mobile-menu" class="md:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#overview" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600">Visão Geral</a>
+                    <a href="#tech" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600">Como Funciona</a>
+                    <a href="#workflows" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600">Workflows</a>
+                    <a href="#comparison" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600">Comparativo</a>
+                    <a href="#ethics" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600">Riscos & Ética</a>
+                    <a href="#conclusion" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-slate-600">Conclusão</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="overview" class="scroll-mt-20 py-10 section-fade-in">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">NotebookLM: Um Colaborador de IA para Humanidades</h2>
+                <p class="mt-4 text-lg leading-8 text-slate-600 max-w-3xl mx-auto">Esta aplicação explora o NotebookLM, uma ferramenta da Google que promete acelerar a investigação académica. Analisamos a sua arquitetura, os fluxos de trabalho práticos e os desafios éticos, oferecendo uma visão crítica sobre como esta tecnologia pode (e não pode) servir os investigadores.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-semibold text-green-700 mb-3 flex items-center">
+                        <span class="text-2xl mr-2">👍</span> Principais Vantagens
+                    </h3>
+                    <ul id="pros-list" class="space-y-3 text-slate-700"></ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="text-lg font-semibold text-red-700 mb-3 flex items-center">
+                       <span class="text-2xl mr-2">👎</span> Principais Limitações
+                    </h3>
+                    <ul id="cons-list" class="space-y-3 text-slate-700"></ul>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-slate-200">
+
+        <section id="tech" class="scroll-mt-20 py-10 section-fade-in">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Como Funciona a "IA Ancorada"?</h2>
+                <p class="mt-4 text-lg leading-8 text-slate-600 max-w-3xl mx-auto">O NotebookLM utiliza uma arquitetura de "Geração Aumentada por Recuperação" (RAG) para basear as suas respostas nas fontes que fornece. Clique em cada passo para entender o processo e as suas limitações inerentes.</p>
+            </div>
+            <div id="rag-diagram" class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 mb-8"></div>
+            <div id="rag-details" class="mt-8 bg-white p-6 rounded-lg shadow-sm border border-slate-200 min-h-[150px]">
+                <p class="text-slate-600">Selecione um passo acima para ver os detalhes.</p>
+            </div>
+        </section>
+        
+        <hr class="my-16 border-slate-200">
+
+        <section id="workflows" class="scroll-mt-20 py-10 section-fade-in">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Workflows de Investigação em Ação</h2>
+                 <p class="mt-4 text-lg leading-8 text-slate-600 max-w-3xl mx-auto">Como o NotebookLM se encaixa no dia a dia de um investigador? Explore os casos de uso práticos, desde a revisão de literatura até à análise qualitativa, e descubra os pontos de atrito mais significativos.</p>
+            </div>
+            <div>
+                <div class="mb-4 border-b border-slate-200">
+                    <nav id="workflow-tabs" class="-mb-px flex space-x-8" aria-label="Tabs"></nav>
+                </div>
+                <div id="workflow-content" class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 min-h-[300px]"></div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-slate-200">
+
+        <section id="comparison" class="scroll-mt-20 py-10 section-fade-in">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Análise Comparativa de Ferramentas</h2>
+                <p class="mt-4 text-lg leading-8 text-slate-600 max-w-3xl mx-auto">O NotebookLM não existe no vácuo. Compare visualmente as suas forças e fraquezas com outras ferramentas de IA para investigação e selecione a mais adequada para cada tarefa.</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="comparison-chart"></canvas>
+            </div>
+            <div id="comparison-buttons" class="flex justify-center flex-wrap gap-2 mt-8"></div>
+            <div id="comparison-text" class="mt-6 text-center text-slate-600 max-w-2xl mx-auto"></div>
+        </section>
+        
+        <hr class="my-16 border-slate-200">
+
+        <section id="ethics" class="scroll-mt-20 py-10 section-fade-in">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Riscos e Responsabilidade Ética</h2>
+                <p class="mt-4 text-lg leading-8 text-slate-600 max-w-3xl mx-auto">Usar IA na investigação acarreta um novo conjunto de responsabilidades. Expanda cada tópico para compreender as diretrizes essenciais sobre direitos de autor, autoria e integridade académica.</p>
+            </div>
+            <div id="ethics-accordion" class="max-w-3xl mx-auto space-y-4"></div>
+        </section>
+
+        <hr class="my-16 border-slate-200">
+
+        <section id="conclusion" class="scroll-mt-20 py-10 text-center section-fade-in">
+            <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">Conclusão: O Investigador no Ciclo</h2>
+            <p class="mt-4 text-lg leading-8 text-slate-600 max-w-3xl mx-auto">O uso eficaz e ético do NotebookLM exige uma mudança de mentalidade: de utilizador passivo para um "investigador no ciclo" ativo, que valida, questiona e dirige a análise da IA. A ferramenta é um colaborador, não um substituto.</p>
+            <div class="mt-10 flex justify-center items-center p-6 bg-white rounded-lg shadow-sm border border-slate-200 max-w-2xl mx-auto">
+                <div class="text-2xl font-bold text-yellow-700">Investigador</div>
+                <div class="text-4xl mx-4 text-slate-300">↔</div>
+                <div class="text-2xl font-bold text-slate-900">IA (NotebookLM)</div>
+            </div>
+            <p class="mt-4 text-sm text-slate-500">O sucesso depende da colaboração crítica entre a intuição humana e a capacidade de síntese da máquina.</p>
+        </section>
+    </main>
+
+    <footer class="bg-slate-100 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-sm text-slate-600">
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+                    <button id="disclaimer-btn" class="w-full text-left p-4 flex justify-between items-center hover:bg-slate-50 focus:outline-none">
+                        <h4 class="font-semibold text-slate-800">Nota sobre a Metodologia de Geração</h4>
+                        <span id="disclaimer-icon" class="transform transition-transform duration-200">
+                            <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </button>
+                    <div id="disclaimer-content" class="hidden p-4 pt-0 text-slate-600">
+                        <p class="mb-4">Esta aplicação web interativa (SPA) foi gerada por um assistente de IA (Google Gemini) para visualizar e explorar o conteúdo de um relatório de pesquisa. O processo metodológico é detalhado abaixo para total transparência.</p>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h5 class="font-semibold text-slate-700">1. Origem da Pesquisa</h5>
+                                <p>O conteúdo analítico desta aplicação deriva de um relatório de pesquisa aprofundado, acessível publicamente no seguinte link: <a href="https://docs.google.com/document/d/e/2PACX-1vQ-ueu3MlWbZJ1Y0lBfXNvGOciRZAtt4JI-HweAN7itoqJXHFO1e8O3vaMegP_y7D5PCfyjg0-4f4FM/pub" target="_blank" rel="noopener noreferrer" class="text-yellow-700 hover:underline">Relatório de Pesquisa sobre NotebookLM</a>.</p>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-slate-700">2. Prompt Inicial (Deep Research)</h5>
+                                <p>A pesquisa e a estruturação do relatório original foram guiadas pelo seguinte plano de pesquisa, executado pela funcionalidade "Deep Research" do Gemini:</p>
+                                <ul class="list-decimal list-inside mt-2 space-y-1 text-xs text-slate-500 bg-slate-50 p-3 rounded-md">
+                                    <li>Mapeamento técnico-arquitetural do NotebookLM.</li>
+                                    <li>Taxonomia de casos de uso em humanidades.</li>
+                                    <li>Análise crítica de workflows para grandes volumes textuais.</li>
+                                    <li>Avaliação epistemológica: eficácia vs. legitimidade científica.</li>
+                                    <li>Estudo comparativo de ferramentas RAG acadêmicas.</li>
+                                    <li>Integração com ecossistemas de pesquisa (Zotero, outros LLMs).</li>
+                                    <li>Limitações sistêmicas e desvantagens.</li>
+                                    <li>Síntese metodológica e diretrizes práticas.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5 class="font-semibold text-slate-700">3. Metodologia de Geração da Aplicação</h5>
+                                <p>A criação desta página SPA (Single-Page Application) foi realizada através da análise do relatório-fonte pela IA, com o objetivo de traduzir a informação textual e analítica em uma estrutura interativa, visual e de fácil navegação, utilizando HTML, Tailwind CSS e Chart.js.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <p class="text-center text-xs text-slate-500 mt-6">Design e implementação por um assistente de IA. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const appData = {
+                overview: {
+                    pros: [
+                        { title: "Síntese Poderosa", detail: "Resume e identifica temas transversais em múltiplas fontes fornecidas pelo utilizador." },
+                        { title: "Ancoragem em Fontes", detail: "Minimiza 'alucinações' ao basear as respostas apenas nos documentos carregados." },
+                        { title: "Capacidade Multimodal", detail: "Processa texto (PDFs, Docs), URLs, e até vídeos do YouTube e áudio." },
+                        { title: "Formatos Criativos", detail: "Gera cronologias, mapas mentais e diálogos em áudio, oferecendo novas formas de explorar o material." }
+                    ],
+                    cons: [
+                        { title: "Sem Integração de Citações", detail: "A ausência de conexão com Zotero ou EndNote cria um fluxo de trabalho manual e fragmentado." },
+                        { title: "Ancoragem Imperfeita", detail: "O mecanismo pode falhar na recuperação do segmento de texto mais relevante, levando a erros." },
+                        { title: "Falta de Visão Holística", detail: "Não consegue analisar um documento inteiro de uma só vez, dificultando resumos estruturais completos." },
+                        { title: "Riscos Éticos e Legais", detail: "O investigador assume a responsabilidade total por questões de direitos de autor e precisão do conteúdo gerado." }
+                    ]
+                },
+                rag: [
+                    { name: "1. Upload", detail: "O utilizador carrega as suas fontes (PDFs, URLs, etc.) para um 'notebook'. O sistema irá processar e indexar este conteúdo para pesquisa." },
+                    { name: "2. Chunking", detail: "Os documentos longos são divididos em segmentos menores ('chunks') de forma semanticamente coerente, usando a estrutura do texto (títulos, parágrafos) para manter o contexto." },
+                    { name: "3. Retrieval", detail: "Quando o utilizador faz uma pergunta, o sistema realiza uma pesquisa semântica para encontrar os 'chunks' mais relevantes nas fontes carregadas. Este passo é probabilístico e não infalível." },
+                    { name: "4. Generation", detail: "Os 'chunks' recuperados são enviados para o modelo de IA (Gemini) juntamente com a pergunta original. O modelo gera uma resposta baseada *apenas* neste contexto fornecido, o que constitui a 'ancoragem em fontes'." }
+                ],
+                workflows: [
+                    { 
+                        id: 'literature',
+                        name: 'Revisão de Literatura',
+                        content: `
+                            <h4 class="font-semibold text-lg mb-2">Da Descoberta à Síntese</h4>
+                            <p class="mb-4 text-slate-600">O NotebookLM brilha na fase de SÍNTESE, não na descoberta. O fluxo ideal começa após a recolha de artigos.</p>
+                            <ol class="list-decimal list-inside space-y-2 mb-6">
+                                <li><strong>Recolha:</strong> Reúna os PDFs e URLs relevantes em ferramentas como Zotero ou Google Scholar.</li>
+                                <li><strong>Upload:</strong> Carregue as fontes para um notebook (até 50 por notebook).</li>
+                                <li><strong>Análise:</strong> Use o 'Guia do Notebook' e faça perguntas para comparar argumentos, extrair evidências e identificar temas.</li>
+                                <li><strong>Síntese:</strong> Peça resumos, esboços ou comparações diretas entre autores.</li>
+                            </ol>
+                            <div class="bg-red-50 border-l-4 border-red-500 text-red-800 p-4 rounded-r-lg">
+                                <h5 class="font-bold">🚨 Ponto de Atrito Crítico</h5>
+                                <p>A falta de integração com o <strong>Zotero</strong> obriga a um processo manual de exportação e importação de PDFs e, mais tarde, à inserção manual de citações ao escrever, quebrando o fluxo de trabalho académico.</p>
+                            </div>
+                        `
+                    },
+                    {
+                        id: 'qualitative',
+                        name: 'Análise Qualitativa',
+                        content: `
+                            <h4 class="font-semibold text-lg mb-2">Análise Exploratória Rápida</h4>
+                            <p class="mb-4 text-slate-600">A ferramenta pode acelerar a análise preliminar de dados textuais, como transcrições de entrevistas ou documentos históricos.</p>
+                            <ul class="list-disc list-inside space-y-2 mb-6">
+                                <li><strong>Codificação Aberta:</strong> Peça para "marcar todas as referências a 'X'" para gerar rapidamente um livro de códigos inicial.</li>
+                                <li><strong>Análise Temática:</strong> Interrogue um grande corpus para identificar temas latentes e padrões subtis que podem passar despercebidos.</li>
+                                <li><strong>Limitação:</strong> Embora útil para exploração, não substitui o rigor sistemático de software dedicado como o <strong>Atlas.ti</strong> para codificação formal. A sua força está na velocidade, não na profundidade metodológica.</li>
+                            </ul>
+                            <div class="bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded-r-lg">
+                                <h5 class="font-bold">⚠️ Cuidado com o Viés</h5>
+                                <p>A IA pode subvalorizar temas de perspetivas não-ocidentais se os seus dados de treino forem enviesados. A validação humana é crucial.</p>
+                            </div>
+                        `
+                    },
+                    {
+                        id: 'creative',
+                        name: 'Criação de Conteúdo',
+                        content: `
+                            <h4 class="font-semibold text-lg mb-2">Novos Formatos Académicos</h4>
+                            <p class="mb-4 text-slate-600">Para além da análise, o NotebookLM pode transformar as suas fontes em formatos inovadores, abrindo novos caminhos para a comunicação da investigação.</p>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li><strong>Cronologia:</strong> Gera automaticamente uma linha do tempo de eventos mencionados nas fontes.</li>
+                                <li><strong>Mapa Mental:</strong> Cria um diagrama visual das relações entre os conceitos-chave.</li>
+                                <li><strong>Podcast de IA:</strong> Gera um diálogo em áudio entre duas personas de IA a discutir o seu material. Esta é uma forma poderosa e inovadora de sintetizar e consumir conteúdo denso.</li>
+                            </ul>
+                            <p class="mt-4 text-slate-600">Estas funcionalidades criam "objetos académicos nativos de IA", que levantam novas questões sobre citação, revisão por pares e publicação.</p>
+                        `
+                    }
+                ],
+                comparison: {
+                    labels: ["Síntese de Fontes", "Descoberta de Artigos", "Gestão de Citações", "Análise Qualitativa Sistemática", "Exploração Visual de Redes"],
+                    datasets: [
+                        { label: 'NotebookLM', data: [5, 1, 1, 2, 3], color: '#ca8a04' },
+                        { label: 'Elicit', data: [4, 4, 4, 3, 2], color: '#1d4ed8' },
+                        { label: 'Semantic Scholar', data: [2, 5, 4, 1, 3], color: '#16a34a' },
+                        { label: 'Connected Papers', data: [1, 4, 3, 1, 5], color: '#c2410c' },
+                        { label: 'Atlas.ti', data: [1, 1, 1, 5, 1], color: '#7e22ce' },
+                    ],
+                    descriptions: {
+                        'NotebookLM': 'Ideal para analisar em profundidade um conjunto de documentos que já possui. Fraco em descoberta e gestão de citações.',
+                        'Elicit': 'Excelente para revisões sistemáticas e extração de dados de muitos artigos. Menos focado em análise qualitativa profunda.',
+                        'Semantic Scholar': 'Poderoso motor de busca para encontrar artigos relevantes e avaliar o seu impacto. Não é uma ferramenta de síntese.',
+                        'Connected Papers': 'A melhor ferramenta para mapear visualmente um campo de investigação e encontrar artigos seminais. Não analisa o conteúdo.',
+                        'Atlas.ti': 'O padrão-ouro para codificação e análise qualitativa rigorosa e sistemática de dados primários. Não é para revisão de literatura.'
+                    }
+                },
+                ethics: [
+                    { 
+                        title: "Direitos de Autor e Uso Justo", 
+                        content: "Carregar PDFs protegidos por direitos de autor pode ser uma violação. Embora o NotebookLM não use os seus dados para treino, o ato de copiar o ficheiro já é um risco. A abordagem mais segura é usar materiais de acesso aberto ou carregar apenas as suas notas e destaques pessoais, não o texto completo." 
+                    },
+                    { 
+                        title: "Autoria e Responsabilidade", 
+                        content: "Uma IA não pode ser autora de um trabalho académico. O investigador humano é <strong>totalmente responsável</strong> por todo o conteúdo, incluindo a verificação de factos, citações e a correção de quaisquer erros ou vieses introduzidos pela IA." 
+                    },
+                    { 
+                        title: "Divulgação e Transparência", 
+                        content: "É obrigatório divulgar o uso de ferramentas de IA na sua publicação. A maioria das editoras (Elsevier, Nature, etc.) exige uma declaração na secção de Métodos ou Agradecimentos, especificando qual ferramenta foi usada e para que fim."
+                    },
+                    {
+                        title: "Privacidade e Dados Sensíveis",
+                        content: "Nunca insira dados sensíveis ou informações pessoalmente identificáveis no NotebookLM. Para investigação com sujeitos humanos, a anonimização de transcrições antes do upload é um requisito mínimo absoluto."
+                    }
+                ]
+            };
+            
+            function populateLists() {
+                const prosList = document.getElementById('pros-list');
+                const consList = document.getElementById('cons-list');
+                appData.overview.pros.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>${item.title}:</strong> ${item.detail}`;
+                    prosList.appendChild(li);
+                });
+                appData.overview.cons.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<strong>${item.title}:</strong> ${item.detail}`;
+                    consList.appendChild(li);
+                });
+            }
+
+            function setupRagDiagram() {
+                const diagramContainer = document.getElementById('rag-diagram');
+                const detailsContainer = document.getElementById('rag-details');
+                appData.rag.forEach((step, index) => {
+                    const stepEl = document.createElement('div');
+                    stepEl.className = 'step-connector flex items-center';
+                    stepEl.innerHTML = `<button data-index="${index}" class="rag-step-btn border-2 border-slate-300 hover:border-yellow-600 hover:bg-yellow-50 text-slate-700 font-semibold py-2 px-4 rounded-lg transition-colors duration-200">${step.name}</button>`;
+                    diagramContainer.appendChild(stepEl);
+                });
+
+                diagramContainer.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('rag-step-btn')) {
+                        const index = e.target.dataset.index;
+                        const stepData = appData.rag[index];
+                        detailsContainer.innerHTML = `<h4 class="font-semibold text-lg mb-2 text-slate-800">${stepData.name}</h4><p class="text-slate-600">${stepData.detail}</p>`;
+                        
+                        document.querySelectorAll('.rag-step-btn').forEach(btn => {
+                            btn.classList.remove('bg-yellow-600', 'text-white', 'border-yellow-600');
+                            btn.classList.add('border-slate-300', 'text-slate-700');
+                        });
+                        e.target.classList.add('bg-yellow-600', 'text-white', 'border-yellow-600');
+                        e.target.classList.remove('border-slate-300', 'text-slate-700');
+                    }
+                });
+            }
+
+            function setupWorkflows() {
+                const tabsContainer = document.getElementById('workflow-tabs');
+                const contentContainer = document.getElementById('workflow-content');
+                appData.workflows.forEach((tab, index) => {
+                    const tabButton = document.createElement('button');
+                    tabButton.dataset.target = tab.id;
+                    tabButton.className = `workflow-tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${index === 0 ? 'border-yellow-600 text-yellow-700' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'}`;
+                    tabButton.textContent = tab.name;
+                    tabsContainer.appendChild(tabButton);
+                });
+                
+                contentContainer.innerHTML = appData.workflows[0].content;
+
+                tabsContainer.addEventListener('click', e => {
+                    if (e.target.classList.contains('workflow-tab-btn')) {
+                        const targetId = e.target.dataset.target;
+                        const targetContent = appData.workflows.find(t => t.id === targetId).content;
+                        contentContainer.innerHTML = targetContent;
+                        
+                        document.querySelectorAll('.workflow-tab-btn').forEach(btn => {
+                            btn.classList.remove('border-yellow-600', 'text-yellow-700');
+                            btn.classList.add('border-transparent', 'text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300');
+                        });
+                        e.target.classList.add('border-yellow-600', 'text-yellow-700');
+                        e.target.classList.remove('border-transparent', 'text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300');
+                    }
+                });
+            }
+            
+            function setupComparisonChart() {
+                const ctx = document.getElementById('comparison-chart').getContext('2d');
+                const buttonsContainer = document.getElementById('comparison-buttons');
+                const textContainer = document.getElementById('comparison-text');
+                const chartData = appData.comparison;
+                
+                const datasets = chartData.datasets.map(d => ({
+                    label: d.label,
+                    data: d.data,
+                    fill: true,
+                    backgroundColor: `${d.color}33`,
+                    borderColor: d.color,
+                    pointBackgroundColor: d.color,
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: d.color,
+                    hidden: true
+                }));
+                datasets[0].hidden = false;
+
+                const comparisonChart = new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: chartData.labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        elements: {
+                            line: {
+                                borderWidth: 2
+                            }
+                        },
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    color: '#e2e8f0' // slate-200
+                                },
+                                grid: {
+                                    color: '#e2e8f0' // slate-200
+                                },
+                                pointLabels: {
+                                    font: {
+                                        size: 12,
+                                        weight: '500'
+                                    },
+                                    color: '#475569' // slate-600
+                                },
+                                ticks: {
+                                    color: '#64748b', // slate-500
+                                    backdropColor: 'rgba(255, 255, 255, 0.75)',
+                                    stepSize: 1,
+                                    max: 5,
+                                    min: 0
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.r !== null) {
+                                            label += context.parsed.r;
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                chartData.datasets.forEach((d, index) => {
+                    const button = document.createElement('button');
+                    button.textContent = d.label;
+                    button.className = `comparison-btn px-4 py-2 text-sm font-medium rounded-md transition-colors ${index === 0 ? 'bg-yellow-600 text-white' : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-100'}`;
+                    button.dataset.index = index;
+                    buttonsContainer.appendChild(button);
+                });
+                
+                textContainer.textContent = chartData.descriptions['NotebookLM'];
+
+                buttonsContainer.addEventListener('click', e => {
+                    if (e.target.classList.contains('comparison-btn')) {
+                        const index = parseInt(e.target.dataset.index, 10);
+                        
+                        comparisonChart.data.datasets.forEach((ds, i) => {
+                            ds.hidden = (i !== index);
+                        });
+                        comparisonChart.update();
+
+                        document.querySelectorAll('.comparison-btn').forEach(btn => {
+                           btn.className = 'comparison-btn px-4 py-2 text-sm font-medium rounded-md transition-colors bg-white text-slate-700 border border-slate-300 hover:bg-slate-100';
+                        });
+                        e.target.className = 'comparison-btn px-4 py-2 text-sm font-medium rounded-md transition-colors bg-yellow-600 text-white';
+                        textContainer.textContent = chartData.descriptions[e.target.textContent];
+                    }
+                });
+            }
+
+            function setupEthicsAccordion() {
+                const accordionContainer = document.getElementById('ethics-accordion');
+                appData.ethics.forEach((item, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden';
+                    div.innerHTML = `
+                        <button class="accordion-btn w-full text-left p-4 flex justify-between items-center hover:bg-slate-50 focus:outline-none">
+                            <h4 class="font-semibold text-slate-800">${item.title}</h4>
+                            <span class="accordion-icon transform transition-transform duration-200">
+                                <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </span>
+                        </button>
+                        <div class="accordion-content hidden p-4 pt-0">
+                            <p class="text-slate-600">${item.content}</p>
+                        </div>
+                    `;
+                    accordionContainer.appendChild(div);
+                });
+                
+                accordionContainer.addEventListener('click', e => {
+                    const button = e.target.closest('.accordion-btn');
+                    if (button) {
+                        const content = button.nextElementSibling;
+                        const icon = button.querySelector('.accordion-icon');
+                        
+                        const isOpening = content.classList.contains('hidden');
+                        
+                        document.querySelectorAll('.accordion-content').forEach(c => c.classList.add('hidden'));
+                        document.querySelectorAll('.accordion-icon').forEach(i => i.classList.remove('rotate-180'));
+
+                        if (isOpening) {
+                            content.classList.remove('hidden');
+                            icon.classList.add('rotate-180');
+                        }
+                    }
+                });
+            }
+
+            function setupDisclaimerAccordion() {
+                const button = document.getElementById('disclaimer-btn');
+                const content = document.getElementById('disclaimer-content');
+                const icon = document.getElementById('disclaimer-icon');
+
+                button.addEventListener('click', () => {
+                    const isOpening = content.classList.contains('hidden');
+                    if (isOpening) {
+                        content.classList.remove('hidden');
+                        icon.classList.add('rotate-180');
+                    } else {
+                        content.classList.add('hidden');
+                        icon.classList.remove('rotate-180');
+                    }
+                });
+            }
+
+            function setupMobileMenu() {
+                const menuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                menuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+                mobileMenu.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'A') {
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            }
+            
+            function setupScrollspy() {
+                const sections = document.querySelectorAll('section');
+                const navLinks = document.querySelectorAll('#nav-menu a, #mobile-menu a');
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(link => {
+                                link.classList.remove('active');
+                                if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                    link.classList.add('active');
+                                }
+                            });
+                        }
+                    });
+                }, { rootMargin: '-50% 0px -50% 0px' });
+
+                sections.forEach(section => observer.observe(section));
+            }
+            
+            function setupFadeInSections() {
+                const sections = document.querySelectorAll('.section-fade-in');
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                sections.forEach(section => {
+                    observer.observe(section);
+                });
+            }
+
+            populateLists();
+            setupRagDiagram();
+            setupWorkflows();
+            setupComparisonChart();
+            setupEthicsAccordion();
+            setupDisclaimerAccordion();
+            setupMobileMenu();
+            setupScrollspy();
+            setupFadeInSections();
+        });
+    </script>
+</body>
+</html>

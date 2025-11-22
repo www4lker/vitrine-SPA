@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Interativo: TCC e ACT para Regulação Emocional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals & Calming Teal -->
+    <!-- Application Structure Plan: A single-page application with a fixed top navigation for easy access to thematic sections. The structure is designed for non-linear exploration, allowing users to compare therapies, dive into specific techniques, or understand the integration model. This dashboard-like approach breaks down dense academic content into digestible, interactive modules (e.g., side-by-side comparisons, clickable technique cards, and a summary chart), which is more user-friendly and engaging than a linear document structure. The goal is to facilitate understanding through interaction and comparison. -->
+    <!-- Visualization & Content Choices: 1. Evolution: An HTML/CSS timeline to visually represent the historical shift from CBT to ACT (Goal: Show change). 2. Therapy Comparison: A tabbed interface to compare CBT and ACT on core principles, techniques, and theoretical models (Goal: Compare). 3. Techniques: Interactive cards that reveal detailed information on click, making practical tools easily accessible (Goal: Inform/Organize). 4. Integration Analysis: A Chart.js radar chart to visually summarize the synergies and tensions between the two therapies, providing a quick, data-driven overview (Goal: Compare/Analyze). All interactions are powered by vanilla JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #3D405B;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #3D7A80;
+            border-bottom-color: #3D7A80;
+        }
+        .tab.active {
+            background-color: #3D7A80;
+            color: #FFFFFF;
+        }
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <ul class="flex items-center justify-center space-x-4 md:space-x-8 text-sm md:text-base">
+                <li><a href="#inicio" class="nav-link font-medium pb-2 border-b-2 border-transparent">Início</a></li>
+                <li><a href="#evolucao" class="nav-link font-medium pb-2 border-b-2 border-transparent">Evolução</a></li>
+                <li><a href="#comparativo" class="nav-link font-medium pb-2 border-b-2 border-transparent">Comparativo</a></li>
+                <li><a href="#tecnicas" class="nav-link font-medium pb-2 border-b-2 border-transparent">Técnicas</a></li>
+                <li><a href="#integracao" class="nav-link font-medium pb-2 border-b-2 border-transparent">Integração</a></li>
+                <li><a href="#futuro" class="nav-link font-medium pb-2 border-b-2 border-transparent">Futuro</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="inicio" class="py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-800 leading-tight">Um Framework Integrado para a Regulação Emocional</h1>
+                <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-gray-600">Explorando a síntese entre a Terapia Cognitivo-Comportamental (TCC) e a Terapia de Aceitação e Compromisso (ACT).</p>
+                <a href="#evolucao" class="mt-8 inline-block bg-[#3D7A80] text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-[#326569] transition-colors">Iniciar Exploração</a>
+            </div>
+        </section>
+
+        <section id="evolucao" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">A Paisagem em Evolução da Terapia</h2>
+                    <p class="mt-3 max-w-2xl mx-auto text-gray-600">Da reestruturação do pensamento à aceitação consciente, uma jornada através das ondas da terapia comportamental.</p>
+                </div>
+                <div class="relative w-full py-4">
+                    <div class="absolute left-0 top-1/2 w-full h-0.5 bg-gray-300"></div>
+                    <div class="relative flex justify-between items-start">
+                        <div class="w-1/3 text-center px-2">
+                            <div class="relative mb-2">
+                                <div class="w-6 h-6 rounded-full bg-[#E07A5F] mx-auto z-10 relative border-4 border-white"></div>
+                            </div>
+                            <h3 class="font-bold text-lg text-[#E07A5F]">1ª Onda: Behaviorismo</h3>
+                            <p class="text-sm text-gray-600 mt-1">Foco no comportamento observável e no condicionamento.</p>
+                        </div>
+                        <div class="w-1/3 text-center px-2">
+                            <div class="relative mb-2">
+                                <div class="w-6 h-6 rounded-full bg-[#81B29A] mx-auto z-10 relative border-4 border-white"></div>
+                            </div>
+                            <h3 class="font-bold text-lg text-[#81B29A]">2ª Onda: TCC</h3>
+                            <p class="text-sm text-gray-600 mt-1">A revolução cognitiva. Foco em identificar e reestruturar pensamentos disfuncionais.</p>
+                        </div>
+                        <div class="w-1/3 text-center px-2">
+                            <div class="relative mb-2">
+                                <div class="w-6 h-6 rounded-full bg-[#F2CC8F] mx-auto z-10 relative border-4 border-white"></div>
+                            </div>
+                            <h3 class="font-bold text-lg text-[#F2CC8F]">3ª Onda: ACT & Mindfulness</h3>
+                            <p class="text-sm text-gray-600 mt-1">Foco na relação com os pensamentos e emoções, utilizando aceitação e atenção plena.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparativo" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Análise Comparativa: TCC vs. ACT</h2>
+                    <p class="mt-3 max-w-2xl mx-auto text-gray-600">Explore os fundamentos, objetivos e mecanismos de cada abordagem. Selecione um tópico para comparar.</p>
+                </div>
+                <div class="flex justify-center mb-8 space-x-2">
+                    <button data-tab="filosofia" class="tab py-2 px-4 rounded-lg font-medium transition-colors active">Base Filosófica</button>
+                    <button data-tab="psicopatologia" class="tab py-2 px-4 rounded-lg font-medium transition-colors">Visão da Psicopatologia</button>
+                    <button data-tab="objetivo" class="tab py-2 px-4 rounded-lg font-medium transition-colors">Objetivo Terapêutico</button>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-xl shadow-md border border-gray-200">
+                        <h3 class="text-2xl font-bold text-center text-[#81B29A] mb-4">Terapia Cognitivo-Comportamental (TCC)</h3>
+                        <div id="tcc-content" class="text-gray-700 space-y-3"></div>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-md border border-gray-200">
+                        <h3 class="text-2xl font-bold text-center text-[#F2CC8F] mb-4">Terapia de Aceitação e Compromisso (ACT)</h3>
+                        <div id="act-content" class="text-gray-700 space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tecnicas" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Toolkit de Técnicas de Regulação Emocional</h2>
+                    <p class="mt-3 max-w-2xl mx-auto text-gray-600">Clique em cada técnica para aprender sobre sua aplicação e base de evidências.</p>
+                </div>
+                <div id="technique-grid" class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                </div>
+            </div>
+        </section>
+
+        <section id="integracao" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">A Ponte da Integração: Sinergias e Tensões</h2>
+                    <p class="mt-3 max-w-2xl mx-auto text-gray-600">A integração não é sobre escolher um lado, mas sobre usar a ferramenta certa para o processo certo. O gráfico abaixo ilustra as áreas de foco de cada terapia.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                    <div class="chart-container">
+                        <canvas id="integrationChart"></canvas>
+                    </div>
+                </div>
+                 <div class="mt-16">
+                    <h3 class="text-2xl font-bold text-center text-gray-800 mb-8">Estrutura Proposta para um Manual Integrado</h3>
+                    <div id="manual-structure" class="max-w-3xl mx-auto space-y-2"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="futuro" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Horizontes Futuros na Regulação Emocional</h2>
+                    <p class="mt-3 max-w-2xl mx-auto text-gray-600">A tecnologia e abordagens transdiagnósticas estão a moldar a próxima geração de intervenções em saúde mental.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="p-6">
+                        <div class="text-4xl text-[#3D7A80] mb-4">📱</div>
+                        <h3 class="text-xl font-bold mb-2">Aplicações de Saúde Mental</h3>
+                        <p class="text-gray-600">Ferramentas de TCC e ACT acessíveis a qualquer momento, oferecendo desde meditações guiadas a diários de pensamentos digitais.</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-4xl text-[#3D7A80] mb-4">🕶️</div>
+                        <h3 class="text-xl font-bold mb-2">Realidade Virtual (RV)</h3>
+                        <p class="text-gray-600">Criação de ambientes imersivos e seguros para terapia de exposição e treino de competências em cenários realistas.</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="text-4xl text-[#3D7A80] mb-4">🤖</div>
+                        <h3 class="text-xl font-bold mb-2">Inteligência Artificial (IA)</h3>
+                        <p class="text-gray-600">Potencial para intervenções personalizadas em tempo real, analisando dados para prever crises e sugerir micro-intervenções.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center text-sm text-gray-400">
+            <p>&copy; 2025 Manual Interativo de Regulação Emocional. O conteúdo e o código desta página foram gerados pela IA Gemini com base na <a href="https://docs.google.com/document/d/e/2PACX-1vQpk01yY6MFpayD6M9Zw3gXkv7x91VYZRfRq8dwQXFRHnHd6OTGeq5YYv4-5Ha85azKtl9lPwNxZg7Q/pub" class="underline hover:text-white" target="_blank" rel="noopener noreferrer">pesquisa original</a>.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const comparisonData = {
+                filosofia: {
+                    tcc: `<strong>Mecanicismo Cognitivo:</strong> A mente é vista como um processador de informação. A psicopatologia surge de "erros" ou "distorções" no processamento que precisam ser corrigidos. A verdade é baseada na correspondência com a realidade objetiva.`,
+                    act: `<strong>Contextualismo Funcional:</strong> Nenhum pensamento é inerentemente problemático. Seu impacto é determinado pela sua função (workability) num contexto. A verdade é pragmática: um pensamento é útil se o aproxima de uma vida valiosa.`
+                },
+                psicopatologia: {
+                    tcc: `<strong>Crenças Disfuncionais:</strong> A desregulação emocional resulta de crenças centrais rígidas ("Sou incompetente") e pensamentos automáticos negativos que distorcem a realidade. O alvo é o conteúdo irracional das cognições.`,
+                    act: `<strong>Inflexibilidade Psicológica:</strong> O sofrimento é mantido pela fusão com os pensamentos e pela tentativa de evitar experiências internas (esquiva experiencial). O alvo são os processos que dão poder aos pensamentos.`
+                },
+                objetivo: {
+                    tcc: `<strong>Reestruturação Cognitiva e Redução de Sintomas:</strong> O objetivo principal é identificar, desafiar e modificar pensamentos disfuncionais para reduzir o sofrimento emocional e os sintomas.`,
+                    act: `<strong>Aumento da Flexibilidade Psicológica:</strong> O objetivo é ajudar a pessoa a agir de acordo com os seus valores, mesmo na presença de pensamentos e sentimentos difíceis. A redução de sintomas é um subproduto, não o alvo principal.`
+                }
+            };
+
+            const techniquesData = [
+                {
+                    therapy: 'TCC',
+                    name: 'Reavaliação Cognitiva',
+                    description: 'Pilar da TCC. Envolve modificar a interpretação de uma situação para alterar o seu impacto emocional. O objetivo é desenvolver uma perspetiva mais equilibrada e menos ameaçadora.',
+                    color: '#81B29A'
+                },
+                {
+                    therapy: 'TCC',
+                    name: 'Solução de Problemas',
+                    description: 'Intervenção estruturada que ensina a lidar eficazmente com problemas de vida que causam stress, dividindo-os em passos manejáveis: definir o problema, gerar alternativas, tomar decisões e implementar.',
+                    color: '#81B29A'
+                },
+                {
+                    therapy: 'ACT',
+                    name: 'Desfusão Cognitiva',
+                    description: 'Processo de observar os pensamentos como eles são (palavras, imagens) em vez de verdades literais. O objetivo é reduzir a influência dos pensamentos sobre o comportamento, criando distância deles.',
+                    color: '#F2CC8F'
+                },
+                {
+                    therapy: 'ACT',
+                    name: 'Aceitação',
+                    description: 'Abertura ativa e voluntária à experiência de eventos internos (emoções, sensações) sem tentar controlá-los. É a alternativa funcional à luta e à esquiva experiencial.',
+                    color: '#F2CC8F'
+                }
+            ];
+
+            const manualData = [
+                { part: 1, title: 'Fundamentos: Compreendendo Suas Emoções', justification: 'Estabelece a base psicoeducativa e introduz a atenção plena como competência fundamental.' },
+                { part: 2, title: 'Abrindo Espaço: Mudando Sua Relação com a Experiência (ACT)', justification: 'Foca em aceitação e desfusão para reduzir a luta interna antes de abordar a mudança de conteúdo.' },
+                { part: 3, title: 'Agindo de Forma Diferente: Mudando Padrões (TCC)', justification: 'Com uma base de aceitação, o cliente pode investigar pensamentos (reestruturação) e resolver problemas de forma mais eficaz.' },
+                { part: 4, title: 'Integrando e Seguindo em Frente', justification: 'Consolida as competências, focando na prevenção de recaídas e na aplicação contínua para viver uma vida valiosa.' }
+            ];
+
+
+            const tccContent = document.getElementById('tcc-content');
+            const actContent = document.getElementById('act-content');
+            const tabs = document.querySelectorAll('.tab');
+
+            function updateComparisonContent(tabId) {
+                tccContent.innerHTML = `<p>${comparisonData[tabId].tcc}</p>`;
+                actContent.innerHTML = `<p>${comparisonData[tabId].act}</p>`;
+                tabs.forEach(t => {
+                    t.classList.toggle('active', t.dataset.tab === tabId);
+                });
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    updateComparisonContent(tab.dataset.tab);
+                });
+            });
+
+            updateComparisonContent('filosofia');
+
+            const techniqueGrid = document.getElementById('technique-grid');
+            techniquesData.forEach(tech => {
+                const card = document.createElement('div');
+                card.className = 'card bg-white p-6 rounded-xl shadow-md border border-gray-200 cursor-pointer';
+                card.innerHTML = `
+                    <div class="flex items-center mb-3">
+                        <span class="text-xs font-bold py-1 px-2 rounded-full" style="background-color:${tech.color}33; color:${tech.color};">${tech.therapy}</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">${tech.name}</h3>
+                    <p class="text-gray-600 text-sm">${tech.description}</p>
+                `;
+                techniqueGrid.appendChild(card);
+            });
+            
+            const manualContainer = document.getElementById('manual-structure');
+            manualData.forEach(item => {
+                const element = document.createElement('div');
+                element.className = 'bg-white p-4 rounded-lg shadow-sm border border-gray-200';
+                element.innerHTML = `
+                    <details>
+                        <summary class="font-bold cursor-pointer text-gray-800">Parte ${item.part}: ${item.title}</summary>
+                        <p class="mt-2 text-sm text-gray-600">${item.justification}</p>
+                    </details>
+                `;
+                manualContainer.appendChild(element);
+            });
+
+
+            const ctx = document.getElementById('integrationChart').getContext('2d');
+            const integrationChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Mudança de Conteúdo', 'Ação Guiada por Valores', 'Aceitação da Experiência', 'Análise Lógica', 'Contato com o Presente', 'Mudança de Comportamento'],
+                    datasets: [{
+                        label: 'Foco da TCC',
+                        data: [5, 2, 1, 5, 2, 5],
+                        backgroundColor: 'rgba(129, 178, 154, 0.2)',
+                        borderColor: 'rgba(129, 178, 154, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(129, 178, 154, 1)'
+                    }, {
+                        label: 'Foco da ACT',
+                        data: [1, 5, 5, 1, 5, 4],
+                        backgroundColor: 'rgba(242, 204, 143, 0.2)',
+                        borderColor: 'rgba(242, 204, 143, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(242, 204, 143, 1)'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                            pointLabels: { font: { size: 12 } },
+                            suggestedMin: 0,
+                            suggestedMax: 5,
+                            ticks: {
+                                stepSize: 1,
+                                backdropColor: 'rgba(255, 255, 255, 0)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.raw;
+                                    return label + ' (de 5)';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.4
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>

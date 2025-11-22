@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Interativo: Chants of Sennaar e Jogos de Dedução</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: A tab-based SPA structure with two main sections: 'Desvendando Sennaar' and 'Ecos de Sennaar'. The first section uses interactive cards to detail the cultures of the Tower and a visual flowchart for its core mechanic. The second section provides a filterable gallery of recommended games, with modals showing detailed comparisons, including a dynamic radar chart. This structure was chosen to transform the linear report into an engaging, user-driven exploration, facilitating comparison and discovery over passive reading. -->
+    <!-- Visualization & Content Choices: 
+    - Report Info: Sennaar's 4-step gameplay loop. Goal: Inform/Organize. Viz: HTML/CSS flowchart. Interaction: Hover to see details. Justification: More engaging than a list. Library: Vanilla JS/Tailwind.
+    - Report Info: Five cultures of the Tower. Goal: Inform/Compare. Viz: Interactive grid of cards. Interaction: Click to expand. Justification: Allows easy comparison and focused exploration. Library: Vanilla JS/Tailwind.
+    - Report Info: Comparative table of similar games. Goal: Compare/Guide. Viz: Filterable gallery with modals and a radar chart. Interaction: Filter by category, click for details. Justification: Filtering simplifies recommendations; the radar chart offers a quick, impactful visual comparison. Library: Vanilla JS/Tailwind/Chart.js.
+    - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDF6E3; /* Warm Neutral - Parchment */
+            color: #585043; /* Dark Brown */
+        }
+        .nav-btn {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-btn.active {
+            border-bottom-color: #C17A4A; /* Terracotta Accent */
+            color: #C17A4A;
+        }
+        .nav-btn:hover {
+            color: #C17A4A;
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .modal-backdrop {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="min-h-screen">
+        <header class="bg-[#FDF6E3] py-6 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl font-bold text-[#655543]">Ecos de Sennaar</h1>
+                <p class="mt-2 text-lg text-[#857667]">Um Guia Interativo para Jogos de Dedução e Descoberta Linguística</p>
+            </div>
+        </header>
+
+        <nav class="bg-[#F9F1D8] shadow-md sticky top-0 z-40">
+            <div class="max-w-4xl mx-auto flex justify-center space-x-4 sm:space-x-8">
+                <button id="nav-sennaar" class="nav-btn active text-lg font-medium py-4 px-2 sm:px-4" data-section="sennaar">Desvendando Sennaar</button>
+                <button id="nav-ecos" class="nav-btn text-lg font-medium py-4 px-2 sm:px-4" data-section="ecos">Ecos de Sennaar</button>
+            </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            
+            <section id="section-sennaar" class="fade-in">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-[#655543]">A Torre e a Palavra: Uma Análise de Chants of Sennaar</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-[#585043]">Esta secção mergulha no coração de *Chants of Sennaar*, explorando a sua premissa inovadora, a mecânica central de decifração linguística e as ricas culturas que habitam a Torre. Interaja com os elementos abaixo para descobrir como o jogo transforma a linguagem num quebra-cabeças fascinante.</p>
+                </div>
+
+                <div class="bg-[#F9F1D8] p-6 sm:p-8 rounded-xl shadow-lg mb-16">
+                    <h3 class="text-2xl font-bold text-center mb-6 text-[#655543]">A Mecânica da Epifania</h3>
+                    <p class="text-center text-[#585043] mb-8 max-w-2xl mx-auto">O núcleo de *Sennaar* é um ciclo de descoberta viciante que imita o processo de um linguista. O jogo guia o jogador através de quatro fases para transformar o desconhecido em compreendido.</p>
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-4 text-center">
+                        <div class="p-4 rounded-lg bg-[#FDF6E3] w-full md:w-auto text-center">
+                            <span class="text-4xl">🧐</span>
+                            <h4 class="font-bold mt-2 text-[#C17A4A]">1. Observação</h4>
+                            <p class="text-sm text-[#585043]">Encontrar glifos no ambiente e em diálogos.</p>
+                        </div>
+                        <div class="text-2xl text-[#857667] font-bold transform rotate-90 md:rotate-0">→</div>
+                        <div class="p-4 rounded-lg bg-[#FDF6E3] w-full md:w-auto">
+                           <span class="text-4xl">🤔</span>
+                            <h4 class="font-bold mt-2 text-[#C17A4A]">2. Hipótese</h4>
+                             <p class="text-sm text-[#585043]">Deduzir significados a partir do contexto.</p>
+                        </div>
+                        <div class="text-2xl text-[#857667] font-bold transform rotate-90 md:rotate-0">→</div>
+                        <div class="p-4 rounded-lg bg-[#FDF6E3] w-full md:w-auto">
+                            <span class="text-4xl">✍️</span>
+                            <h4 class="font-bold mt-2 text-[#C17A4A]">3. Registro</h4>
+                             <p class="text-sm text-[#585043]">Anotar traduções provisórias no diário.</p>
+                        </div>
+                        <div class="text-2xl text-[#857667] font-bold transform rotate-90 md:rotate-0">→</div>
+                        <div class="p-4 rounded-lg bg-[#FDF6E3] w-full md:w-auto">
+                           <span class="text-4xl">💡</span>
+                            <h4 class="font-bold mt-2 text-[#C17A4A]">4. Validação</h4>
+                             <p class="text-sm text-[#585043]">Confirmar hipóteses em testes de conhecimento.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-center mb-2 text-[#655543]">Os Povos da Torre</h3>
+                    <p class="text-center text-[#585043] mb-8 max-w-3xl mx-auto">Cada andar da Torre abriga uma cultura única, definida pela sua função, estética e, mais importante, pela sua própria linguagem. Clique em cada povo para saber mais sobre o seu sistema semiótico.</p>
+                    <div id="peoples-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-ecos" class="hidden fade-in">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-[#655543]">Ecos de Sennaar: Um Guia de Jogos Semelhantes</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-[#585043]">Se a jornada pela Torre despertou o seu apetite por desafios intelectuais, esta secção é para si. Explore uma seleção de jogos que partilham o espírito de *Sennaar*, seja na decifração de línguas, na dedução pura ou na exploração baseada em conhecimento. Use os filtros para encontrar a sua próxima aventura.</p>
+                </div>
+                
+                <div class="flex justify-center flex-wrap gap-2 mb-8">
+                    <button class="filter-btn bg-[#E8DDCB] text-[#655543] font-semibold py-2 px-4 rounded-full" data-filter="all">Todos</button>
+                    <button class="filter-btn bg-[#F9F1D8] text-[#857667] font-semibold py-2 px-4 rounded-full" data-filter="linguistica">Decifração Linguística</button>
+                    <button class="filter-btn bg-[#F9F1D8] text-[#857667] font-semibold py-2 px-4 rounded-full" data-filter="deducao">Dedução e Investigação</button>
+                    <button class="filter-btn bg-[#F9F1D8] text-[#857667] font-semibold py-2 px-4 rounded-full" data-filter="exploracao">Exploração e Conhecimento</button>
+                </div>
+
+                <div id="games-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="game-modal" class="modal-backdrop fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
+        <div id="modal-content" class="modal-content bg-[#FDF6E3] rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto transform scale-95 opacity-0">
+            <div class="p-6 sm:p-8">
+                <div class="flex justify-between items-start">
+                    <h2 id="modal-title" class="text-3xl font-bold text-[#655543]"></h2>
+                    <button id="modal-close" class="text-3xl text-[#857667] hover:text-[#C17A4A]">&times;</button>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                    <div>
+                        <h3 class="font-bold text-xl mb-2 text-[#C17A4A]">Sinopse e Mecânica</h3>
+                        <p id="modal-synopsis" class="text-[#585043] text-base leading-relaxed"></p>
+                        <h3 class="font-bold text-xl mt-6 mb-2 text-[#C17A4A]">Análise Comparativa</h3>
+                        <p id="modal-comparison" class="text-[#585043] text-base leading-relaxed"></p>
+                    </div>
+                    <div class="bg-[#F9F1D8] p-4 rounded-lg">
+                        <h3 class="font-bold text-xl mb-4 text-center text-[#C17A4A]">Perfil do Desafio</h3>
+                         <div class="chart-container">
+                            <canvas id="game-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-8 px-4">
+        <p class="text-xs text-[#857667]">
+            Este site interativo foi gerado pela IA Gemini do Google. O conteúdo é baseado numa análise aprofundada, também gerada pela Gemini, que pode ser acedida 
+            <a href="https://docs.google.com/document/d/e/2PACX-1vSI9cPz6Bjhd6mgi-owgfaRnJDsxKZSKvRI5VO4lA1aAZr16nxIHd2n5DxpikED_0DEFLmfGfIrfPi5/pub" target="_blank" rel="noopener noreferrer" class="underline hover:text-[#C17A4A]">aqui</a>.
+        </p>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const data = {
+        peoples: [
+            { id: 'devotos', name: 'Os Devotos', icon: '🙏', inspiration: 'Cuneiforme/Fenício', linguistics: 'SVO, Plural por repetição', culture: 'Religião e comunhão com a natureza. Uma sociedade teocrática e comunal cuja vida gira em torno da adoração de um deus e do cuidado de seus jardins. A sua arquitetura evoca civilizações antigas da Mesopotâmia.', color: 'bg-green-100', textColor: 'text-green-800' },
+            { id: 'guerreiros', name: 'Os Guerreiros', icon: '🛡️', inspiration: 'Futhark Rúnico', linguistics: 'SVO, glifo de plural, sem pronomes pessoais', culture: 'Dever, ordem e coletivismo militar. Uma casta militarista com uma missão sagrada de guardar a Torre. A sua estética é opressiva, brutalista e monocromática.', color: 'bg-gray-200', textColor: 'text-gray-800' },
+            { id: 'bardos', name: 'Os Bardos', icon: '🎭', inspiration: 'Kufic Árabe/Devanagari', linguistics: 'OSV, glifo de interrogação', culture: 'Arte, abstração e hierarquia social. Focados no hedonismo e na beleza, mas seu estilo de vida luxuoso é sustentado por servos, revelando uma profunda hipocrisia.', color: 'bg-purple-100', textColor: 'text-purple-800' },
+            { id: 'alquimistas', name: 'Os Alquimistas', icon: '⚗️', inspiration: 'Numerais Cistercianos/Geométrico', linguistics: 'SVO, introdução de numerais', culture: 'Ciência, lógica e transformação. Um povo de cientistas, mineiros e inventores, dedicados a experiências que os outros mal compreendem. Seu ambiente mistura indústria e laboratórios.', color: 'bg-blue-100', textColor: 'text-blue-800' },
+            { id: 'anacoretas', name: 'Os Anacoretas', icon: '🤖', inspiration: 'Digital/Mecânico', linguistics: 'Linguagem da IA, focada na estase', culture: 'Exílio, estase e desapego tecnológico. Vivem no topo da Torre em um exílio autoimposto, mantidos por uma IA. Sua cultura representa um pináculo tecnológico que resultou em isolamento total.', color: 'bg-indigo-100', textColor: 'text-indigo-800' },
+        ],
+        games: [
+            { 
+                id: 'heavens-vault',
+                name: "Heaven's Vault", 
+                category: 'linguistica', 
+                icon: '🏺',
+                synopsis: "No papel da arqueóloga Aliya Elasra, explore uma nebulosa para desvendar a história de uma civilização perdida. A principal ferramenta é a capacidade de decifrar a língua hieroglífica dos Antigos, propondo traduções para frases inteiras com base em significados parciais.",
+                comparison: "É a comparação mais direta com *Sennaar*, mas com maior profundidade gramatical e ambiguidade. O foco está na interpretação e na construção da narrativa, enquanto *Sennaar* foca na resolução de quebra-cabeças com respostas corretas.",
+                chartData: [5, 3, 4, 5]
+            },
+            {
+                id: '7-days',
+                name: "7 Days to End with You",
+                category: 'linguistica',
+                icon: '❤️',
+                synopsis: "Um romance visual onde o jogador acorda com amnésia e passa sete dias com uma pessoa que fala uma língua desconhecida. A decifração baseia-se unicamente em contexto e gestos, sem qualquer validação explícita do jogo.",
+                comparison: "Leva a ambiguidade a um extremo fascinante. Se *Sennaar* oferece a satisfação da solução correta, este jogo explora a natureza subjetiva da comunicação e do relacionamento, questionando como construímos significado.",
+                chartData: [4, 2, 1, 4]
+            },
+            { 
+                id: 'obra-dinn',
+                name: "Return of the Obra Dinn",
+                category: 'deducao',
+                icon: '💀',
+                synopsis: "Como um inspetor de seguros em 1807, investigue o navio fantasma Obra Dinn. Usando um relógio mágico, revisite o momento da morte de cada tripulante para identificar todas as 60 almas, suas causas de morte e seus assassinos.",
+                comparison: "A quintessência do jogo de dedução. O ciclo de observar, hipotetizar e validar em lote é um espelho direto do de *Sennaar*, substituindo a decifração de glifos pela investigação de complexos dioramas de morte.",
+                chartData: [1, 5, 2, 4]
+            },
+            {
+                id: 'golden-idol',
+                name: "The Case of the Golden Idol",
+                category: 'deducao',
+                icon: '📜',
+                synopsis: "Investigue uma série de doze assassinatos interligados ao longo de 40 anos. Explore cenas de crime estáticas, colete palavras-chave e arraste-as para preencher lacunas num pergaminho, reconstruindo a narrativa do crime.",
+                comparison: "A mecânica de 'preencher os espaços em branco' com palavras-chave é um paralelo direto ao ato de arrastar glifos em *Sennaar*. A satisfação de 'trancar' a solução correta é idêntica em ambos.",
+                chartData: [1, 5, 1, 3]
+            },
+            {
+                id: 'tunic',
+                name: "Tunic",
+                category: 'exploracao',
+                icon: '🦊',
+                synopsis: "Um jogo de aventura isométrico onde você controla uma raposa num mundo em ruínas. A chave para progredir é encontrar páginas de um manual de instruções do jogo, escrito numa língua rúnica, e decifrar suas mecânicas através de diagramas e ilustrações.",
+                comparison: "O núcleo do jogo é decifrar uma 'linguagem': a linguagem visual do seu próprio design, codificada no manual. O momento 'aha!' ao entender uma mecânica oculta é o mesmo que define a experiência de *Sennaar*.",
+                chartData: [3, 4, 5, 2]
+            },
+            { 
+                id: 'outer-wilds',
+                name: "Outer Wilds",
+                category: 'exploracao',
+                icon: '🚀',
+                synopsis: "Explore um sistema solar preso num loop temporal de 22 minutos. A progressão não é baseada em itens, mas puramente em conhecimento. O que você aprende num loop (física, traduções de textos antigos) permite-lhe ir mais longe no próximo.",
+                comparison: "A expressão máxima da progressão baseada no conhecimento. A única 'chave' para a próxima 'porta' é a compreensão, estabelecendo a ligação temática mais profunda com *Sennaar*. Ambos são odes à curiosidade e à jornada do entendimento.",
+                chartData: [2, 4, 5, 5]
+            }
+        ]
+    };
+
+    const peoplesGrid = document.getElementById('peoples-grid');
+    const gamesGrid = document.getElementById('games-grid');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const sections = {
+        sennaar: document.getElementById('section-sennaar'),
+        ecos: document.getElementById('section-ecos')
+    };
+    const navBtns = {
+        sennaar: document.getElementById('nav-sennaar'),
+        ecos: document.getElementById('nav-ecos')
+    };
+    
+    const gameModal = document.getElementById('game-modal');
+    const modalContent = document.getElementById('modal-content');
+    const modalClose = document.getElementById('modal-close');
+    const modalTitle = document.getElementById('modal-title');
+    const modalSynopsis = document.getElementById('modal-synopsis');
+    const modalComparison = document.getElementById('modal-comparison');
+    let gameChart = null;
+
+    function switchSection(sectionName) {
+        Object.values(sections).forEach(s => s.classList.add('hidden'));
+        Object.values(navBtns).forEach(b => b.classList.remove('active'));
+        
+        sections[sectionName].classList.remove('hidden');
+        navBtns[sectionName].classList.add('active');
+    }
+
+    Object.values(navBtns).forEach(btn => {
+        btn.addEventListener('click', () => switchSection(btn.dataset.section));
+    });
+
+    function createPeopleCards() {
+        peoplesGrid.innerHTML = '';
+        data.peoples.forEach(people => {
+            const card = document.createElement('div');
+            card.className = `card bg-[#F9F1D8] rounded-xl p-6 cursor-pointer shadow-md`;
+            card.innerHTML = `
+                <div class="flex flex-col items-center text-center">
+                    <div class="text-5xl mb-3">${people.icon}</div>
+                    <h4 class="text-xl font-bold ${people.textColor.replace('text-', 'text-')}">${people.name}</h4>
+                    <div class="details hidden mt-4 text-left text-sm text-[#585043] w-full">
+                        <p><strong>Inspiração:</strong> ${people.inspiration}</p>
+                        <p class="mt-2"><strong>Linguística:</strong> ${people.linguistics}</p>
+                        <p class="mt-2"><strong>Cultura:</strong> ${people.culture}</p>
+                    </div>
+                </div>`;
+            peoplesGrid.appendChild(card);
+            
+            card.addEventListener('click', () => {
+                const details = card.querySelector('.details');
+                const isOpen = !details.classList.contains('hidden');
+                document.querySelectorAll('#peoples-grid .details').forEach(d => d.classList.add('hidden'));
+                if (!isOpen) {
+                    details.classList.remove('hidden');
+                }
+            });
+        });
+    }
+
+    function createGameCards(filter = 'all') {
+        gamesGrid.innerHTML = '';
+        const filteredGames = filter === 'all' ? data.games : data.games.filter(g => g.category === filter);
+        
+        filteredGames.forEach(game => {
+            const card = document.createElement('div');
+            card.className = 'card bg-[#F9F1D8] rounded-xl p-6 flex flex-col items-center text-center shadow-md';
+            card.innerHTML = `
+                <div class="text-6xl mb-4">${game.icon}</div>
+                <h4 class="text-2xl font-bold text-[#655543]">${game.name}</h4>
+                <p class="mt-2 text-[#585043] flex-grow">${game.synopsis.substring(0, 100)}...</p>
+                <button class="open-modal-btn mt-6 bg-[#C17A4A] text-white font-bold py-2 px-6 rounded-full hover:bg-[#a56337] transition-colors" data-id="${game.id}">Saiba Mais</button>
+            `;
+            gamesGrid.appendChild(card);
+        });
+
+        document.querySelectorAll('.open-modal-btn').forEach(btn => {
+            btn.addEventListener('click', () => openGameModal(btn.dataset.id));
+        });
+    }
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => {
+                b.classList.replace('bg-[#E8DDCB]', 'bg-[#F9F1D8]');
+                b.classList.replace('text-[#655543]', 'text-[#857667]');
+            });
+            btn.classList.replace('bg-[#F9F1D8]', 'bg-[#E8DDCB]');
+            btn.classList.replace('text-[#857667]', 'text-[#655543]');
+            createGameCards(btn.dataset.filter);
+        });
+    });
+
+    function openGameModal(gameId) {
+        const game = data.games.find(g => g.id === gameId);
+        if (!game) return;
+
+        modalTitle.textContent = game.name;
+        modalSynopsis.innerHTML = game.synopsis;
+        modalComparison.innerHTML = game.comparison;
+
+        gameModal.classList.remove('opacity-0', 'pointer-events-none');
+        modalContent.classList.remove('scale-95', 'opacity-0');
+        
+        if (gameChart) {
+            gameChart.destroy();
+        }
+
+        const ctx = document.getElementById('game-chart').getContext('2d');
+        gameChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Foco Linguístico', 'Dedução Pura', 'Exploração Livre', 'Complexidade Narrativa'],
+                datasets: [{
+                    label: game.name,
+                    data: game.chartData,
+                    backgroundColor: 'rgba(193, 122, 74, 0.2)',
+                    borderColor: 'rgba(193, 122, 74, 1)',
+                    pointBackgroundColor: 'rgba(193, 122, 74, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(193, 122, 74, 1)'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(88, 80, 67, 0.2)' },
+                        grid: { color: 'rgba(88, 80, 67, 0.2)' },
+                        pointLabels: { 
+                            color: '#585043',
+                            font: { size: 12 } 
+                        },
+                        ticks: {
+                            color: '#857667',
+                            backdropColor: 'transparent',
+                            stepSize: 1,
+                        },
+                        suggestedMin: 0,
+                        suggestedMax: 5
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+
+    function closeGameModal() {
+        gameModal.classList.add('opacity-0', 'pointer-events-none');
+        modalContent.classList.add('scale-95', 'opacity-0');
+    }
+
+    modalClose.addEventListener('click', closeGameModal);
+    gameModal.addEventListener('click', (e) => {
+        if (e.target === gameModal) {
+            closeGameModal();
+        }
+    });
+
+    createPeopleCards();
+    createGameCards();
+});
+</script>
+
+</body>
+</html>

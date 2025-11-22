@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breathwork - Guia de Padrões</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #fafafa;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            letter-spacing: -0.5px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1px;
+            background: #e0e0e0;
+            padding: 1px;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 24px;
+            background: white;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            color: #666;
+        }
+
+        .tab:first-child {
+            border-radius: 7px 0 0 7px;
+        }
+
+        .tab:last-child {
+            border-radius: 0 7px 7px 0;
+        }
+
+        .tab.active {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .content {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 3rem;
+        }
+
+        .pattern-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .pattern-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .pattern-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .pattern-structure {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 1.2rem;
+            color: #0066cc;
+            margin-bottom: 12px;
+        }
+
+        .pattern-desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .pattern-effects {
+            font-size: 0.85rem;
+            color: #888;
+            font-style: italic;
+        }
+
+        .duo-container {
+            background: white;
+            padding: 32px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .duo-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .duo-purpose {
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .duo-sequence {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .duo-pattern {
+            background: #f5f5f5;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .duo-arrow {
+            color: #999;
+            font-size: 1.2rem;
+        }
+
+        .duo-desc {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .protocol-section {
+            margin-bottom: 48px;
+        }
+
+        .protocol-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .protocol-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .protocol-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .protocol-context {
+            font-weight: 600;
+            min-width: 180px;
+        }
+
+        .principles-box {
+            background: #f8f8f8;
+            padding: 24px;
+            border-radius: 12px;
+            margin-top: 32px;
+        }
+
+        .principles-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .principle-item {
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .principle-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                border-radius: 0;
+            }
+            
+            .tab:first-child {
+                border-radius: 7px 7px 0 0;
+            }
+            
+            .tab:last-child {
+                border-radius: 0 0 7px 7px;
+            }
+            
+            .pattern-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Guia de Padrões Respiratórios</h1>
+    
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('patterns')">Padrões</button>
+        <button class="tab" onclick="showTab('duos')">Duos</button>
+        <button class="tab" onclick="showTab('protocols')">Protocolos</button>
+    </div>
+
+    <div id="patterns" class="content active">
+        <h2 style="font-size: 1.5rem; margin-bottom: 24px;">Padrões Originais</h2>
+        <div class="pattern-grid">
+            <div class="pattern-card">
+                <div class="pattern-name">Box Plus</div>
+                <div class="pattern-structure">6-6-6-6</div>
+                <div class="pattern-desc">Expansão do Box Breathing com simetria perfeita</div>
+                <div class="pattern-effects">Coerência cardíaca profunda, estados de fluxo, foco sustentado</div>
+            </div>
+            
+            <div class="pattern-card">
+                <div class="pattern-name">Sossega Leão</div>
+                <div class="pattern-structure">4-7-8-0</div>
+                <div class="pattern-desc">Variação do 4-7-8 com retenção prolongada</div>
+                <div class="pattern-effects">Ativação parassimpática intensa, preparação para sono</div>
+            </div>
+            
+            <div class="pattern-card">
+                <div class="pattern-name">Calma</div>
+                <div class="pattern-structure">4-0-6-0</div>
+                <div class="pattern-desc">Expiração 1,5x mais longa sem retenções</div>
+                <div class="pattern-effects">Relaxamento suave, redução gradual da frequência cardíaca</div>
+            </div>
+            
+            <div class="pattern-card">
+                <div class="pattern-name">Energia Calma</div>
+                <div class="pattern-structure">5-0-2-0</div>
+                <div class="pattern-desc">Inspiração 2,5x mais longa que expiração</div>
+                <div class="pattern-effects">Ativação simpática suave, alerta sem ansiedade</div>
+            </div>
+            
+            <div class="pattern-card">
+                <div class="pattern-name">Endurance</div>
+                <div class="pattern-structure">5-0-8-5</div>
+                <div class="pattern-desc">Expiração longa com retenção vazia substancial</div>
+                <div class="pattern-effects">Tolerância ao CO2, eficiência respiratória, resistência mental</div>
+            </div>
+            
+            <div class="pattern-card">
+                <div class="pattern-name">Melhor Ventilação</div>
+                <div class="pattern-structure">3-0-8-1.8</div>
+                <div class="pattern-desc">Expiração extremamente prolongada</div>
+                <div class="pattern-effects">Limpeza de CO2, reset neural rápido</div>
+            </div>
+            
+            <div class="pattern-card">
+                <div class="pattern-name">Tranquilidade</div>
+                <div class="pattern-structure">3-0-6-0</div>
+                <div class="pattern-desc">Proporção clássica 1:2 sem retenções</div>
+                <div class="pattern-effects">Estado meditativo básico, calma profunda</div>
+            </div>
+            
+            <div class="pattern-card">
+                <div class="pattern-name">Tactical</div>
+                <div class="pattern-structure">5.5-5.5-5.5-0</div>
+                <div class="pattern-desc">Simetria nas três primeiras fases</div>
+                <div class="pattern-effects">Alerta calmo, prontidão sem tensão</div>
+            </div>
+        </div>
+
+        <h2 style="font-size: 1.5rem; margin-bottom: 24px; margin-top: 48px;">Padrões Customizados</h2>
+        <div class="pattern-grid">
+            <div class="pattern-card">
+                <div class="pattern-name">Foco Intermediário</div>
+                <div class="pattern-structure">4-2-4-2</div>
+                <div class="pattern-desc">Equilibrado com retenções curtas</div>
+                <div class="pattern-effects">Fluxo cognitivo, oxigenação para estudo</div>
+            </div>
+            
+            <div class="pattern-card">
+                <div class="pattern-name">Kevala Prep</div>
+                <div class="pattern-structure">6-3-6-3</div>
+                <div class="pattern-desc">Simetria com retenções moderadas</div>
+                <div class="pattern-effects">Preparação para absorção profunda</div>
+            </div>
+            
+            <div class="pattern-card">
+                <div class="pattern-name">Reset Profundo</div>
+                <div class="pattern-structure">3-0-9-3</div>
+                <div class="pattern-desc">Expiração triplicada com retenções</div>
+                <div class="pattern-effects">Limpeza neural intensa, recuperação mental</div>
+            </div>
+            
+            <div class="pattern-card">
+                <div class="pattern-name">Regeneração</div>
+                <div class="pattern-structure">5-0-10-5</div>
+                <div class="pattern-desc">Expiração dupla com retenções equilibradas</div>
+                <div class="pattern-effects">Ativação linfática, recuperação muscular</div>
+            </div>
+            
+            <div class="pattern-card">
+                <div class="pattern-name">Endurance Meditativo</div>
+                <div class="pattern-structure">6-0-12-6</div>
+                <div class="pattern-desc">Versão estendida para meditação</div>
+                <div class="pattern-effects">Preparação para jhanas, dissolução sensorial</div>
+            </div>
+            
+            <div class="pattern-card">
+                <div class="pattern-name">Wim Hof Modificado</div>
+                <div class="pattern-structure">2-1-2-0</div>
+                <div class="pattern-desc">Ciclos rápidos com breve retenção</div>
+                <div class="pattern-effects">Alcalose controlada, energia rápida</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="duos" class="content">
+        <div class="duo-container">
+            <div class="duo-title">Despertar Lúcido</div>
+            <div class="duo-purpose">Para manhãs conscientes e energizadas</div>
+            <div class="duo-sequence">
+                <div class="duo-pattern">Tranquilidade (3-0-6-0) • 4min</div>
+                <div class="duo-arrow">→</div>
+                <div class="duo-pattern">Energia Calma (5-0-2-0) • 4min</div>
+            </div>
+            <div class="duo-desc">
+                Começa com limpeza parassimpática profunda através de exalações prolongadas, removendo a inércia do sono. 
+                A transição para ativação simpática controlada cria um despertar simultaneamente suave e energizante.
+            </div>
+        </div>
+
+        <div class="duo-container">
+            <div class="duo-title">Foco Laser</div>
+            <div class="duo-purpose">Para trabalho profundo e concentração intensa</div>
+            <div class="duo-sequence">
+                <div class="duo-pattern">Box Plus (6-6-6-6) • 5min</div>
+                <div class="duo-arrow">→</div>
+                <div class="duo-pattern">Tactical (5.5-5.5-5.5-0) • 3min</div>
+            </div>
+            <div class="duo-desc">
+                A simetria completa estabelece coerência cardíaca profunda. A transição para simetria parcial 
+                mantém a coerência criando fluxo mais dinâmico, ideal para períodos de concentração sustentada.
+            </div>
+        </div>
+
+        <div class="duo-container">
+            <div class="duo-title">Reset Rápido</div>
+            <div class="duo-purpose">Para transições eficientes entre tarefas</div>
+            <div class="duo-sequence">
+                <div class="duo-pattern">Melhor Ventilação (3-0-8-1.8) • 3min</div>
+                <div class="duo-arrow">→</div>
+                <div class="duo-pattern">Box Plus (6-6-6-6) • 3min</div>
+            </div>
+            <div class="duo-desc">
+                A ventilação profunda "varre" padrões neurais da tarefa anterior, enquanto Box Plus estabelece 
+                novo estado de equilíbrio. Previne fadiga de decisão ao longo do dia.
+            </div>
+        </div>
+
+        <div class="duo-container">
+            <div class="duo-title">Pré-Meditação Express</div>
+            <div class="duo-purpose">Preparação rápida para práticas contemplativas</div>
+            <div class="duo-sequence">
+                <div class="duo-pattern">Sossega Leão (4-7-8-0) • 5min</div>
+                <div class="duo-arrow">→</div>
+                <div class="duo-pattern">Endurance (5-0-8-5) • 5min</div>
+            </div>
+            <div class="duo-desc">
+                Cria base de calma através de retenção com pulmões cheios, depois aprofunda com retenções vazias. 
+                Treina rapidamente tolerância respiratória facilitando entrada em estados meditativos profundos.
+            </div>
+        </div>
+
+        <div class="duo-container">
+            <div class="duo-title">Recuperação Atlética</div>
+            <div class="duo-purpose">Otimização pós-exercício</div>
+            <div class="duo-sequence">
+                <div class="duo-pattern">Energia Calma (5-0-2-0) • 2min</div>
+                <div class="duo-arrow">→</div>
+                <div class="duo-pattern">Sossega Leão (4-7-8-0) • 6min</div>
+            </div>
+            <div class="duo-desc">
+                Inicia com leve ativação para prevenir queda abrupta de catecolaminas. A transição gradual 
+                para recuperação profunda evita o "crash" pós-exercício, facilitando processos regenerativos.
+            </div>
+        </div>
+
+        <div class="duo-container">
+            <div class="duo-title">Modo Competitivo</div>
+            <div class="duo-purpose">Para gaming, apresentações ou performances</div>
+            <div class="duo-sequence">
+                <div class="duo-pattern">Tactical (5.5-5.5-5.5-0) • 4min</div>
+                <div class="duo-arrow">→</div>
+                <div class="duo-pattern">Energia Calma (5-0-2-0) • 2min</div>
+            </div>
+            <div class="duo-desc">
+                Estabelece linha de base de alerta calmo, depois adiciona camada extra de ativação nos minutos finais. 
+                Cria o estado ideal de "estar na zona" - reflexos rápidos com controle emocional.
+            </div>
+        </div>
+    </div>
+
+    <div id="protocols" class="content">
+        <div class="protocol-section">
+            <div class="protocol-title">Protocolos Completos por Contexto</div>
+            
+            <div class="protocol-list">
+                <div class="protocol-item">
+                    <span class="protocol-context">Ativação Matinal:</span>
+                    <span>Melhor Ventilação → Energia Calma → Tactical</span>
+                </div>
+                
+                <div class="protocol-item">
+                    <span class="protocol-context">Preparação para Estudo:</span>
+                    <span>Box Plus → Foco Intermediário → Box Plus</span>
+                </div>
+                
+                <div class="protocol-item">
+                    <span class="protocol-context">Meditação Longa (90min):</span>
+                    <span>Sossega Leão → Kevala Prep → Endurance Meditativo</span>
+                </div>
+                
+                <div class="protocol-item">
+                    <span class="protocol-context">Recuperação Mental:</span>
+                    <span>Reset Profundo → Tranquilidade → Respiração natural</span>
+                </div>
+                
+                <div class="protocol-item">
+                    <span class="protocol-context">Pré-Exercício:</span>
+                    <span>Melhor Ventilação → Wim Hof Modificado → Energia Calma</span>
+                </div>
+                
+                <div class="protocol-item">
+                    <span class="protocol-context">Recuperação Muscular:</span>
+                    <span>Sossega Leão → Regeneração → Box Plus</span>
+                </div>
+                
+                <div class="protocol-item">
+                    <span class="protocol-context">Gaming Competitivo:</span>
+                    <span>Tactical → Box Plus Compacto → Energia Calma</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="principles-box">
+            <div class="principles-title">Princípios Fundamentais</div>
+            <div class="principle-item">
+                <strong>Transições Graduais:</strong> Use padrões intermediários entre técnicas muito diferentes
+            </div>
+            <div class="principle-item">
+                <strong>Memória Respiratória:</strong> Efeitos persistem 3-5 minutos após mudança de padrão
+            </div>
+            <div class="principle-item">
+                <strong>Ordem Sequencial:</strong> Energização → Foco → Relaxamento (não o inverso)
+            </div>
+            <div class="principle-item">
+                <strong>Duração Mínima:</strong> 3-4 minutos por padrão para consolidar efeitos
+            </div>
+            <div class="principle-item">
+                <strong>Respiração Nasal:</strong> Padrão universal (exceto técnicas específicas)
+            </div>
+            <div class="principle-item">
+                <strong>Base Diafragmática:</strong> Fundamental para todos os padrões
+            </div>
+        </div>
+
+        <div class="principles-box" style="margin-top: 20px;">
+            <div class="principles-title">Indicadores de Transição</div>
+            <div class="principle-item">
+                Frequência cardíaca estabilizada indica momento ideal para mudança
+            </div>
+            <div class="principle-item">
+                Sensação de "saciedade respiratória" sinaliza prontidão para novo padrão
+            </div>
+            <div class="principle-item">
+                Mudança espontânea no ritmo sugere necessidade de ajuste
+            </div>
+            <div class="principle-item">
+                Qualidade da atenção (dispersão/hiperfoco) guia escolha do próximo padrão
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Remove active class from all tabs and contents
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab and corresponding content
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+    </script>
+
+    <footer style="margin-top: 80px; padding: 40px 0 20px; border-top: 1px solid #eee; text-align: center; color: #999; font-size: 0.85rem;">
+        Criado por Claude a partir da solicitação de análise sobre engenharia de padrões respiratórios e suas aplicações neurofisiológicas no cotidiano
+    </footer>
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cérebro, IA e a Dívida Cognitiva</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7FAFC;
+            color: #2D3748;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #2B6CB0;
+            border-bottom-color: #2B6CB0;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 350px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">Cérebro & IA: A Dívida Cognitiva</h1>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#estudo" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">O Estudo</a>
+                <a href="#divida" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">A Dívida</a>
+                <a href="#impactos" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">Impactos</a>
+                <a href="#recomendacoes" class="nav-link text-gray-600 border-b-2 border-transparent pb-1">Recomendações</a>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden">
+                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#estudo" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-100">O Estudo</a>
+            <a href="#divida" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-100">A Dívida</a>
+            <a href="#impactos" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-100">Impactos</a>
+            <a href="#recomendacoes" class="block py-2 px-6 text-sm text-gray-700 hover:bg-gray-100">Recomendações</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="bg-white py-20">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl font-bold mb-4 text-gray-800">Como os assistentes de IA estão moldando nosso cérebro?</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    Este aplicativo interativo explora as descobertas do estudo "Your Brain on ChatGPT". Navegue pelas seções para entender o conceito de "dívida cognitiva", analisar os dados experimentais e descobrir como podemos usar a IA de forma mais consciente.
+                </p>
+            </div>
+        </section>
+
+        <section id="estudo" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800">O Estudo: "Your Brain on ChatGPT"</h2>
+                    <p class="text-md text-gray-600 mt-2 max-w-2xl mx-auto">
+                        O estudo comparou três grupos de participantes em uma tarefa de escrita para medir o impacto de diferentes ferramentas na cognição. Explore os resultados de cada grupo abaixo.
+                    </p>
+                </div>
+
+                <div class="flex justify-center mb-8 space-x-2 md:space-x-4">
+                    <button data-group="brain" class="group-btn bg-blue-500 text-white px-4 py-2 rounded-full shadow-lg transition transform hover:scale-105">🧠 Apenas Cérebro</button>
+                    <button data-group="search" class="group-btn bg-white text-gray-700 px-4 py-2 rounded-full shadow transition transform hover:scale-105">🌐 Busca</button>
+                    <button data-group="llm" class="group-btn bg-white text-gray-700 px-4 py-2 rounded-full shadow transition transform hover:scale-105">🤖 LLM (IA)</button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+                    <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-md">
+                        <h3 id="group-title" class="text-2xl font-bold mb-4 text-gray-800"></h3>
+                        <div id="group-metrics" class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-base font-medium text-blue-700">Conectividade Neural</span>
+                                    <span id="metric-connectivity-value" class="text-sm font-medium text-blue-700"></span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div id="metric-connectivity-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-base font-medium text-green-700">Recordação da Memória</span>
+                                    <span id="metric-recall-value" class="text-sm font-medium text-green-700"></span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div id="metric-recall-bar" class="bg-green-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p id="group-description" class="mt-6 text-gray-600"></p>
+                    </div>
+                    <div class="lg:col-span-3">
+                        <div class="chart-container">
+                            <canvas id="comparisonChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                 <div class="mt-12 bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-6 rounded-r-lg shadow-md">
+                    <h4 class="text-xl font-bold mb-2">💡 A Ordem das Ferramentas Importa!</h4>
+                    <p>Uma das descobertas mais críticas foi que iniciar a tarefa <span class="font-bold">sem IA</span> e depois usá-la para revisar (Cérebro-para-LLM) resultou em maior atividade cerebral e melhor memória. Começar com a IA (LLM-para-Cérebro) demonstrou um subengajamento persistente, mesmo ao tentar escrever sem a ferramenta depois. O esforço cognitivo inicial é protetor.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="divida" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800">O que é Dívida Cognitiva?</h2>
+                    <p class="text-md text-gray-600 mt-2 max-w-2xl mx-auto">
+                        É o custo que pagamos no futuro por escolher a conveniência da IA hoje. É renunciar ao pensamento profundo para obter respostas rápidas, sem entender o "porquê" por trás delas.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-8 rounded-lg shadow-md flex flex-col items-center">
+                        <h4 class="text-xl font-bold text-gray-700 mb-4">A Balança Cognitiva</h4>
+                        <div class="w-full max-w-sm">
+                            <div class="flex justify-between items-end text-center text-sm font-semibold text-gray-600">
+                                <div class="w-2/5 p-2 bg-green-100 rounded-lg border-2 border-green-300">
+                                    🧠<br>Esforço Cognitivo & Aprendizado Profundo
+                                </div>
+                                <div class="w-2/5 p-2 bg-red-100 rounded-lg border-2 border-red-300">
+                                    ⚡️<br>Conveniência & Respostas Rápidas
+                                </div>
+                            </div>
+                             <div class="h-2 bg-gray-700 rounded-full mt-1 transform -rotate-6"></div>
+                             <div class="h-12 w-2 bg-gray-700 mx-auto"></div>
+                             <div class="h-2 w-24 bg-gray-700 mx-auto rounded-full"></div>
+                        </div>
+                         <p class="mt-6 text-center text-gray-600">A dependência excessiva da IA inclina a balança, favorecendo a conveniência em detrimento do esforço que constrói a compreensão e a memória duradouras.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6 text-gray-800">Fatores que aceleram a dívida:</h3>
+                        <div class="space-y-4">
+                            <div class="card bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="font-bold text-lg">Descarga Cognitiva (Cognitive Offloading)</h4>
+                                <p class="text-gray-600 mt-1">Delegar tarefas mentais à IA reduz a carga na memória, mas também o engajamento neural necessário para aprender.</p>
+                            </div>
+                            <div class="card bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="font-bold text-lg">Complacência da Automação</h4>
+                                <p class="text-gray-600 mt-1">Confiar excessivamente nas saídas da IA sem uma verificação crítica, assumindo que a ferramenta está sempre correta.</p>
+                            </div>
+                             <div class="card bg-white p-6 rounded-lg shadow-sm">
+                                <h4 class="font-bold text-lg">Pressão por Produtividade</h4>
+                                <p class="text-gray-600 mt-1">A necessidade de resultados rápidos em ambientes de trabalho e estudo incentiva o uso de atalhos de IA, sacrificando a compreensão profunda.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="impactos" class="py-20 bg-gray-50">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800">Impactos: Desqualificação ou Requalificação?</h2>
+                    <p class="text-md text-gray-600 mt-2 max-w-2xl mx-auto">A IA está mudando as habilidades necessárias no mercado de trabalho, levando a dois caminhos possíveis: a perda de habilidades ("deskilling") ou o desenvolvimento de novas ("upskilling").</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <div class="grid grid-cols-1 md:grid-cols-11 gap-4 items-center">
+                        <div class="md:col-span-5 text-center md:text-right">
+                             <h4 class="text-2xl font-bold text-red-600 mb-2">Desqualificação (Deskilling)</h4>
+                             <p class="text-gray-600">A IA automatiza tarefas complexas, tornando o trabalho humano mais simples e rotineiro. Isso pode "nivelar" o desempenho, reduzindo a necessidade de expertise profunda.</p>
+                             <div class="mt-4 space-y-2 text-sm text-right">
+                                 <p class="bg-red-100 p-2 rounded-lg"><strong>Ex: Suporte ao Cliente</strong> - IA sugere respostas, diminuindo a necessidade de conhecimento profundo do agente.</p>
+                                 <p class="bg-red-100 p-2 rounded-lg"><strong>Ex: Programação Básica</strong> - IA gera código, permitindo que novatos realizem tarefas antes restritas a especialistas.</p>
+                             </div>
+                        </div>
+
+                        <div class="md:col-span-1 flex justify-center items-center">
+                            <div class="w-px h-full bg-gray-300 hidden md:block"></div>
+                            <div class="text-2xl font-bold text-gray-700 bg-gray-200 rounded-full w-20 h-20 flex items-center justify-center my-4 md:my-0">TAREFA</div>
+                            <div class="w-px h-full bg-gray-300 hidden md:block"></div>
+                        </div>
+                        
+                        <div class="md:col-span-5 text-center md:text-left">
+                            <h4 class="text-2xl font-bold text-green-600 mb-2">Requalificação (Upskilling)</h4>
+                            <p class="text-gray-600">A IA cuida de tarefas repetitivas, liberando os humanos para se concentrarem em atividades de maior valor: estratégia, criatividade e julgamento ético.</p>
+                             <div class="mt-4 space-y-2 text-sm text-left">
+                                 <p class="bg-green-100 p-2 rounded-lg"><strong>Ex: Análise de Dados</strong> - IA processa os dados, humanos interpretam os insights e tomam decisões estratégicas.</p>
+                                 <p class="bg-green-100 p-2 rounded-lg"><strong>Ex: Medicina</strong> - IA auxilia no diagnóstico, médicos focam no plano de tratamento complexo e na relação com o paciente.</p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="recomendacoes" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-800">Recomendações: Como Mitigar a Dívida?</h2>
+                    <p class="text-md text-gray-600 mt-2 max-w-2xl mx-auto">
+                        O objetivo não é evitar a IA, mas usá-la de forma a aprimorar, e não substituir, a cognição humana. Aqui estão estratégias para diferentes grupos.
+                    </p>
+                </div>
+                <div class="max-w-4xl mx-auto">
+                    <div id="accordion-container">
+                        </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>Aplicação interativa baseada na análise do estudo "<a href="https://arxiv.org/abs/2506.08872" target="_blank" class="text-blue-300 hover:underline">Your Brain on ChatGPT: Accumulation of Cognitive Debt when Using an AI Assistant for Essay Writing Task</a>" e literatura relacionada.</p>
+            <p class="text-sm mt-2 text-gray-400">Esta página foi gerada com o uso de Gemini e o seguinte prompt:</p>
+            <p class="text-xs text-gray-500 mt-1 max-w-3xl mx-auto italic break-words">
+                (1) Acessar e ler o artigo "Your Brain on ChatGPT: Accumulation of Cognitive Debt when Using an AI Assistant for Essay Writing Task" para compreender sua tese central, metodologia e principais descobertas.
+                (2) Analisar em profundidade o conceito de "dívida cognitiva" (cognitive debt) conforme apresentado no artigo, incluindo suas causas, manifestações e implicações para o usuário de IA.
+                (3) Avaliar as implicações diretas dos resultados do artigo sobre o impacto da inteligência artificial no processo de escrita e na cognição humana.
+                (4) Investigar como o uso de assistentes de IA, conforme discutido no artigo, pode afetar o desenvolvimento e a manutenção do pensamento crítico em tarefas acadêmicas e criativas.
+                (5) Realizar uma revisão de literatura sobre estudos que abordam o impacto da inteligência artificial na cognição humana, com foco em aspectos como carga cognitiva, tomada de decisão e aprendizado.
+                (6) Buscar artigos e pesquisas que explorem a relação entre o uso de ferramentas de IA e a capacidade de pensamento crítico, incluindo potenciais benefícios e desafios.
+                (7) Identificar e analisar outras pesquisas que corroborem, refutem ou expandam as descobertas do artigo sobre a acumulação de dívida cognitiva no contexto da interação humano-IA.
+                (8) Sintetizar as informações do artigo principal com os achados da revisão de literatura para estabelecer uma compreensão abrangente das implicações da IA no pensamento crítico e na cognição.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // Mobile Menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Data for the study section
+            const studyData = {
+                brain: {
+                    title: '🧠 Apenas Cérebro',
+                    metrics: { connectivity: 95, recall: 90 },
+                    description: 'Este grupo demonstrou a mais forte e distribuída conectividade neural. O alto engajamento cognitivo resultou em excelente recordação da memória e um forte senso de autoria.',
+                    chartData: {
+                        connectivity: 95,
+                        recall: 90,
+                        authorship: 92
+                    }
+                },
+                search: {
+                    title: '🌐 Mecanismo de Busca',
+                    metrics: { connectivity: 70, recall: 75 },
+                    description: 'O uso de mecanismos de busca mostrou um engajamento cognitivo moderado. A recordação da memória foi boa, mas a atividade neural foi menor em comparação com o grupo "Apenas Cérebro".',
+                    chartData: {
+                        connectivity: 70,
+                        recall: 75,
+                        authorship: 80
+                    }
+                },
+                llm: {
+                    title: '🤖 LLM (IA)',
+                    metrics: { connectivity: 40, recall: 20 },
+                    description: 'Este grupo exibiu a conectividade cerebral mais fraca, um claro sinal de "descarga cognitiva". A recordação do conteúdo foi notavelmente baixa (>80% tiveram dificuldade), assim como o senso de autoria.',
+                    chartData: {
+                        connectivity: 40,
+                        recall: 20,
+                        authorship: 35
+                    }
+                }
+            };
+
+            // Study Section Interactivity
+            const groupButtons = document.querySelectorAll('.group-btn');
+            const groupTitle = document.getElementById('group-title');
+            const groupDescription = document.getElementById('group-description');
+            const metricConnectivityBar = document.getElementById('metric-connectivity-bar');
+            const metricConnectivityValue = document.getElementById('metric-connectivity-value');
+            const metricRecallBar = document.getElementById('metric-recall-bar');
+            const metricRecallValue = document.getElementById('metric-recall-value');
+
+            function updateGroupInfo(groupKey) {
+                const data = studyData[groupKey];
+                groupTitle.textContent = data.title;
+                groupDescription.textContent = data.description;
+                
+                metricConnectivityValue.textContent = `${data.metrics.connectivity}%`;
+                metricConnectivityBar.style.width = `${data.metrics.connectivity}%`;
+                
+                metricRecallValue.textContent = `${data.metrics.recall}%`;
+                metricRecallBar.style.width = `${data.metrics.recall}%`;
+
+                groupButtons.forEach(btn => {
+                    if (btn.dataset.group === groupKey) {
+                        btn.classList.remove('bg-white', 'text-gray-700');
+                        btn.classList.add('bg-blue-500', 'text-white');
+                    } else {
+                        btn.classList.remove('bg-blue-500', 'text-white');
+                        btn.classList.add('bg-white', 'text-gray-700');
+                    }
+                });
+            }
+
+            groupButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    updateGroupInfo(button.dataset.group);
+                });
+            });
+
+            updateGroupInfo('brain');
+
+            // Chart.js Comparison Chart
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            const comparisonChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Conectividade Neural', 'Recordação da Memória', 'Sentimento de Autoria'],
+                    datasets: [
+                        {
+                            label: '🧠 Apenas Cérebro',
+                            data: [studyData.brain.chartData.connectivity, studyData.brain.chartData.recall, studyData.brain.chartData.authorship],
+                            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '🌐 Busca',
+                            data: [studyData.search.chartData.connectivity, studyData.search.chartData.recall, studyData.search.chartData.authorship],
+                            backgroundColor: 'rgba(107, 114, 128, 0.7)',
+                            borderColor: 'rgba(107, 114, 128, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '🤖 LLM (IA)',
+                            data: [studyData.llm.chartData.connectivity, studyData.llm.chartData.recall, studyData.llm.chartData.authorship],
+                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                            borderColor: 'rgba(239, 68, 68, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Comparativo de Desempenho Cognitivo por Grupo',
+                            font: { size: 18 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: {
+                                display: true,
+                                text: 'Pontuação Normalizada (%)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Accordion for Recommendations
+            const recommendationsData = [
+                {
+                    title: 'Para a Educação',
+                    icon: '🎓',
+                    content: 'Integrar a IA de forma estratégica, focando no engajamento ativo e avaliação crítica. Fomentar habilidades metacognitivas e conscientizar sobre o "currículo oculto" da interação com a IA, que molda os hábitos de pensamento.'
+                },
+                {
+                    title: 'Para Organizações',
+                    icon: '🏢',
+                    content: 'Gerir proativamente a dívida cognitiva como um risco estratégico. Fomentar uma cultura de compreensão profunda ("o porquê") e não apenas de resultados rápidos. Investir em "alfabetização em IA" e reconhecer a mudança no valor da expertise humana.'
+                },
+                {
+                    title: 'Para Indivíduos',
+                    icon: '👤',
+                    content: 'Cultivar o pensamento crítico ativo, verificando e questionando as saídas da IA. Priorizar o esforço cognitivo em tarefas cruciais para o aprendizado. Estar ciente da complacência da automação e usar a IA como um parceiro de raciocínio, não um substituto.'
+                }
+            ];
+
+            const accordionContainer = document.getElementById('accordion-container');
+            recommendationsData.forEach((item, index) => {
+                const accordionItem = document.createElement('div');
+                accordionItem.className = 'border-b border-gray-200';
+                accordionItem.innerHTML = `
+                    <h2>
+                        <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-700 bg-gray-100 hover:bg-gray-200" data-accordion-target="accordion-body-${index}">
+                            <span class="flex items-center">
+                                <span class="mr-3 text-2xl">${item.icon}</span>
+                                ${item.title}
+                            </span>
+                            <svg data-accordion-icon class="w-6 h-6 shrink-0 transition-transform" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-body-${index}" class="hidden p-5 bg-white">
+                        <p class="text-gray-600">${item.content}</p>
+                    </div>
+                `;
+                accordionContainer.appendChild(accordionItem);
+            });
+
+            accordionContainer.addEventListener('click', function(e) {
+                const button = e.target.closest('button');
+                if (!button) return;
+
+                const targetId = button.getAttribute('data-accordion-target');
+                const targetPanel = document.getElementById(targetId);
+                const icon = button.querySelector('svg');
+
+                if (targetPanel.classList.contains('hidden')) {
+                    targetPanel.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                } else {
+                    targetPanel.classList.add('hidden');
+                    icon.classList.remove('rotate-180');
+                }
+            });
+            
+             // Active Nav Link on Scroll
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 60) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

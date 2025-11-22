@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico: O Império Subterrâneo das Formigas no Brasil Central</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .kpi-card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .kpi-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #1e3a8a; 
+        }
+        .kpi-label {
+            font-size: 1rem;
+            color: #4b5563;
+            margin-top: 0.5rem;
+        }
+        .flowchart-step {
+            background-color: #dbeafe; 
+            border-left: 5px solid #1e3a8a; 
+            padding: 1rem;
+            border-radius: 0.5rem;
+            position: relative;
+        }
+        .flowchart-arrow {
+            text-align: center;
+            font-size: 2rem;
+            color: #1e3a8a;
+            margin: 0.5rem 0;
+        }
+        .header-bg {
+            background-color: #1e3a8a; 
+            color: white;
+        }
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 900;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: #4b5563;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem auto;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            height: 100%;
+        }
+        .details-box {
+            background-color: #e0f2fe; 
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            margin-top: 2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .details-box:hover {
+            background-color: #bfdbfe; 
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .details-content {
+            text-align: left;
+            margin-top: 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            padding-top: 0;
+        }
+        .details-content.open {
+            max-height: 1000px; 
+            padding-top: 1rem;
+            transition: max-height 0.7s ease-in;
+        }
+        .prompt-code {
+            background-color: #f8fafc;
+            border-left: 4px solid #3b82f6; 
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.875rem;
+            color: #1f2937;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <header class="header-bg p-8 mb-12 text-center">
+        <h1 class="text-4xl md:text-5xl font-black mb-2">O Império Subterrâneo</h1>
+        <p class="text-lg md:text-xl text-blue-200">Uma Análise Visual da Extensão dos Formigueiros no Brasil Central</p>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8">
+
+        <section id="overview" class="mb-16">
+            <h2 class="section-title">Dimensões de um Mundo Oculto</h2>
+            <p class="section-subtitle">
+                Os ninhos de formigas, especialmente do gênero *Atta*, são estruturas de engenharia complexas e de vasta escala. Seus números revelam a magnitude de seu impacto ecológico e agrícola, que muitas vezes permanece invisível sob a superfície.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="kpi-card">
+                    <div class="kpi-number">8m</div>
+                    <div class="kpi-label">Profundidade Máxima de Ninhos (*Atta*)</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-number">7M</div>
+                    <div class="kpi-label">Indivíduos em uma Colônia de *Atta*</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-number">8.000</div>
+                    <div class="kpi-label">Câmaras de Fungo por Ninho de *Atta*</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-number">1T</div>
+                    <div class="kpi-label">Folhas Cortadas por Colônia de *Atta* (Anual)</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="species-comparison" class="mb-16">
+            <h2 class="section-title">Gigantes Nativas vs. Invasora Global</h2>
+            <p class="section-subtitle">
+                No Brasil Central, a dinâmica dos formigueiros é dominada por espécies nativas robustas e pela ameaça de uma invasora globalmente famosa por suas supercolônias. Compreender suas diferenças é crucial para o manejo.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card lg:col-span-2">
+                    <h3 class="text-xl font-bold mb-4 text-center">Comparativo de Escala: *Atta* vs. *Acromyrmex*</h3>
+                    <p class="text-gray-600 mb-4 text-center">Este gráfico compara as principais características dos ninhos dos dois gêneros de formigas cortadeiras mais importantes do Brasil. A diferença de escala é evidente, destacando o maior potencial de impacto das saúvas (*Atta*).</p>
+                    <div class="chart-container">
+                        <canvas id="nestComparisonChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-4 text-center">A Ameaça *Linepithema humile*</h3>
+                    <p class="text-gray-600 mb-4">A formiga-argentina (*L. humile*) forma "supercolônias" que se estendem por milhares de quilômetros globalmente. Embora sua presença seja confirmada no Centro-Oeste, a extensão de suas colônias na região é uma lacuna crítica de conhecimento, representando um risco ecológico e econômico não quantificado.</p>
+                    <div class="text-center p-4">
+                        <div class="text-6xl mb-2">🐜</div>
+                        <div class="text-2xl font-bold text-red-600">Alerta de Invasão</div>
+                         <ul class="text-left mt-4 space-y-2 text-gray-700">
+                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-2">▶</span> Comportamento unicolonial: sem agressão entre ninhos.</li>
+                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-2">▶</span> Desloca espécies nativas, afetando a biodiversidade.</li>
+                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-2">▶</span> Protege pragas agrícolas como pulgões.</li>
+                            <li class="flex items-start"><span class="text-blue-500 font-bold mr-2">▶</span> Potencial para formar mega-colônias no Brasil Central.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="mb-16">
+            <h2 class="section-title">A Dualidade do Impacto: Praga e Engenheira</h2>
+            <p class="section-subtitle">
+                As formigas cortadeiras exercem um duplo papel nos ecossistemas do Brasil Central. Enquanto causam perdas significativas na agricultura, suas atividades subterrâneas são vitais para a saúde do solo e a biodiversidade.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-4 text-center">Impacto Agrícola: Consumo por Cultura</h3>
+                    <p class="text-gray-600 mb-4 text-center">Uma colônia madura de *Atta* pode desfolhar um número surpreendente de árvores anualmente para sustentar seu fungo. Este gráfico ilustra o consumo projetado em culturas de reflorestamento, evidenciando o prejuízo econômico.</p>
+                    <div class="chart-container h-[300px] md:h-[350px]">
+                         <canvas id="agriculturalImpactChart"></canvas>
+                    </div>
+                </div>
+                 <div class="card">
+                    <h3 class="text-xl font-bold mb-4 text-center">Impacto Ecológico Positivo</h3>
+                    <p class="text-gray-600 mb-4 text-center">Como "engenheiras de ecossistemas", as formigas alteram o ambiente físico, criando efeitos benéficos que sustentam a saúde do ecossistema, um contraponto crucial ao seu status de praga.</p>
+                    <div class="chart-container h-[300px] md:h-[350px]">
+                        <canvas id="ecologicalImpactChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="technology" class="mb-16">
+            <h2 class="section-title">Mapeando o Mundo Subterrâneo</h2>
+            <p class="section-subtitle">
+                A detecção e o monitoramento de formigueiros estão evoluindo. Novas tecnologias, como o sensoriamento remoto, prometem revolucionar o manejo de pragas, oferecendo uma visão sem precedentes da escala subterrânea.
+            </p>
+            <div class="card md:col-span-2">
+                <h3 class="text-xl font-bold mb-6 text-center">Metodologia Proposta para Estudo e Monitoramento</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+                    <div class="flowchart-step">
+                        <div class="font-bold text-blue-800">Etapa 1: Revisão e Dados</div>
+                        <p class="text-sm text-gray-700">Compilar dados existentes sobre espécies, ninhos e supercolônias para identificar áreas de interesse.</p>
+                    </div>
+                    <div class="flowchart-arrow hidden md:block">→</div>
+                    <div class="flowchart-arrow block md:hidden">↓</div>
+                    <div class="flowchart-step">
+                        <div class="font-bold text-blue-800">Etapa 2: Sensoriamento Remoto</div>
+                        <p class="text-sm text-gray-700">Utilizar imagens de satélite e radares em drones para detectar padrões de vegetação e montes de terra, mapeando a densidade de ninhos em larga escala.</p>
+                    </div>
+                    <div class="flowchart-arrow hidden md:block">→</div>
+                     <div class="flowchart-arrow block md:hidden">↓</div>
+                    <div class="flowchart-step">
+                        <div class="font-bold text-blue-800">Etapa 3: Validação em Campo</div>
+                        <p class="text-sm text-gray-700">Realizar levantamentos de campo e entrevistas com agricultores para validar os dados remotos e aprofundar o conhecimento local.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center p-8 mt-12 bg-gray-800 text-white">
+        <p>Infográfico gerado com base no relatório "A Extensão dos Formigueiros no Centro Geográfico do Brasil".</p>
+        
+        <div class="details-box" onclick="toggleDetails()">
+            <span class="font-bold text-blue-800">Detalhes da Origem deste Site</span>
+            <div id="detailsContent" class="details-content">
+                <h4 class="text-lg font-semibold text-gray-700 mt-4 mb-2">Prompt Inicial:</h4>
+                <pre class="prompt-code">
+(1) Pesquisar sobre as espécies de formigas no Brasil conhecidas por construir grandes ninhos ou supercolônias, focando em sua distribuição e as espécies envolvidas.
+(2) Encontrar estudos que detalham métodos de quantificação da extensão e complexidade de formigueiros subterrâneos, e identificar os maiores ninhos já registrados globalmente e no Brasil.
+(3) Compilar dados sobre a distribuição, densidade populacional e diversidade de espécies de formigas nos biomas do centro geográfico do Brasil (Cerrado, Amazônia, Pantanal).
+(4) Investigar pesquisas que utilizam sensoriamento remoto ou análise de imagens de satélite para detectar padrões de vegetação anômalos ou montes de terra associados à presença de grandes formigueiros.
+(5) Identificar estudos de caso ou relatórios de pesquisa sobre áreas no centro geográfico do Brasil que apresentam alta concentração ou agregação de formigueiros.
+(6) Buscar informações sobre o conhecimento tradicional ou empírico de populações locais e agricultores no centro do Brasil a respeito da presença e extensão de formigueiros em suas terras.
+(7) Analisar o impacto ecológico e agrícola da extensão de formigueiros e supercolônias no Brasil, especialmente nas regiões centrais.
+(8) Explorar as lacunas de pesquisa e as direções futuras para o estudo da extensão de formigueiros e supercolônias no Brasil.
+                </pre>
+                <p class="text-gray-700 mt-4">Para ler o artigo completo, clique aqui: 
+                    <a href="https://docs.google.com/document/d/e/2PACX-1vTWCxopBJLCUiUz-YP7ASnsklnIaLUh7USKXIX_DgAABV9HBqvqC8TkUKMb41hQlCKA_TwAP9u4qTq6/pub" target="_blank" class="text-blue-600 hover:underline">Artigo Completo</a>
+                </p>
+            </div>
+        </div>
+
+        <p class="text-sm text-gray-400 mt-2">Design e Visualização por Canvas Infographics. Junho de 2025.</p>
+    </footer>
+
+    <script>
+        
+        function wrapLabels(label, maxWidth) {
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 < maxWidth) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const brilliantBluesPalette = {
+            darkBlue: '#1e3a8a', 
+            mediumBlue: '#3b82f6', 
+            lightBlue: '#93c5fd', 
+            accentYellow: '#facc15',
+            accentGray: '#6b7280',
+            background: '#f0f4f8'
+        };
+
+        
+        const nestCtx = document.getElementById('nestComparisonChart').getContext('2d');
+        new Chart(nestCtx, {
+            type: 'bar',
+            data: {
+                labels: ['População Máxima da Colônia', 'Profundidade Máxima do Ninho (m)', 'Nº Máximo de Câmaras de Fungo'],
+                datasets: [{
+                    label: 'Atta (Saúvas)',
+                    data: [7000000, 8, 8000],
+                    backgroundColor: brilliantBluesPalette.darkBlue,
+                    borderColor: brilliantBluesPalette.darkBlue,
+                    borderWidth: 1
+                }, {
+                    label: 'Acromyrmex (Quenquéns)',
+                    data: [175000, 2, 5],
+                    backgroundColor: brilliantBluesPalette.lightBlue,
+                    borderColor: brilliantBluesPalette.lightBlue,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        type: 'logarithmic',
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Valor (Escala Logarítmica)'
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: false
+                    },
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                           title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+
+        const agriculturalCtx = document.getElementById('agriculturalImpactChart').getContext('2d');
+        new Chart(agriculturalCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Árvores de Eucalipto', 'Árvores de Pinus'],
+                datasets: [{
+                    label: 'Nº de árvores desfolhadas/ano por colônia de Atta',
+                    data: [86, 161],
+                    backgroundColor: [brilliantBluesPalette.mediumBlue, brilliantBluesPalette.lightBlue],
+                    borderColor: [brilliantBluesPalette.darkBlue, brilliantBluesPalette.mediumBlue],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                         title: {
+                            display: true,
+                            text: 'Número de Árvores'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                           title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+
+        
+        const ecologicalCtx = document.getElementById('ecologicalImpactChart').getContext('2d');
+        new Chart(ecologicalCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Engenharia do Solo', 'Dispersão de Sementes', 'Controle de Populações', 'Aumento da Fertilidade'],
+                datasets: [{
+                    label: 'Impacto Ecológico',
+                    data: [40, 25, 20, 15],
+                    backgroundColor: [
+                        brilliantBluesPalette.darkBlue,
+                        brilliantBluesPalette.mediumBlue,
+                        brilliantBluesPalette.lightBlue,
+                        brilliantBluesPalette.accentYellow
+                    ],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    },
+                    tooltip: {
+                        callbacks: {
+                           title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+
+        function toggleDetails() {
+            const detailsContent = document.getElementById('detailsContent');
+            detailsContent.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

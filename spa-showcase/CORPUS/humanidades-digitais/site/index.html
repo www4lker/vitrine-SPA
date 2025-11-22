@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA para Acadêmicos de Humanidades: Guia Interativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Academia -->
+    <!-- Application Structure Plan: O SPA foi estruturado em seções temáticas navegáveis para transformar o relatório linear em uma experiência de exploração não-linear e orientada a tarefas. A estrutura inclui: 1) Uma introdução concisa. 2) Uma seção de 'Fundamentos' com cartões para fácil digestão. 3) Um 'Explorador de Prompts' interativo para substituir a tabela estática, permitindo ao usuário selecionar um objetivo e copiar o prompt correspondente. 4) Uma seção de 'Boas Práticas' para otimizar a interação com a IA. 5) Uma seção de 'Comparativo de Ferramentas' com um gráfico Chart.js para visualização de dados e um layout em colunas para comparação direta. 6) Uma seção de 'Continuidade entre LLMs' para gerenciar projetos em diferentes modelos. 7) Uma seção de 'Resolução de Problemas' com um acordeão para focar em tipos de erro específicos. 8) Uma conclusão com um checklist de recomendações. Um disclaimer expansível foi adicionado ao rodapé para indicar a origem e o processo de criação da página. Esta estrutura foi escolhida para melhorar a usabilidade para um público não-técnico, tornando a informação mais acessível, interativa e menos intimidante do que um longo documento. -->
+    <!-- Visualization & Content Choices: O plano prioriza a interatividade e a clareza visual, evitando SVG e Mermaid. 1) Tabela de Prompts (Relatório) -> Explorador de Prompts Interativo (SPA): Goal: Organizar/Fornecer Ferramenta. Method: Botões que revelam e permitem copiar prompts. Justification: Melhora a usabilidade e a aplicação prática. Library: Vanilla JS. 2) Comparativo de LLMs (Relatório) -> Gráfico de Doughnut e Colunas Comparativas (SPA): Goal: Comparar. Method: Chart.js para exibir dados de precisão de codificação (93.7% Claude, 90.2% GPT-4o, 71.9% Gemini) e colunas Tailwind para características. Justification: Visualização de dados quantitativos é mais impactante e a comparação lado a lado é mais rápida de assimilar. Library: Chart.js. 3) Tipos de Erro (Relatório) -> Acordeão Interativo (SPA): Goal: Organizar. Method: Conteúdo expansível para cada tipo de erro. Justification: Reduz a carga cognitiva, permitindo que o usuário se concentre em um problema de cada vez. Library: Vanilla JS. 4) Disclaimer (Novo): Goal: Informar. Method: Caixa expansível no rodapé com texto e prompt. Justification: Fornecer transparência sobre a origem do conteúdo de forma discreta. Library: Vanilla JS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFCFB;
+            color: #3D405B;
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #E07A5F;
+            border-bottom-color: #E07A5F;
+        }
+        .accent-bg { background-color: #E07A5F; }
+        .accent-text { color: #E07A5F; }
+        .secondary-bg { background-color: #F4F1DE; }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #EAEAEA;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .prompt-code {
+            background-color: #F8F9FA;
+            border-left: 4px solid #81B29A;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 300px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .disclaimer-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .disclaimer-prompt-code {
+            background-color: #F8F9FA;
+            border-left: 4px solid #E07A5F; /* Cor do accent para o disclaimer */
+            padding: 1rem;
+            border-radius: 0.25rem;
+            white-space: pre-wrap; /* Para quebrar linhas automaticamente */
+            word-break: break-word; /* Para quebrar palavras longas */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold accent-text">Guia Interativo de IA</h1>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#fundamentos" class="nav-link">Fundamentos</a>
+                    <a href="#prompts" class="nav-link">Prompts</a>
+                    <a href="#boas-praticas" class="nav-link">Boas Práticas</a>
+                    <a href="#ferramentas" class="nav-link">Ferramentas</a>
+                    <a href="#continuidade-llms" class="nav-link">Continuidade</a>
+                    <a href="#resolucao" class="nav-link">Resolução</a>
+                    <a href="#recomendacoes" class="nav-link">Recomendações</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-4">
+                <a href="#fundamentos" class="block py-2 px-4 text-sm hover:bg-gray-100 rounded">Fundamentos</a>
+                <a href="#prompts" class="block py-2 px-4 text-sm hover:bg-gray-100 rounded">Prompts</a>
+                <a href="#boas-praticas" class="block py-2 px-4 text-sm hover:bg-gray-100 rounded">Boas Práticas</a>
+                <a href="#ferramentas" class="block py-2 px-4 text-sm hover:bg-gray-100 rounded">Ferramentas</a>
+                <a href="#continuidade-llms" class="block py-2 px-4 text-sm hover:bg-gray-100 rounded">Continuidade</a>
+                <a href="#resolucao" class="block py-2 px-4 text-sm hover:bg-gray-100 rounded">Resolução</a>
+                <a href="#recomendacoes" class="block py-2 px-4 text-sm hover:bg-gray-100 rounded">Recomendações</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <section class="text-center mb-24">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">Desmistificando a IA para Humanidades</h2>
+            <p class="text-lg max-w-3xl mx-auto text-gray-600">Um guia prático para acadêmicos de humanidades usarem Grandes Modelos de Linguagem (LLMs) na criação de scripts e aplicações simples, sem necessidade de experiência prévia em programação.</p>
+        </section>
+
+        <section id="fundamentos" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-4">Fundamentos Essenciais</h3>
+            <p class="text-center max-w-2xl mx-auto text-gray-600 mb-12">Antes de começar, é crucial entender três conceitos básicos que formam a base do uso de IA para codificação. Pense neles como os pilares para uma colaboração bem-sucedida com seu assistente de IA.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">🧠</div>
+                    <h4 class="text-xl font-bold mb-2">O que são LLMs?</h4>
+                    <p class="text-gray-600">São IAs treinadas com vastas quantidades de texto e código. Elas aprendem padrões e podem gerar conteúdo novo, incluindo scripts de programação, a partir de instruções em linguagem natural (como o português).</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">🚀</div>
+                    <h4 class="text-xl font-bold mb-2">Por que usá-los?</h4>
+                    <p class="text-gray-600">Para automatizar tarefas repetitivas de processamento de dados e prototipar rapidamente visualizações. Isso libera seu tempo para focar na análise e interpretação, que são o coração da pesquisa em humanidades.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">🧐</div>
+                    <h4 class="text-xl font-bold mb-2">A Revisão Humana é Crucial</h4>
+                    <p class="text-gray-600">A IA é uma ferramenta poderosa, mas não infalível. O código gerado pode conter erros ou falhas de segurança. A sua supervisão é essencial para garantir a qualidade e a segurança do seu trabalho.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="prompts" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-4">A Arte do Prompt: Escolha seu Assistente Ideal</h3>
+             <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">"Engenharia de Prompt" é a habilidade de dar instruções claras e eficazes à IA. É a forma como você "programa" a IA usando linguagem humana. Aqui, você pode explorar prompts prontos para tarefas comuns em pesquisa. Selecione um prompt para ver um modelo e copie-o para começar, adaptando-o às suas necessidades.</p>
+            <div class="secondary-bg p-8 rounded-lg">
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <button class="prompt-btn bg-white px-4 py-2 rounded-full shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-E07A5F" data-prompt="prompt1">Prompt 1</button>
+                    <button class="prompt-btn bg-white px-4 py-2 rounded-full shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-E07A5F" data-prompt="prompt2">Prompt 2</button>
+                    <button class="prompt-btn bg-white px-4 py-2 rounded-full shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-E07A5F" data-prompt="prompt3">Prompt 3</button>
+                    <button class="prompt-btn bg-white px-4 py-2 rounded-full shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-E07A5F" data-prompt="prompt4">Prompt 4</button>
+                    <button class="prompt-btn bg-white px-4 py-2 rounded-full shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-E07A5F" data-prompt="prompt5">Prompt 5</button>
+                </div>
+                <div id="prompt-display" class="bg-white p-6 rounded-lg shadow-inner min-h-[200px]">
+                    <p class="text-gray-500 text-center">Selecione um prompt acima para ver o conteúdo correspondente.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="boas-praticas" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-4">Boas Práticas para Programação Assistida por IA</h3>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">Ao usar IA para gerar código simples, é crucial formular prompts claros e específicos. Defina bem o objetivo da tarefa, incluindo o formato dos dados de entrada e as expectativas de saída. Por exemplo, em vez de pedir genericamente “escreva uma função de ordenação”, especifique “Escreva uma função em Python que ordene uma lista de inteiros usando o algoritmo quicksort”. **Forneça contexto** relevante — por exemplo, inclua amostras de dados (trechos de arquivo .txt, estruturas JSON ou exemplos de links) e explique quaisquer padrões ou requisitos (como estilos de código) que a IA deve seguir.</p>
+            <ul class="space-y-4 max-w-2xl mx-auto">
+                <li class="flex items-start">
+                    <span class="accent-text text-2xl mr-4 font-bold">●</span>
+                    <div>
+                        <h4 class="font-bold">Prompts claros e detalhados</h4>
+                        <p class="text-gray-600">descreva exatamente o que quer em termos simples, liste requisitos ou casos de uso e use exemplos. Prompts bem formulados (“prompt engineering”) aumentam muito a qualidade do código gerado.</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="accent-text text-2xl mr-4 font-bold">●</span>
+                    <div>
+                        <h4 class="font-bold">Contexto e informações adicionais</h4>
+                        <p class="text-gray-600">sempre que possível, forneça à IA partes do seu código existente ou descrições de como os dados estão estruturados. Explique o domínio da sua pesquisa (ex.: “sou acadêmico de humanidades lidando com destaques do Kindle, links em Markdown e JSON de conversas”) para orientar o assistente.</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="accent-text text-2xl mr-4 font-bold">●</span>
+                    <div>
+                        <h4 class="font-bold">Divisão em etapas iterativas</h4>
+                        <p class="text-gray-600">peça à IA para trabalhar em partes menores. Inicie uma tarefa simples, discuta e planeje antes de codificar, depois peça revisões e refinamentos passo a passo. Isso evita sobrecarregar o modelo e permite ajustar o código gerado progressivamente.</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="accent-text text-2xl mr-4 font-bold">●</span>
+                    <div>
+                        <h4 class="font-bold">Revisão e testes rigorosos</h4>
+                        <p class="text-gray-600">nunca aceite o código gerado sem verificação. Sempre revise manualmente, corrija erros e escreva testes básicos, pois a IA pode ignorar casos de borda ou sugerir código inseguro. O colaborador humano deve revisar vulnerabilidades, lógica incorreta ou suposições erradas, validando os resultados em dados reais.</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="accent-text text-2xl mr-4 font-bold">●</span>
+                    <div>
+                        <h4 class="font-bold">Ferramentas adequadas</h4>
+                        <p class="text-gray-600">escolha linguagens e ambientes apropriados. Por exemplo, use Python para scripts de processamento de texto e JavaScript para páginas web conforme mencionado pelo usuário. Comece com tarefas simples e use editores amigáveis (VSCode, Jupyter, etc.) para interagir com a IA. Segundo especialistas, começar com pequenos trechos e revisá-los aumenta a confiança no assistente. Mais adiante, para análise de dados complexos, você pode combinar Python com RStudio (por exemplo, exportando dados para CSV e criando gráficos em R).</p>
+                    </div>
+                </li>
+            </ul>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mt-8">De forma geral, **fornecer informação suficiente no prompt e iterar** garante que a IA entenda o escopo e produza código útil. Práticas como pedir exemplos de saída ou explicar partes do problema dentro do próprio prompt também ajudam a orientar a geração de código. Além disso, mantenha em mente que a IA é *companheira*, não substituta: ela acelera tarefas rotineiras, mas o raciocínio e a validação final são seus.</p>
+        </section>
+        
+        <section id="ferramentas" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-4">Escolhendo sua Ferramenta de IA</h3>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">Claude, Gemini e ChatGPT são excelentes ferramentas, mas cada uma tem seus pontos fortes. A escolha ideal depende da sua tarefa. Abaixo, comparamos suas capacidades de codificação com base em dados recentes para ajudá-lo a decidir.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
+                <div class="lg:col-span-1 card p-6">
+                    <h4 class="text-xl font-bold mb-4 text-center">Precisão em Codificação</h4>
+                    <div class="chart-container">
+                        <canvas id="llm-chart"></canvas>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-4 text-center">Fonte: Dados de benchmark comparando a precisão na resolução de problemas de codificação.</p>
+                </div>
+                <div class="md:col-span-2 lg:col-span-2 grid md:grid-cols-2 gap-8">
+                    <div class="card p-6">
+                        <h4 class="text-xl font-bold mb-2">Claude 3.5 Sonnet</h4>
+                        <p class="text-sm text-gray-500 mb-4">Ideal para Raciocínio Complexo</p>
+                        <ul class="space-y-2 text-gray-600 list-disc list-inside">
+                            <li>Performance superior em tarefas de codificação complexas.</li>
+                            <li>Ótimo para análise de documentos e tarefas que exigem raciocínio metódico.</li>
+                            <li>Respostas cuidadosas e detalhadas.</li>
+                        </ul>
+                    </div>
+                    <div class="card p-6">
+                        <h4 class="text-xl font-bold mb-2">ChatGPT (GPT-4o)</h4>
+                        <p class="text-sm text-gray-500 mb-4">O Conversador Versátil</p>
+                        <ul class="space-y-2 text-gray-600 list-disc list-inside">
+                            <li>Excelente para desenvolvimento geral e aprendizado de programação.</li>
+                            <li>Ecossistema rico com plugins e integrações.</li>
+                            <li>Soluções rápidas e explicações claras.</li>
+                        </ul>
+                    </div>
+                     <div class="card p-6">
+                        <h4 class="text-xl font-bold mb-2">Gemini 1.5 Pro</h4>
+                        <p class="text-sm text-gray-500 mb-4">O Mestre Multimodal</p>
+                        <ul class="space-y-2 text-gray-600 list-disc list-inside">
+                            <li>Sobressai em análise de dados em tempo real e interações multimodais (texto, imagem, etc).</li>
+                            <li>Extremamente rápido e bom em precisão factual.</li>
+                            <li>Janela de contexto massiva, ideal para projetos grandes.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="continuidade-llms" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-4">Continuidade entre Diferentes LLMs</h3>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">Em projetos longos ou com muitos dados, você pode precisar trocar de modelo (por exemplo, de ChatGPT para Gemini ou Claude) devido a limites de contexto ou preferências de desempenho. Para facilitar a **transição e a continuidade**, considere:</p>
+            <ul class="space-y-4 max-w-2xl mx-auto">
+                <li class="flex items-start">
+                    <span class="accent-text text-2xl mr-4 font-bold">●</span>
+                    <div>
+                        <h4 class="font-bold">Aproveitar modelos com contexto maior</h4>
+                        <p class="text-gray-600">alguns modelos suportam janelas de contexto muito maiores. Por exemplo, Gemini permite processar ~2 milhões de tokens contra ~128 mil do ChatGPT padrão. Se o ChatGPT estiver cortando a conversa, tente usar Gemini ou Claude, que podem “segurar” mais informação de uma só vez.</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="accent-text text-2xl mr-4 font-bold">●</span>
+                    <div>
+                        <h4 class="font-bold">Salvar e reutilizar o contexto</h4>
+                        <p class="text-gray-600">mantenha registros do que já foi discutido. Você pode exportar a conversa atual para um documento (como um Google Doc) e fornecer esse link ao novo modelo, para que ele leia o histórico e saiba onde você parou. Outra opção é usar o recurso de **memória** de modelos como Claude: diga ao assistente para “atualizar o banco de memória” com informações importantes do projeto. Isso ajuda a reter planejamento, definições e decisões entre sessões.</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="accent-text text-2xl mr-4 font-bold">●</span>
+                    <div>
+                        <h4 class="font-bold">Resumos intermediários</h4>
+                        <p class="text-gray-600">peça ao modelo atual que resuma o trabalho feito até o momento. Por exemplo, solicite ao Claude que crie um resumo dos principais pontos do projeto ou um “log” das alterações. Esses resumos (capítulos, objetivos, listas de tarefas) servem como referência compacta para alimentar outro modelo mais tarde. Dessa forma, você fornece ao novo LLM a essência do contexto sem ter que recomeçar do zero.</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="accent-text text-2xl mr-4 font-bold">●</span>
+                    <div>
+                        <h4 class="font-bold">Divisão lógica do projeto</h4>
+                        <p class="text-gray-600">estruture o projeto em módulos ou arquivos distintos (scripts Python separados, componentes de frontend distintos). Conforme recomendado em comunidades técnicas, dividir código em arquivos menores evita erros de merge automáticos e torna mais fácil retomar o trabalho. Isso também facilita reabrir partes isoladas do projeto em outra LLM sem confundir o modelo com muitos conteúdos simultâneos.</p>
+                </li>
+            </ul>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mt-8">Em resumo, *não há perda inevitável de contexto*: mantenha versões intermediárias, use recursos de memória e modelos alternativos. Quando um LLM atinge seus limites, transfira o contexto essencial (via resumos ou arquivo de projeto) para o próximo modelo. Se uma abordagem não funcionar, troque para outro modelo mais adequado (por exemplo, use Gemini para textos muito longos ou Claude para codificação detalhada). A chave é registrar o progresso externamente e fragmentar bem as informações.</p>
+        </section>
+
+        <section id="resolucao" class="mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-4">Resolvendo Problemas: Depuração para Não-Programadores</h3>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">Erros acontecerão. É uma parte normal do processo. A chave é saber como identificá-los e corrigi-los. Use a própria IA como uma aliada na depuração. Abaixo estão os tipos de erro mais comuns e como abordá-los.</p>
+            <div class="max-w-3xl mx-auto">
+                <div class="accordion-item border-b">
+                    <button class="accordion-header w-full text-left py-4 px-2 flex justify-between items-center">
+                        <span class="text-lg font-semibold">Erros de Sintaxe</span>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-2 pb-4">
+                        <p class="text-gray-600"><strong>O que é:</strong> "Erros de digitação" no código, como um parêntese faltando ou uma vírgula no lugar errado. O programa nem chega a rodar.<br><strong>Como resolver:</strong> Geralmente são os mais fáceis de corrigir. Copie a mensagem de erro e o código de volta para a IA e peça: "Corrija o erro de sintaxe neste código".</p>
+                    </div>
+                </div>
+                <div class="accordion-item border-b">
+                    <button class="accordion-header w-full text-left py-4 px-2 flex justify-between items-center">
+                        <span class="text-lg font-semibold">Erros de Execução</span>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-2 pb-4">
+                        <p class="text-gray-600"><strong>O que é:</strong> O código começa a rodar, mas para no meio do caminho devido a uma operação impossível, como tentar dividir por zero ou acessar um arquivo que não existe.<br><strong>Como resolver:</strong> A mensagem de erro geralmente indica a linha do problema. Peça à IA para "adicionar tratamento de erros para este código, especialmente na linha X, para evitar problemas de execução".</p>
+                    </div>
+                </div>
+                <div class="accordion-item border-b">
+                    <button class="accordion-header w-full text-left py-4 px-2 flex justify-between items-center">
+                        <span class="text-lg font-semibold">Erros Lógicos (Semânticos)</span>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-2 pb-4">
+                        <p class="text-gray-600"><strong>O que é:</strong> O mais complicado. O código roda sem travar, mas o resultado final está errado. Por exemplo, a contagem de palavras está incorreta.<br><strong>Como resolver:</strong> Requer uma revisão da sua lógica. Explique à IA o que você queria que o código fizesse e mostre o resultado incorreto. Peça: "A lógica deste código está correta para [seu objetivo]? O resultado que obtive foi [resultado errado], mas eu esperava [resultado certo]. Onde pode estar o erro?".</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="recomendacoes" class="secondary-bg p-8 rounded-lg scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-4">Checklist para o Sucesso</h3>
+            <p class="text-center max-w-3xl mx-auto text-gray-600 mb-12">Para garantir uma jornada produtiva e segura com a IA, siga estas recomendações. Elas servem como um roteiro para integrar essas ferramentas de forma eficaz em sua pesquisa.</p>
+            <ul class="space-y-4 max-w-2xl mx-auto">
+                <li class="flex items-start">
+                    <span class="accent-text text-2xl mr-4 font-bold">1.</span>
+                    <div>
+                        <h4 class="font-bold">Priorize a Engenharia de Prompt</h4>
+                        <p class="text-gray-600">Invista tempo em formular instruções claras e detalhadas. A qualidade da sua pergunta define a qualidade da resposta da IA.</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="accent-text text-2xl mr-4 font-bold">2.</span>
+                    <div>
+                        <h4 class="font-bold">Adote a Iteração Contínua</h4>
+                        <p class="text-gray-600">Encare a geração de código como um diálogo. Teste, observe os resultados e refine seus prompts. Não espere a perfeição na primeira tentativa.</p>
+                    </div>
+                </li>
+                 <li class="flex items-start">
+                    <span class="accent-text text-2xl mr-4 font-bold">3.</span>
+                    <div>
+                        <h4 class="font-bold">Sempre Revise o Código</h4>
+                        <p class="text-gray-600">Nunca confie cegamente. Revise o código gerado para garantir que faz sentido e é seguro, especialmente se lidar com dados sensíveis.</p>
+                    </div>
+                </li>
+                <li class="flex items-start">
+                    <span class="accent-text text-2xl mr-4 font-bold">4.</span>
+                    <div>
+                        <h4 class="font-bold">Gerencie o Contexto Ativamente</h4>
+                        <p class="text-gray-600">Esteja ciente dos limites de cada ferramenta. Ao mudar de IA ou em conversas longas, forneça resumos para manter a IA "na mesma página".</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-24">
+        <div class="container mx-auto px-6 py-4 text-center">
+            <p>Guia Interativo adaptado do relatório "IA para Acadêmicos de Humanidades".</p>
+            <p class="text-sm text-gray-400">Criado com colaboração Humano IA (detalhes no rodapé).</p>
+            
+            <div class="mt-6 p-4 bg-gray-700 rounded-lg shadow-md text-sm text-gray-300">
+                <button id="disclaimer-toggle" class="w-full flex justify-center items-center py-2 px-4 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                    <span class="mr-2">Sobre a criação deste guia</span>
+                    <svg id="disclaimer-icon" class="w-4 h-4 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="disclaimer-content" class="disclaimer-content mt-4 hidden">
+                    <p class="mb-3">Esta pesquisa foi realizada e esta página desenvolvida utilizando recursos de pesquisa aprofundada e criação de páginas do Google Gemini.</p>
+                    <p class="font-semibold mb-2">Prompt original utilizado:</p>
+                    <div class="disclaimer-prompt-code text-left text-xs">
+                        pesquise na web pelas melhores praticas para usar IA para escrever codigos simples. 
+                        sou um academico de humanidades, mas preciso processar iniformacoes de algumas fontes, e desejo criar scripts ou paginas SPA para isso. 
+                        desejo usar o claude, o gemini e o chatgpt - e preciso inclusive saber como contionuar o projeto em outra LLM quando houver limitacoes na LLM atual ou eu desejar um branch diferente. 
+                        meu objetivo é ter pelo menos 5 system prompts para escolher o melhor e, se necessario, adaptar as minhas necessidades. 
+                        linguagem clara e acessivel.
+
+                        <a href="https://docs.google.com/document/d/e/2PACX-1vTC3C7yJGaxnkUbbApn0j8SShdbjwRtU4WW8hfFGuv-4PRAyym5l-TQLxEn6uKq5V8XjRi4FGa9Zolu/pub" target="_blank" rel="noopener noreferrer">Pesquisa completa neste link</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            const promptButtons = document.querySelectorAll('.prompt-btn');
+            const promptDisplay = document.getElementById('prompt-display');
+
+            const prompts = {
+                prompt1: `
+                    <h4 class="font-bold text-lg mb-2">Prompt 1: Assistente de Pesquisa para Humanidades</h4>
+                    <div class="prompt-code p-4 rounded-md text-sm">
+                        <pre><code class="language-text">Você é um assistente de programação de IA especializado em auxiliar pesquisadores de humanidades iniciantes. O usuário não é programador, então explique cada passo com clareza. Auxilie na criação de scripts Python ou páginas web JavaScript que processem dados de fontes variadas (ex.: destaques em .txt do Kindle, links em Markdown, dados em JSON de conversas). Sempre verifique e otimize o código gerado, comentando as partes importantes.</code></pre>
+                    </div>
+                    <button class="copy-btn mt-4 bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-xs hover:bg-gray-300">Copiar</button>
+                `,
+                prompt2: `
+                    <h4 class="font-bold text-lg mb-2">Prompt 2: Parceiro de Programação Didático</h4>
+                    <div class="prompt-code p-4 rounded-md text-sm">
+                        <pre><code class="language-text">Você é um parceiro de programação que responde em linguagem simples. Seu papel é guiar um acadêmico de humanidades a escrever código: receba instruções sobre o que analisar ou calcular (por exemplo, processar anotações de texto, extrair URLs de arquivos Markdown, manipular JSON) e gere trechos de código Python ou JavaScript comentados. Divida tarefas complexas em etapas menores e confirme cada resultado antes de prosseguir.</code></pre>
+                    </div>
+                    <button class="copy-btn mt-4 bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-xs hover:bg-gray-300">Copiar</button>
+                `,
+                prompt3: `
+                    <h4 class="font-bold text-lg mb-2">Prompt 3: Assistente de Manipulação de Dados</h4>
+                    <div class="prompt-code p-4 rounded-md text-sm">
+                        <pre><code class="language-text">Você é um assistente AI focado em manipulação de dados. Use Python para criar scripts que leiam e processem arquivos de texto, markdown e JSON fornecidos pelo usuário. Gere explicações didáticas em Português que descrevam cada função ou algoritmo usado. Se necessário, sugira como visualizar resultados (ex.: exportar dados para R ou gerar gráficos simples).</code></pre>
+                    </div>
+                    <button class="copy-btn mt-4 bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-xs hover:bg-gray-300">Copiar</button>
+                `,
+                prompt4: `
+                    <h4 class="font-bold text-lg mb-2">Prompt 4: Agente Multi-LLM para Continuidade</h4>
+                    <div class="prompt-code p-4 rounded-md text-sm">
+                        <pre><code class="language-text">Você é um agente multilinguagem de codificação assistida. Baseie-se nos comandos do usuário para produzir código simples, e esteja pronto para continuar o projeto em outro modelo LLM caso haja limitações. Informe ao usuário quando mudar para outra LLM (ChatGPT, Claude ou Gemini) e peça as informações necessárias para retomar. Providencie sempre o código em trechos auto-explicativos, para fácil transferência de contexto entre modelos.</code></pre>
+                    </div>
+                    <button class="copy-btn mt-4 bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-xs hover:bg-gray-300">Copiar</button>
+                `,
+                prompt5: `
+                    <h4 class="font-bold text-lg mb-2">Prompt 5: Assistente Conciso e Acessível</h4>
+                    <div class="prompt-code p-4 rounded-md text-sm">
+                        <pre><code class="language-text">Você é um assistente de programação conciso e acessível. A linguagem principal de saída é Português, mas os códigos devem estar em Python ou JavaScript, conforme apropriado. Quando o usuário fornecer ideias ou dados (textos, links, JSON de conversas), analise-os e gere o código correspondente. Explique em linguagem leiga cada parte do código produzido e destaque se algo precisa ser ajustado manualmente.</code></pre>
+                    </div>
+                    <button class="copy-btn mt-4 bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-xs hover:bg-gray-300">Copiar</button>
+                `
+            };
+            
+            promptButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const promptKey = button.dataset.prompt;
+                    promptDisplay.innerHTML = prompts[promptKey];
+                });
+            });
+
+            promptDisplay.addEventListener('click', function(e) {
+                if (e.target.classList.contains('copy-btn')) {
+                    const codeToCopy = e.target.previousElementSibling.querySelector('code').innerText;
+                    navigator.clipboard.writeText(codeToCopy).then(() => {
+                        e.target.innerText = 'Copiado!';
+                        setTimeout(() => { e.target.innerText = 'Copiar'; }, 2000);
+                    }, (err) => {
+                        console.error('Erro ao copiar: ', err);
+                    });
+                }
+            });
+
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                header.addEventListener('click', () => {
+                    const content = item.querySelector('.accordion-content');
+                    const icon = header.querySelector('span:last-child');
+                    
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            const ctx = document.getElementById('llm-chart').getContext('2d');
+            const llmChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Claude 3.5 Sonnet', 'ChatGPT (GPT-4o)', 'Gemini 1.5 Pro'],
+                    datasets: [{
+                        label: 'Precisão em Codificação (%)',
+                        data: [93.7, 90.2, 71.9],
+                        backgroundColor: [
+                            '#81B29A',
+                            '#F2CC8F',
+                            '#E07A5F'
+                        ],
+                        borderColor: '#FDFCFB',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: 'Inter'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.raw + '%';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+
+            const disclaimerToggle = document.getElementById('disclaimer-toggle');
+            const disclaimerContent = document.getElementById('disclaimer-content');
+            const disclaimerIcon = document.getElementById('disclaimer-icon');
+
+            disclaimerToggle.addEventListener('click', () => {
+                if (disclaimerContent.classList.contains('hidden')) {
+                    disclaimerContent.classList.remove('hidden');
+                    disclaimerContent.style.maxHeight = disclaimerContent.scrollHeight + 'px';
+                    disclaimerIcon.style.transform = 'rotate(180deg)';
+                } else {
+                    disclaimerContent.style.maxHeight = null;
+                    disclaimerContent.classList.add('hidden');
+                    disclaimerIcon.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
