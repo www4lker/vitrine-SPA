@@ -4,41 +4,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Experiments - Portfolio</title>
+  <meta name="description" content="Portfólio de experimentos interativos - Visualizações e aplicações geradas por IA">
+  <title>Meus Experimentos - Portfólio</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-  <header class="header">
+  <header class="header" role="banner">
     <div class="header-content">
       <div class="header-left">
-        <div class="logo-icon"></div>
-        <h1>My Experiments <span class="version">v2.0</span></h1>
+        <div class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 8 L12 32 M12 20 L28 20 M28 8 L28 32" stroke="currentColor" stroke-width="3"
+              stroke-linecap="round" />
+          </svg>
+        </div>
+        <h1>Meus Experimentos <span class="version">v2.0</span></h1>
       </div>
       <div class="header-right">
-        <input type="text" id="searchInput" placeholder="Search experiments..." class="search-input">
+        <label for="searchInput" class="visually-hidden">Buscar experimentos</label>
+        <input type="search" id="searchInput" placeholder="Buscar experimentos..." class="search-input"
+          aria-label="Campo de busca de experimentos">
       </div>
     </div>
   </header>
 
-  <main class="main">
-    <div class="intro">
-      <h2>Experimental Showcase</h2>
-      <p>A collection of interactive summaries and Single Page Applications generated via AI. These are experimental
-        prototypes exploring new ways to visualize complex information.</p>
+  <main class="main" role="main">
+    <section class="intro">
+      <h2>Vitrine Experimental</h2>
+      <p>Uma coleção de resumos interativos e aplicações de página única geradas com auxílio de IA.
+        São protótipos experimentais que exploram novas formas de visualizar informações complexas.</p>
+    </section>
+
+    <div id="projectGrid" class="project-grid" role="list">
+      <!-- Projetos serão carregados aqui via app.js -->
     </div>
 
-    <div id="projectGrid" class="project-grid">
-      <!-- Projects will be loaded here by app.js -->
-    </div>
-
-    <div id="noResults" class="no-results" style="display: none;">
-      <p>No experiments found matching your search.</p>
+    <div id="noResults" class="no-results" style="display: none;" role="status" aria-live="polite">
+      <p>Nenhum experimento encontrado para sua busca.</p>
     </div>
   </main>
 
-  <footer class="footer">
-    <p>&copy; <span id="currentYear"></span> My Experimental Portfolio. Hosted on Static Pages.</p>
+  <footer class="footer" role="contentinfo">
+    <p>&copy; <span id="currentYear"></span> Portfólio Experimental. Hospedado em páginas estáticas.</p>
   </footer>
 
   <script src="app.js"></script>

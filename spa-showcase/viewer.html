@@ -4,67 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Viewer</title>
+    <meta name="description" content="Visualizador de projetos experimentais">
+    <title>Visualizador de Projeto</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="viewer-body">
-    <header class="viewer-header">
+    <header class="viewer-header" role="banner">
         <div class="viewer-header-content">
             <div class="viewer-left">
-                <a href="index.html" class="back-button">
-                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <a href="index.html" class="back-button" aria-label="Voltar para o portfólio">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
-                    Back to Portfolio
+                    Voltar ao Portfólio
                 </a>
-                <div class="divider"></div>
-                <h1 id="projectTitle" class="project-title">Loading...</h1>
+                <div class="divider" aria-hidden="true"></div>
+                <h1 id="projectTitle" class="project-title">Carregando...</h1>
             </div>
             <div class="viewer-right">
-                <a id="fullscreenLink" href="#" target="_blank" rel="noreferrer" class="fullscreen-button">
-                    Open Fullscreen ↗
+                <a id="fullscreenLink" href="#" target="_blank" rel="noreferrer" class="fullscreen-button"
+                    aria-label="Abrir projeto em tela cheia">
+                    Abrir em Tela Cheia ↗
                 </a>
             </div>
         </div>
     </header>
 
-    <div class="iframe-container">
-        <iframe id="projectFrame" title="Project Viewer" sandbox="allow-scripts allow-popups allow-forms"></iframe>
+    <div class="iframe-container" role="main">
+        <iframe id="projectFrame" title="Conteúdo do projeto" sandbox="allow-scripts allow-popups allow-forms"></iframe>
     </div>
 
     <script>
-        // Get project ID from URL
+        // Obtém o ID do projeto da URL
         const urlParams = new URLSearchParams(window.location.search);
         const projectId = urlParams.get('id');
 
         if (!projectId) {
-            document.getElementById('projectTitle').textContent = 'No project specified';
+            document.getElementById('projectTitle').textContent = 'Nenhum projeto especificado';
             document.getElementById('projectFrame').style.display = 'none';
         } else {
-            // Load projects.json to get project details
+            // Carrega projects.json para obter detalhes do projeto
             fetch('projects.json')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(projects => {
                     const project = projects.find(p => p.id === projectId);
 
                     if (project) {
                         document.getElementById('projectTitle').textContent = project.title;
-                        document.title = project.title + ' - Portfolio';
+                        document.title = `${project.title} - Portfólio`;
 
-                        // Construct path - assumes projects are in /projects/ folder at root
+                        // Constrói o caminho - assume que os projetos estão na pasta /projects/
                         const iframeSrc = `projects/${project.folderName}/${project.entryFile || 'index.html'}`;
-                        document.getElementById('projectFrame').src = iframeSrc;
+                        const iframe = document.getElementById('projectFrame');
+                        iframe.src = iframeSrc;
+                        iframe.title = `Visualizador de ${project.title}`;
                         document.getElementById('fullscreenLink').href = iframeSrc;
                     } else {
-                        document.getElementById('projectTitle').textContent = 'Project not found';
+                        document.getElementById('projectTitle').textContent = 'Projeto não encontrado';
                         document.getElementById('projectFrame').style.display = 'none';
                     }
                 })
                 .catch(error => {
-                    console.error('Error loading projects:', error);
-                    document.getElementById('projectTitle').textContent = 'Error loading project';
+                    console.error('Erro ao carregar projetos:', error);
+                    document.getElementById('projectTitle').textContent = 'Erro ao carregar projeto';
+                    document.getElementById('projectFrame').style.display = 'none';
                 });
         }
     </script>
