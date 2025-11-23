@@ -12,15 +12,6 @@
 <body>
   <header class="header" role="banner">
     <div class="header-content">
-      <div class="header-left">
-        <div class="logo-mark" aria-hidden="true">
-          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 8 L12 32 M12 20 L28 20 M28 8 L28 32" stroke="currentColor" stroke-width="3"
-              stroke-linecap="round" />
-          </svg>
-        </div>
-        <h1>Meus Experimentos <span class="version">v2.0</span></h1>
-      </div>
       <div class="header-right">
         <label for="searchInput" class="visually-hidden">Buscar experimentos</label>
         <input type="search" id="searchInput" placeholder="Buscar experimentos..." class="search-input"
@@ -50,7 +41,13 @@
   </main>
 
   <footer class="footer" role="contentinfo">
-    <p>&copy; <span id="currentYear"></span> Portfólio Experimental. Hospedado em páginas estáticas.</p>
+    <p>
+      Desenvolvido por <a href="https://github.com/www4lker" target="_blank" rel="noopener noreferrer"
+        class="footer-link">www4lker</a>
+      · Licença <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer"
+        class="footer-link">MIT</a>
+      · <span id="currentYear"></span>
+    </p>
   </footer>
 
   <script src="app.js"></script>
