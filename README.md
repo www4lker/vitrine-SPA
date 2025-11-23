@@ -1,6 +1,34 @@
-# Meu Portfólio Experimental
+# Experimentos em SPA: Curiosidade Automatizada
 
-Uma coleção de resumos interativos e aplicações de página única (SPA) geradas via IA. Estes são protótipos experimentais que exploram novas formas de visualizar informações complexas.
+Este portfólio documenta uma jornada experimental com IA generativa aplicada à criação de páginas web de conteúdo denso.
+
+## 🧪 Sobre Este Projeto
+
+Este pesquisador, inicialmente atraído pelas capacidades de codificação da IA, rapidamente se desinteressou pela geração de imagens (que consome muita energia, produz pouca novidade e pode ser antiética). Ele migrou para a criação de **Single Page Applications (SPAs)**, motivado por:
+
+1. **Curiosidade pelo "vibe coding"** — a experiência de co-criar código com ferramentas generativas.
+2. **Fascínio pela automação** — usar ferramentas como Deep Research do Google Gemini para transformar ideias e pesquisas em páginas web interativas.
+3. **Liberdade criativa** — poder explorar virtualmente qualquer ideia, qualquer lampejo de curiosidade, sem julgamento de qualidade ou veracidade absoluta.
+
+> **Importante**: Os conteúdos aqui apresentados **não são avaliados quanto à qualidade ou veracidade dos fatos**, nem são atestados pelo autor. Trata-se de um **experimento metodológico** sobre o uso de IA para exploração de ideias.
+
+## 🔬 Metodologia
+
+Muitos destes sites foram gerados com a assistência do Gemini, do **Deep Research**, e do **Canvas**, ferramenta que integra pesquisa e documentos densos (10+ páginas) em geração automática de SPAs. 
+
+Sempre que possível (mas não em todos os casos), o pesquisador tentou incluir **links para os documentos originais no rodapé** das páginas e até mesmo os prompts usados, permitindo verificação por parte de interessados.
+
+## 📬 Transparência e Responsabilidade
+
+O autor está **aberto a remover ou retificar qualquer fato que estiver incorreto e for danoso**. 
+
+Para correções, sugestões ou dúvidas:
+- **Email**: [barros@mdcc.walker.eco.br](mailto:barros@mdcc.walker.eco.br)
+- **Bluesky**: [@walker.eco.br](https://bsky.app/profile/walker.eco.br)
+
+## 🌐 Manifesto
+
+> Que possamos usar essas ferramentas para **florescer nossa criatividade** e tornar a web, novamente, um lugar de **descoberta e esquisitice**.
 
 ---
 
