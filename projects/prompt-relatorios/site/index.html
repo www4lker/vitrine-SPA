@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f8f9fa;
@@ -18,17 +19,17 @@
             color: #202124;
             padding: 2rem 1rem;
         }
-        
+
         .container {
             max-width: 1100px;
             margin: 0 auto;
         }
-        
+
         .header {
             text-align: center;
             margin-bottom: 3rem;
         }
-        
+
         .header h1 {
             font-size: 2rem;
             font-weight: 500;
@@ -36,30 +37,30 @@
             color: #202124;
             letter-spacing: -0.5px;
         }
-        
+
         .header p {
             font-size: 0.95rem;
             color: #5f6368;
             font-weight: 400;
         }
-        
+
         .card {
             background: white;
             border-radius: 12px;
             padding: 2rem;
-            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
             margin-bottom: 1.5rem;
             transition: box-shadow 0.2s ease;
         }
-        
+
         .card:hover {
-            box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+            box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
         }
-        
+
         .input-section {
             margin-bottom: 1.5rem;
         }
-        
+
         label {
             display: block;
             margin-bottom: 0.5rem;
@@ -67,8 +68,9 @@
             color: #202124;
             font-size: 0.9rem;
         }
-        
-        input, textarea {
+
+        input,
+        textarea {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid #dadce0;
@@ -78,17 +80,19 @@
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
             background: #fff;
         }
-        
-        input:focus, textarea:focus {
+
+        input:focus,
+        textarea:focus {
             outline: none;
             border-color: #1a73e8;
             box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
         }
-        
-        input::placeholder, textarea::placeholder {
+
+        input::placeholder,
+        textarea::placeholder {
             color: #80868b;
         }
-        
+
         .templates-label {
             display: block;
             margin-bottom: 1rem;
@@ -96,14 +100,14 @@
             color: #202124;
             font-size: 0.9rem;
         }
-        
+
         .templates {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 0.75rem;
             margin-bottom: 0.5rem;
         }
-        
+
         .template-btn {
             background: #f8f9fa;
             border: 1px solid #dadce0;
@@ -119,23 +123,23 @@
             align-items: center;
             gap: 0.5rem;
         }
-        
+
         .template-btn:hover {
             background: #f1f3f4;
             border-color: #1a73e8;
             transform: translateY(-1px);
         }
-        
+
         .template-btn.active {
             background: linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%);
             border-color: #1a73e8;
             color: #1967d2;
         }
-        
+
         .template-btn span {
             font-size: 1.3rem;
         }
-        
+
         .generate-btn {
             background: #1a73e8;
             color: white;
@@ -147,35 +151,35 @@
             cursor: pointer;
             transition: all 0.2s ease;
             width: 100%;
-            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
         }
-        
+
         .generate-btn:hover {
             background: #1765cc;
-            box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+            box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
         }
-        
+
         .generate-btn:active {
             background: #1557b0;
         }
-        
+
         .output-section {
             margin-top: 1.5rem;
         }
-        
+
         .output-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
-        
+
         .output-header h3 {
             font-size: 1.1rem;
             font-weight: 500;
             color: #202124;
         }
-        
+
         .output-box {
             background: #f8f9fa;
             border: 1px solid #dadce0;
@@ -189,23 +193,23 @@
             overflow-y: auto;
             color: #202124;
         }
-        
+
         .focus-recommended {
             border-color: #1a73e8 !important;
             box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
             transition: all 0.3s ease;
         }
-        
+
         .focus-recommended:focus {
             box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.15);
         }
-        
+
         .recommended-badge {
             color: #1a73e8;
             font-weight: 600;
             font-size: 0.85rem;
         }
-        
+
         .copy-btn {
             background: #1a73e8;
             color: white;
@@ -220,15 +224,15 @@
             align-items: center;
             gap: 0.5rem;
         }
-        
+
         .copy-btn:hover {
             background: #1765cc;
         }
-        
+
         .copy-btn.copied {
             background: #1e8e3e;
         }
-        
+
         .char-count {
             font-size: 0.8rem;
             color: #5f6368;
@@ -238,36 +242,37 @@
             border-radius: 6px;
             display: inline-block;
         }
-        
+
         .warning {
             color: #ea4335;
             font-weight: 500;
         }
-        
+
         @media (max-width: 768px) {
             .templates {
                 grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             }
-            
+
             .header h1 {
                 font-size: 1.5rem;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
             <h1>📚 Gerador de Prompts para NotebookLM</h1>
             <p>Crie prompts customizados para análise acadêmica, arqueologia conceitual e roteiros narrativos</p>
         </div>
-        
+
         <div class="card">
             <div class="input-section">
                 <label for="reportType">Tipo de Relatório Desejado:</label>
                 <input type="text" id="reportType" placeholder="Descreva o tipo de análise que você precisa...">
             </div>
-            
+
             <div class="input-section">
                 <span class="templates-label">Templates Pré-definidos:</span>
                 <div class="templates">
@@ -321,15 +326,17 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="input-section">
-                <label for="customFocus">Foco Específico <span id="recommendedLabel" class="recommended-badge" style="display: none;">(recomendado)</span>:</label>
-                <textarea id="customFocus" rows="3" placeholder="Descreva aspectos específicos que devem ser priorizados na análise..."></textarea>
+                <label for="customFocus">Foco Específico <span id="recommendedLabel" class="recommended-badge"
+                        style="display: none;">(recomendado)</span>:</label>
+                <textarea id="customFocus" rows="3"
+                    placeholder="Descreva aspectos específicos que devem ser priorizados na análise..."></textarea>
             </div>
-            
+
             <button class="generate-btn" onclick="generatePrompt()">🚀 Gerar Prompt</button>
         </div>
-        
+
         <div class="card output-section" id="outputSection" style="display: none;">
             <div class="output-header">
                 <h3>Prompt Gerado</h3>
@@ -345,7 +352,7 @@
 
     <script>
         let activeTemplate = null;
-        
+
         const templates = {
             'arquivo': 'arquivo de referência consultivo com citações ABNT e mapeamento epistemológico',
             'projeto': 'síntese temática para desenvolvimento de pesquisa original',
@@ -364,7 +371,7 @@
             'pressupostos': 'arqueologia sistemática de pressupostos ocultos com desenvolvimento de interpretações alternativas fundamentadas',
             'timeline': 'linha do tempo cronológica detalhada com eventos ordenados e elenco de personagens principais'
         };
-        
+
         const placeholders = {
             'arquivo': 'Ex: priorizar citações para fundamentação de argumento X, mapear tradições teóricas sobre Y...',
             'projeto': 'Ex: aplicabilidade ao projeto sobre Z, transferibilidade conceitual para contexto brasileiro, agenda investigativa para doutorado...',
@@ -383,19 +390,19 @@
             'pressupostos': 'Ex: investigar pressuposto de objetividade na pesquisa qualitativa, examinar crença no progresso linear da ciência...',
             'timeline': 'Ex: priorizar eventos políticos sobre culturais, focar desenvolvimento institucional, destacar marcos de publicações acadêmicas...'
         };
-        
+
         const highlyBenefited = ['podcast', 'projeto', 'dialetica', 'desilusao', 'antitese', 'arqueologia', 'pressupostos'];
-        
+
         function selectTemplate(type) {
             document.querySelectorAll('.template-btn').forEach(btn => btn.classList.remove('active'));
             event.target.closest('.template-btn').classList.add('active');
             document.getElementById('reportType').value = templates[type];
             activeTemplate = type;
-            
+
             // Atualizar placeholder dinamicamente
             const customFocusField = document.getElementById('customFocus');
             customFocusField.placeholder = placeholders[type];
-            
+
             // Adicionar highlight visual para templates altamente beneficiados
             const recommendedLabel = document.getElementById('recommendedLabel');
             if (highlyBenefited.includes(type)) {
@@ -406,16 +413,16 @@
                 recommendedLabel.style.display = 'none';
             }
         }
-        
+
         function generatePrompt() {
             const reportType = document.getElementById('reportType').value.trim();
             const customFocus = document.getElementById('customFocus').value.trim();
-            
+
             if (!reportType) {
                 alert('Por favor, especifique o tipo de relatório desejado.');
                 return;
             }
-            
+
             const basePrompt = `Analise as fontes fornecidas e produza um relatório customizado do tipo: **${reportType}**
 
 **ESTRUTURA ANALÍTICA**: Organize o relatório em seções funcionais adequadas ao objetivo especificado, priorizando elementos com maior relevância para o tipo de análise solicitada.
@@ -444,7 +451,7 @@
 **CONECTIVIDADE ACADÊMICA**: Identifique potencial de articulação com outros campos disciplinares, tradições teóricas correlatas e agenda de pesquisa contemporânea relevante ao tipo de relatório solicitado.`;
 
             let finalPrompt = basePrompt;
-            
+
             if (activeTemplate === 'lacunas') {
                 finalPrompt += `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA ANÁLISE DE LACUNAS**:
 Identifique sistematicamente três categorias de lacunas:
@@ -949,48 +956,96 @@ Liste pessoas principais (3-20), por relevância ou ordem alfabética:
 
 **VALIDAÇÃO**: Cite fonte específica para cada evento; permita rastreamento até original; sinalize conflitos entre fontes.`;
             }
-            
+
             if (customFocus) {
                 finalPrompt += `\n\n**FOCO ESPECÍFICO**: ${customFocus}`;
             }
-            
+
             finalPrompt += `\n\nAdapte automaticamente profundidade analítica, ênfases conceituais e modalidade de apresentação conforme especificações do relatório solicitado.`;
-            
+
             document.getElementById('promptOutput').textContent = finalPrompt;
-            
+
             const charCount = finalPrompt.length;
             const countElement = document.getElementById('charCount');
-            
+
             if (charCount > 5000) {
                 countElement.innerHTML = `<span class="warning">${charCount} caracteres (excede limite NotebookLM: 5000)</span>`;
             } else {
                 countElement.innerHTML = `${charCount} caracteres (limite NotebookLM: 5000)`;
             }
-            
+
             document.getElementById('outputSection').style.display = 'block';
             document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-        
+
         function copyToClipboard() {
             const promptText = document.getElementById('promptOutput').textContent;
-            navigator.clipboard.writeText(promptText).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                const icon = document.getElementById('copyIcon');
-                const text = document.getElementById('copyText');
-                
+            const btn = document.querySelector('.copy-btn');
+            const icon = document.getElementById('copyIcon');
+            const text = document.getElementById('copyText');
+
+            // Função de sucesso compartilhada
+            const onSuccess = () => {
                 btn.classList.add('copied');
                 icon.textContent = '✓';
                 text.textContent = 'Copiado!';
-                
+
                 setTimeout(() => {
                     btn.classList.remove('copied');
                     icon.textContent = '📋';
                     text.textContent = 'Copiar';
                 }, 2000);
-            }).catch(() => {
+            };
+
+            // Tentar método moderno primeiro (navigator.clipboard)
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(promptText)
+                    .then(onSuccess)
+                    .catch(() => {
+                        // Se falhar, tenta método fallback
+                        fallbackCopy(promptText, onSuccess);
+                    });
+            } else {
+                // Usar método fallback diretamente
+                fallbackCopy(promptText, onSuccess);
+            }
+        }
+
+        // Método fallback usando textarea temporária (funciona em file:// e HTTP)
+        function fallbackCopy(text, onSuccess) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.top = '0';
+            textarea.style.left = '0';
+            textarea.style.width = '2em';
+            textarea.style.height = '2em';
+            textarea.style.padding = '0';
+            textarea.style.border = 'none';
+            textarea.style.outline = 'none';
+            textarea.style.boxShadow = 'none';
+            textarea.style.background = 'transparent';
+            textarea.style.opacity = '0';
+
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    onSuccess();
+                } else {
+                    alert('Erro ao copiar. Selecione e copie manualmente o texto.');
+                }
+            } catch (err) {
                 alert('Erro ao copiar. Selecione e copie manualmente o texto.');
-            });
+            }
+
+            document.body.removeChild(textarea);
         }
     </script>
 </body>
+
 </html>
+```

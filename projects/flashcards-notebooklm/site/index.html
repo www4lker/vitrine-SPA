@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gerador de Flashcards para NotebookLM</title>
-  <meta name="description" content="Ferramenta para gerar prompts otimizados que criam flashcards baseados em repetição espaçada no Google NotebookLM">
+  <meta name="description"
+    content="Ferramenta para gerar prompts otimizados que criam flashcards baseados em repetição espaçada no Google NotebookLM">
   <meta name="keywords" content="flashcards, notebooklm, repetição espaçada, anki, estudo, aprendizagem">
-  
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
+
   <!-- React -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  
+
   <!-- Babel Standalone para JSX -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  
+
   <style>
     * {
       margin: 0;
@@ -25,6 +27,7 @@
     }
   </style>
 </head>
+
 <body>
   <div id="root"></div>
 
@@ -184,7 +187,7 @@
         if (!selectedMode || !tema) return;
 
         const mode = modes[selectedMode];
-        
+
         const prompt = `# GERADOR AVANÇADO DE FLASHCARDS NOTEBOOKLM
 ## Tema: ${tema}
 ${foco ? `## Foco Específico: ${foco}` : ''}
@@ -297,9 +300,56 @@ Lembre-se: O melhor flashcard é aquele que você compreende profundamente, cons
       };
 
       const copyToClipboard = () => {
-        navigator.clipboard.writeText(generatedPrompt);
-        setShowCopySuccess(true);
-        setTimeout(() => setShowCopySuccess(false), 2000);
+        const onSuccess = () => {
+          setShowCopySuccess(true);
+          setTimeout(() => setShowCopySuccess(false), 2000);
+        };
+
+        // Tentar método moderno primeiro (navigator.clipboard)
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(generatedPrompt)
+            .then(onSuccess)
+            .catch(() => {
+              // Se falhar, tenta método fallback
+              fallbackCopy(generatedPrompt, onSuccess);
+            });
+        } else {
+          // Usar método fallback diretamente
+          fallbackCopy(generatedPrompt, onSuccess);
+        }
+      };
+
+      const fallbackCopy = (text, onSuccess) => {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.top = '0';
+        textarea.style.left = '0';
+        textarea.style.width = '2em';
+        textarea.style.height = '2em';
+        textarea.style.padding = '0';
+        textarea.style.border = 'none';
+        textarea.style.outline = 'none';
+        textarea.style.boxShadow = 'none';
+        textarea.style.background = 'transparent';
+        textarea.style.opacity = '0';
+
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+
+        try {
+          const successful = document.execCommand('copy');
+          if (successful) {
+            onSuccess();
+          } else {
+            alert('Erro ao copiar. Selecione e copie manualmente o texto.');
+          }
+        } catch (err) {
+          alert('Erro ao copiar. Selecione e copie manualmente o texto.');
+        }
+
+        document.body.removeChild(textarea);
       };
 
       const charCount = generatedPrompt.length;
@@ -367,11 +417,10 @@ Lembre-se: O melhor flashcard é aquele que você compreende profundamente, cons
                       <div
                         key={key}
                         onClick={() => setSelectedMode(key)}
-                        className={`relative p-5 border-2 rounded-xl cursor-pointer transition-all duration-200 ${
-                          selectedMode === key
+                        className={`relative p-5 border-2 rounded-xl cursor-pointer transition-all duration-200 ${selectedMode === key
                             ? `${mode.borderColor} ${mode.bgColor} shadow-md`
                             : 'border-gray-200 hover:border-gray-300 hover:shadow-sm bg-white'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-start gap-3">
                           <div className={`p-2.5 rounded-lg text-white bg-gradient-to-br ${mode.color} shadow-sm flex-shrink-0`}>
@@ -444,11 +493,10 @@ Lembre-se: O melhor flashcard é aquele que você compreende profundamente, cons
                         Prompt Gerado
                       </h3>
                       <div className="flex items-center gap-3">
-                        <span className={`text-xs px-3 py-1.5 rounded-full font-medium ${
-                          isLongPrompt 
-                            ? 'bg-orange-50 text-orange-700 border border-orange-200' 
+                        <span className={`text-xs px-3 py-1.5 rounded-full font-medium ${isLongPrompt
+                            ? 'bg-orange-50 text-orange-700 border border-orange-200'
                             : 'bg-gray-100 text-[#5f6368]'
-                        }`}>
+                          }`}>
                           {charCount.toLocaleString()} caracteres
                         </span>
                         <button
@@ -515,4 +563,5 @@ Lembre-se: O melhor flashcard é aquele que você compreende profundamente, cons
     ReactDOM.render(<PromptGenerator />, document.getElementById('root'));
   </script>
 </body>
+
 </html>

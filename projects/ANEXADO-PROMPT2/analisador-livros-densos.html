@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f8f9fa;
@@ -18,12 +19,12 @@
             color: #202124;
             padding: 2rem 1rem;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         .header {
             text-align: center;
             margin-bottom: 3rem;
@@ -33,41 +34,41 @@
             color: white;
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
         }
-        
+
         .header h1 {
             font-size: 2.2rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
             letter-spacing: -0.5px;
         }
-        
+
         .header p {
             font-size: 1rem;
             opacity: 0.95;
             font-weight: 400;
             line-height: 1.5;
         }
-        
+
         .header .subtitle {
             font-size: 0.85rem;
             opacity: 0.8;
             margin-top: 0.5rem;
             font-style: italic;
         }
-        
+
         .card {
             background: white;
             border-radius: 12px;
             padding: 2rem;
-            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
             margin-bottom: 1.5rem;
             transition: box-shadow 0.2s ease;
         }
-        
+
         .card:hover {
-            box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+            box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
         }
-        
+
         .card h2 {
             font-size: 1.3rem;
             font-weight: 500;
@@ -77,15 +78,15 @@
             align-items: center;
             gap: 0.5rem;
         }
-        
+
         .card h2 .emoji {
             font-size: 1.5rem;
         }
-        
+
         .input-section {
             margin-bottom: 1.5rem;
         }
-        
+
         label {
             display: block;
             margin-bottom: 0.5rem;
@@ -93,8 +94,10 @@
             color: #202124;
             font-size: 0.9rem;
         }
-        
-        input, textarea, select {
+
+        input,
+        textarea,
+        select {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid #dadce0;
@@ -104,18 +107,20 @@
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
             background: #fff;
         }
-        
-        input:focus, textarea:focus, select:focus {
+
+        input:focus,
+        textarea:focus,
+        select:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
-        
+
         textarea {
             min-height: 100px;
             resize: vertical;
         }
-        
+
         .templates-label {
             display: block;
             margin-bottom: 1rem;
@@ -123,14 +128,14 @@
             color: #202124;
             font-size: 0.9rem;
         }
-        
+
         .templates {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 0.75rem;
             margin-bottom: 1rem;
         }
-        
+
         .template-btn {
             background: #f8f9fa;
             border: 2px solid #dadce0;
@@ -146,35 +151,35 @@
             flex-direction: column;
             gap: 0.3rem;
         }
-        
+
         .template-btn:hover {
             background: #f1f3f4;
             border-color: #667eea;
             transform: translateY(-2px);
         }
-        
+
         .template-btn.active {
             background: linear-gradient(135deg, #e8eeff 0%, #dce4ff 100%);
             border-color: #667eea;
             color: #4c5fd5;
             box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
         }
-        
+
         .template-btn .emoji {
             font-size: 1.5rem;
         }
-        
+
         .template-btn .title {
             font-weight: 600;
             font-size: 0.95rem;
         }
-        
+
         .template-btn .desc {
             font-size: 0.75rem;
             opacity: 0.7;
             line-height: 1.3;
         }
-        
+
         .warning-box {
             background: #fff3cd;
             border-left: 4px solid #ff9800;
@@ -184,13 +189,13 @@
             font-size: 0.9rem;
             line-height: 1.6;
         }
-        
+
         .warning-box strong {
             color: #f57c00;
             display: block;
             margin-bottom: 0.5rem;
         }
-        
+
         .checklist {
             background: #f1f8ff;
             border-left: 4px solid #1a73e8;
@@ -198,13 +203,13 @@
             border-radius: 8px;
             margin-top: 1rem;
         }
-        
+
         .checklist h4 {
             font-size: 0.9rem;
             margin-bottom: 0.75rem;
             color: #1557b0;
         }
-        
+
         .checklist-item {
             display: flex;
             align-items: flex-start;
@@ -213,13 +218,13 @@
             font-size: 0.85rem;
             line-height: 1.5;
         }
-        
+
         .checklist-item input[type="checkbox"] {
             width: auto;
             margin-top: 0.2rem;
             cursor: pointer;
         }
-        
+
         .generate-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -233,39 +238,46 @@
             width: 100%;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
-        
+
         .generate-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
-        
+
         .generate-btn:active {
             transform: translateY(0);
         }
-        
+
         .output-section {
             display: none;
             animation: fadeIn 0.3s ease;
         }
-        
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
+
         .output-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
-        
+
         .output-header h3 {
             font-size: 1.1rem;
             font-weight: 500;
             color: #202124;
         }
-        
+
         .copy-btn {
             background: #1a73e8;
             color: white;
@@ -279,15 +291,15 @@
             align-items: center;
             gap: 0.5rem;
         }
-        
+
         .copy-btn:hover {
             background: #1765cc;
         }
-        
+
         .copy-btn.copied {
             background: #34a853;
         }
-        
+
         .output-box {
             background: #f8f9fa;
             border: 1px solid #dadce0;
@@ -301,19 +313,19 @@
             overflow-y: auto;
             color: #202124;
         }
-        
+
         .char-count {
             text-align: right;
             font-size: 0.8rem;
             color: #5f6368;
             margin-top: 0.5rem;
         }
-        
+
         .char-count .warning {
             color: #d93025;
             font-weight: 500;
         }
-        
+
         .audit-section {
             background: #fef7e0;
             border-left: 4px solid #f9ab00;
@@ -321,13 +333,13 @@
             border-radius: 8px;
             margin-top: 1.5rem;
         }
-        
+
         .audit-section h4 {
             color: #ea8600;
             margin-bottom: 1rem;
             font-size: 1rem;
         }
-        
+
         .audit-item {
             background: white;
             padding: 1rem;
@@ -336,45 +348,47 @@
             font-size: 0.85rem;
             line-height: 1.6;
         }
-        
+
         .audit-item strong {
             color: #ea8600;
         }
-        
+
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1rem;
         }
-        
+
         @media (max-width: 768px) {
             .grid-2 {
                 grid-template-columns: 1fr;
             }
-            
+
             .templates {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
             <h1>📚 Analisador de Livros Densos</h1>
             <p>Sistema de Prompts Estratificados para NotebookLM — RAG-Aware</p>
-            <div class="subtitle">Baseado na estrutura clássica de produção livreira + Protocolos de verificação para limitações RAG</div>
+            <div class="subtitle">Baseado na estrutura clássica de produção livreira + Protocolos de verificação para
+                limitações RAG</div>
         </div>
-        
+
         <!-- CONFIGURAÇÃO BÁSICA -->
         <div class="card">
             <h2><span class="emoji">⚙️</span> Configuração Básica</h2>
-            
+
             <div class="input-section">
                 <label>Título da Obra/Corpus</label>
                 <input type="text" id="bookTitle" placeholder="Ex: Vigiar e Punir (Foucault, 1975)">
             </div>
-            
+
             <div class="input-section">
                 <label>Tipo de Análise</label>
                 <select id="analysisType">
@@ -383,35 +397,40 @@
                     <option value="extensive">Corpus Extenso (6-30 obras)</option>
                 </select>
             </div>
-            
+
             <div class="input-section">
                 <label>Contexto de Pesquisa (opcional)</label>
-                <textarea id="researchContext" placeholder="Ex: Analisando concepção de poder disciplinar para tese sobre dispositivos de vigilância algorítmica"></textarea>
+                <textarea id="researchContext"
+                    placeholder="Ex: Analisando concepção de poder disciplinar para tese sobre dispositivos de vigilância algorítmica"></textarea>
             </div>
         </div>
-        
+
         <!-- MODO DE ANÁLISE ESTRUTURAL -->
         <div class="card">
             <h2><span class="emoji">🏗️</span> Modo de Análise Estrutural</h2>
-            <p style="margin-bottom: 1.5rem; color: #5f6368; font-size: 0.9rem;">Baseado na arquitetura clássica de produção de livros acadêmicos</p>
-            
+            <p style="margin-bottom: 1.5rem; color: #5f6368; font-size: 0.9rem;">Baseado na arquitetura clássica de
+                produção de livros acadêmicos</p>
+
             <div class="templates-label">Selecione o componente estrutural para análise:</div>
             <div class="templates" id="structuralModes"></div>
-            
+
             <div class="warning-box">
                 <strong>⚠️ Limitação RAG Crítica: Fragmentação de Leitura</strong>
-                NotebookLM não lê o livro integralmente — processa via chunks semânticos. Análises de "arco argumentativo completo" são tecnicamente impossíveis sem múltiplas queries. Use estratégia multi-prompt para reconstruir estrutura.
+                NotebookLM não lê o livro integralmente — processa via chunks semânticos. Análises de "arco
+                argumentativo completo" são tecnicamente impossíveis sem múltiplas queries. Use estratégia multi-prompt
+                para reconstruir estrutura.
             </div>
         </div>
-        
+
         <!-- PROMPTS COMPENSATÓRIOS PARA VIÉS RAG -->
         <div class="card">
             <h2><span class="emoji">🔍</span> Prompts Compensatórios (Anti-Viés RAG)</h2>
-            <p style="margin-bottom: 1.5rem; color: #5f6368; font-size: 0.9rem;">Estratégias para combater travamento semântico e path dependency</p>
-            
+            <p style="margin-bottom: 1.5rem; color: #5f6368; font-size: 0.9rem;">Estratégias para combater travamento
+                semântico e path dependency</p>
+
             <div class="templates-label">Selecione estratégia de verificação:</div>
             <div class="templates" id="compensatoryModes"></div>
-            
+
             <div class="checklist">
                 <h4>✓ Checklist de Verificação Manual (Researcher-in-the-Loop)</h4>
                 <div class="checklist-item">
@@ -432,27 +451,29 @@
                 </div>
                 <div class="checklist-item">
                     <input type="checkbox" id="check5">
-                    <label for="check5">Auditei se os "20% Pareto" são os mais IMPORTANTES (não apenas os mais SIMILARES)?</label>
+                    <label for="check5">Auditei se os "20% Pareto" são os mais IMPORTANTES (não apenas os mais
+                        SIMILARES)?</label>
                 </div>
             </div>
         </div>
-        
+
         <!-- FOCO CUSTOMIZADO -->
         <div class="card">
             <h2><span class="emoji">🎯</span> Foco Customizado</h2>
             <div class="input-section">
                 <label>Direcionamento Específico (opcional)</label>
-                <textarea id="customFocus" placeholder="Ex: Enfatize conceito de 'panoptismo' e suas relações com tecnologias contemporâneas de vigilância"></textarea>
+                <textarea id="customFocus"
+                    placeholder="Ex: Enfatize conceito de 'panoptismo' e suas relações com tecnologias contemporâneas de vigilância"></textarea>
             </div>
         </div>
-        
+
         <!-- BOTÃO GERAR -->
         <div class="card">
             <button class="generate-btn" onclick="generatePrompt()">
                 🚀 Gerar Prompt Estratificado
             </button>
         </div>
-        
+
         <!-- OUTPUT -->
         <div class="card output-section" id="outputSection">
             <div class="output-header">
@@ -464,20 +485,26 @@
             </div>
             <div class="output-box" id="promptOutput"></div>
             <div class="char-count" id="charCount"></div>
-            
+
             <div class="audit-section">
                 <h4>🔬 Protocolo de Auditoria Pós-Resposta</h4>
                 <div class="audit-item">
-                    <strong>1. Verificação de Chunks:</strong> Compare citações inline com passagens originais. O modelo usou os segmentos mais representativos ou houve "semantic locking" em trechos periféricos?
+                    <strong>1. Verificação de Chunks:</strong> Compare citações inline com passagens originais. O modelo
+                    usou os segmentos mais representativos ou houve "semantic locking" em trechos periféricos?
                 </div>
                 <div class="audit-item">
-                    <strong>2. Teste de Contradição:</strong> Reformule a query de forma semanticamente distante (ex: se perguntou sobre "poder", pergunte sobre "resistência"). Respostas idênticas indicam travamento semântico.
+                    <strong>2. Teste de Contradição:</strong> Reformule a query de forma semanticamente distante (ex: se
+                    perguntou sobre "poder", pergunte sobre "resistência"). Respostas idênticas indicam travamento
+                    semântico.
                 </div>
                 <div class="audit-item">
-                    <strong>3. Auditoria de Omissões:</strong> Liste 3 conceitos-chave que você SABE estarem no livro. NotebookLM os mencionou? Se não, eles podem estar em chunks não-recuperados.
+                    <strong>3. Auditoria de Omissões:</strong> Liste 3 conceitos-chave que você SABE estarem no livro.
+                    NotebookLM os mencionou? Se não, eles podem estar em chunks não-recuperados.
                 </div>
                 <div class="audit-item">
-                    <strong>4. Validação Cross-Corpus:</strong> Se análise multi-livro, verifique se todos os livros foram genuinamente considerados ou se apenas os primeiros carregados dominaram a resposta (bug Centrestage).
+                    <strong>4. Validação Cross-Corpus:</strong> Se análise multi-livro, verifique se todos os livros
+                    foram genuinamente considerados ou se apenas os primeiros carregados dominaram a resposta (bug
+                    Centrestage).
                 </div>
             </div>
         </div>
@@ -954,7 +981,7 @@ Exemplos:
         function renderTemplates() {
             const structuralContainer = document.getElementById('structuralModes');
             const compensatoryContainer = document.getElementById('compensatoryModes');
-            
+
             structuralModes.forEach(mode => {
                 const btn = document.createElement('button');
                 btn.className = 'template-btn';
@@ -966,7 +993,7 @@ Exemplos:
                 `;
                 structuralContainer.appendChild(btn);
             });
-            
+
             compensatoryModes.forEach(mode => {
                 const btn = document.createElement('button');
                 btn.className = 'template-btn';
@@ -995,7 +1022,7 @@ Exemplos:
                     btn.classList.remove('active');
                 });
             }
-            
+
             event.currentTarget.classList.add('active');
         }
 
@@ -1004,17 +1031,17 @@ Exemplos:
             const analysisType = document.getElementById('analysisType').value;
             const researchContext = document.getElementById('researchContext').value;
             const customFocus = document.getElementById('customFocus').value;
-            
+
             if (!bookTitle) {
                 alert('Por favor, insira o título da obra/corpus.');
                 return;
             }
-            
+
             if (!selectedStructural && !selectedCompensatory) {
                 alert('Por favor, selecione pelo menos um modo de análise.');
                 return;
             }
-            
+
             let prompt = `# PROMPT ESTRATIFICADO PARA NOTEBOOKLM — RAG-AWARE
 
 ## CONFIGURAÇÃO BÁSICA
@@ -1032,17 +1059,17 @@ ${researchContext ? `**Contexto de Pesquisa**: ${researchContext}` : ''}
                 prompt += `## MODO DE ANÁLISE ESTRUTURAL: ${mode.title}\n\n`;
                 prompt += mode.prompt + '\n\n---\n\n';
             }
-            
+
             if (selectedCompensatory) {
                 const mode = compensatoryModes.find(m => m.id === selectedCompensatory);
                 prompt += `## PROMPT COMPENSATÓRIO ANTI-VIÉS: ${mode.title}\n\n`;
                 prompt += mode.prompt + '\n\n---\n\n';
             }
-            
+
             if (customFocus) {
                 prompt += `## FOCO CUSTOMIZADO\n\n${customFocus}\n\n---\n\n`;
             }
-            
+
             prompt += `## DIRETRIZES GERAIS DE RESPOSTA
 
 **Transparência de Recuperação**: Para cada claim substantivo, cite a seção/página específica do documento.
@@ -1066,43 +1093,90 @@ Este prompt foi projetado considerando as limitações arquiteturais do Notebook
 O pesquisador DEVE auditar manualmente a resposta usando protocolos indicados.`;
 
             document.getElementById('promptOutput').textContent = prompt;
-            
+
             const charCount = prompt.length;
             const countElement = document.getElementById('charCount');
-            
+
             if (charCount > 5000) {
                 countElement.innerHTML = `<span class="warning">${charCount.toLocaleString()} caracteres (excede limite NotebookLM: 5.000)</span>`;
             } else {
                 countElement.innerHTML = `${charCount.toLocaleString()} caracteres (dentro do limite NotebookLM: 5.000)`;
             }
-            
+
             document.getElementById('outputSection').style.display = 'block';
             document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-        
+
         function copyToClipboard() {
             const promptText = document.getElementById('promptOutput').textContent;
-            navigator.clipboard.writeText(promptText).then(() => {
-                const btn = document.querySelector('.copy-btn');
-                const icon = document.getElementById('copyIcon');
-                const text = document.getElementById('copyText');
-                
+            const btn = document.querySelector('.copy-btn');
+            const icon = document.getElementById('copyIcon');
+            const text = document.getElementById('copyText');
+
+            // Função de sucesso compartilhada
+            const onSuccess = () => {
                 btn.classList.add('copied');
                 icon.textContent = '✓';
                 text.textContent = 'Copiado!';
-                
+
                 setTimeout(() => {
                     btn.classList.remove('copied');
                     icon.textContent = '📋';
                     text.textContent = 'Copiar';
                 }, 2000);
-            }).catch(() => {
-                alert('Erro ao copiar. Selecione e copie manualmente o texto.');
-            });
+            };
+
+            // Tentar método moderno primeiro (navigator.clipboard)
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(promptText)
+                    .then(onSuccess)
+                    .catch(() => {
+                        // Se falhar, tenta método fallback
+                        fallbackCopy(promptText, onSuccess);
+                    });
+            } else {
+                // Usar método fallback diretamente
+                fallbackCopy(promptText, onSuccess);
+            }
         }
-        
+
+        // Método fallback usando textarea temporária (funciona em file:// e HTTP)
+        function fallbackCopy(text, onSuccess) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.top = '0';
+            textarea.style.left = '0';
+            textarea.style.width = '2em';
+            textarea.style.height = '2em';
+            textarea.style.padding = '0';
+            textarea.style.border = 'none';
+            textarea.style.outline = 'none';
+            textarea.style.boxShadow = 'none';
+            textarea.style.background = 'transparent';
+            textarea.style.opacity = '0';
+
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    onSuccess();
+                } else {
+                    alert('Erro ao copiar. Selecione e copie manualmente o texto.');
+                }
+            } catch (err) {
+                alert('Erro ao copiar. Selecione e copie manualmente o texto.');
+            }
+
+            document.body.removeChild(textarea);
+        }
+
         // Inicializar
         renderTemplates();
     </script>
 </body>
+
 </html>
