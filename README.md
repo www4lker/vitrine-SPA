@@ -39,14 +39,46 @@ Para manter o site organizado e funcionando, siga esta **Regra de Ouro**:
 
 A pasta `projects` é gerada automaticamente. Se você mudar algo lá, perderá as alterações na próxima sincronização.
 
+### 🔄 Script de Sincronização: `sync-projects.js`
+
+Este script é o coração do sistema de atualização. Ele:
+
+1. **Copia** todos os projetos de `CORPUS/` → `projects/` (pasta pública)
+2. **Escaneia** cada projeto procurando por `index.html` ou outros arquivos HTML
+3. **Extrai metadados** automaticamente:
+   - Título (do `<title>` do HTML)
+   - Descrição (da meta tag `description`)
+   - Tags/conceitos (análise semântica: IA, Neurociência, Humanidades, etc.)
+   - Emoji temático (🧠, 📚, 🤖, etc.)
+4. **Gera** o arquivo `projects.json` com todos os metadados
+5. **Limpa** a pasta `projects/` antes de copiar (evita projetos órfãos)
+
+**Quando rodar o script:**
+- ✅ Sempre que adicionar um novo projeto no `CORPUS/`
+- ✅ Sempre que editar o conteúdo de um projeto existente
+- ✅ Sempre que remover um projeto do `CORPUS/`
+
 ### 1. Como Adicionar um Novo Projeto
 1.  Copie a pasta do seu projeto para dentro de `CORPUS/`.
-2.  Abra o terminal na pasta raiz do portfólio.
-3.  Rode o comando de sincronização:
+2.  Certifique-se de que existe um arquivo HTML (preferencialmente `index.html`) dentro da pasta.
+3.  Abra o terminal na pasta raiz do portfólio.
+4.  Rode o comando de sincronização:
     ```bash
     node scripts/sync-projects.js
     ```
-4.  Pronto! O script vai copiar o projeto para o lugar certo, identificar o tema (IA, Neurociência, etc.) e atualizar o site.
+5.  Pronto! O script vai:
+    - Copiar o projeto para `projects/`
+    - Identificar automaticamente o tema (IA, Neurociência, etc.)
+    - Atualizar o `projects.json`
+    - Gerar um emoji temático
+
+**Exemplo de saída:**
+```
+🔄 Syncing projects from CORPUS...
+   Copying novo-projeto...
+   Copying outro-projeto...
+✅ Synced 40 projects to projects.json
+```
 
 ### 2. Como Remover um Projeto
 1.  Apague a pasta do projeto de dentro de `CORPUS/`.
@@ -54,7 +86,7 @@ A pasta `projects` é gerada automaticamente. Se você mudar algo lá, perderá 
     ```bash
     node scripts/sync-projects.js
     ```
-3.  O projeto sumirá do site e da pasta pública.
+3.  O projeto sumirá do site e da pasta pública automaticamente.
 
 ### 3. Como Editar um Projeto Existente
 1.  Faça as alterações nos arquivos dentro de `CORPUS/SeuProjeto/`.
@@ -62,7 +94,7 @@ A pasta `projects` é gerada automaticamente. Se você mudar algo lá, perderá 
     ```bash
     node scripts/sync-projects.js
     ```
-    *(Isso garante que suas edições sejam publicadas corretamente)*.
+3.  As alterações serão copiadas para `projects/` e refletidas no site.
 
 ---
 
