@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico: Procrastinação na Pós-Graduação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cycle-arrow {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(5px);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+
+    <!-- Header Section -->
+    <header class="relative overflow-hidden py-12 px-4 sm:px-6 lg:px-8 bg-slate-950 border-b border-slate-800">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div
+                class="inline-flex items-center justify-center p-2 bg-slate-800 rounded-full mb-4 px-4 border border-slate-700">
+                <i data-lucide="file-text" class="w-4 h-4 text-blue-400 mr-2"></i>
+                <span class="text-xs font-semibold tracking-wide uppercase text-blue-200">Baseado no Relatório Técnico
+                    2025</span>
+            </div>
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-4">
+                A Crise Silenciosa da <br>
+                <span class="gradient-text">Procrastinação Acadêmica</span>
+            </h1>
+            <p class="mt-4 text-xl text-slate-400 max-w-2xl mx-auto">
+                Uma análise exaustiva sobre o fenômeno que afeta pesquisadores de Mestrado e Doutorado no Brasil. Não é
+                preguiça, é sofrimento psíquico.
+            </p>
+        </div>
+        <!-- Abstract Background Elements -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 z-0 pointer-events-none">
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-blue-600 rounded-full blur-3xl"></div>
+            <div class="absolute top-1/2 right-0 w-64 h-64 bg-teal-600 rounded-full blur-3xl"></div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-12 space-y-16">
+
+        <!-- Section 1: The Big Numbers & Definition -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="space-y-6">
+                <h2 class="text-3xl font-bold text-white flex items-center gap-3">
+                    <i data-lucide="alert-circle" class="text-red-500"></i>
+                    O Cenário Brasileiro
+                </h2>
+                <div class="glass-panel p-6 rounded-2xl shadow-lg border-l-4 border-amber-500">
+                    <p class="text-lg text-slate-300 leading-relaxed">
+                        A procrastinação na pós-graduação não é <span class="text-amber-400 font-bold">preguiça</span>
+                        (akrasia). É uma falha complexa de <span class="text-blue-400 font-bold">regulação
+                            emocional</span>. O pesquisador adia a tarefa para evitar o sofrimento associado a ela
+                        (medo, insegurança).
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-slate-800 p-4 rounded-xl text-center">
+                        <span class="block text-4xl font-black text-blue-500">82,6%</span>
+                        <span class="text-sm text-slate-400">Procrastinam tarefas com frequência</span>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded-xl text-center">
+                        <span class="block text-4xl font-black text-red-500">47,7%</span>
+                        <span class="text-sm text-slate-400">Relatam crises emocionais (FONAPRACE)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Metaphor: The Iceberg -->
+            <div
+                class="relative bg-gradient-to-b from-sky-900/50 to-slate-900 p-8 rounded-3xl border border-slate-700 text-center">
+                <h3 class="text-xl font-semibold mb-6 text-sky-200">O Iceberg da Procrastinação</h3>
+
+                <div
+                    class="relative z-10 mx-auto w-48 h-32 bg-sky-400/20 backdrop-blur-sm rounded-t-3xl border-t border-sky-300 flex items-center justify-center">
+                    <span class="font-bold text-sky-100">O que se vê:<br>"Falta de Tempo"</span>
+                </div>
+                <div class="w-full h-1 bg-sky-500/50 mb-2"></div> <!-- Water line -->
+
+                <div
+                    class="mx-auto w-64 p-6 bg-slate-800/80 rounded-b-3xl border-b border-slate-700 text-sm space-y-2 text-slate-300">
+                    <p class="font-semibold text-white mb-2">O que está escondido:</p>
+                    <div class="flex items-center gap-2 justify-center"><i data-lucide="frown" class="w-4 h-4"></i> Medo
+                        do Fracasso</div>
+                    <div class="flex items-center gap-2 justify-center"><i data-lucide="shield-alert"
+                            class="w-4 h-4"></i> Perfeccionismo</div>
+                    <div class="flex items-center gap-2 justify-center"><i data-lucide="users" class="w-4 h-4"></i>
+                        Síndrome do Impostor</div>
+                    <div class="flex items-center gap-2 justify-center"><i data-lucide="trending-up"
+                            class="w-4 h-4"></i> Pressão CAPES/CNPq</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: The Roots (Internal vs External) -->
+        <section>
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-white mb-2">As Raízes do Adiamento</h2>
+                <p class="text-slate-400">Uma "tempestade perfeita" de fatores internos e externos.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Internal Factors -->
+                <div
+                    class="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-blue-500/50 transition-colors duration-300">
+                    <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="brain"
+                            class="w-24 h-24 text-blue-500"></i></div>
+                    <h3 class="text-xl font-bold text-blue-400 mb-4 flex items-center gap-2">
+                        <i data-lucide="user" class="w-5 h-5"></i>
+                        Fatores Intrapsíquicos
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="bg-blue-500/20 p-2 rounded-lg text-blue-400 mt-1"><i data-lucide="check"
+                                    class="w-4 h-4"></i></div>
+                            <div>
+                                <strong class="text-white">Perfeccionismo Desadaptativo:</strong>
+                                <p class="text-sm text-slate-400">"Ou fica genial, ou não faço." Padrões inalcançáveis
+                                    geram paralisia.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="bg-blue-500/20 p-2 rounded-lg text-blue-400 mt-1"><i data-lucide="check"
+                                    class="w-4 h-4"></i></div>
+                            <div>
+                                <strong class="text-white">Síndrome do Impostor:</strong>
+                                <p class="text-sm text-slate-400">Crença de ser uma fraude intelectual. Adiar a tarefa
+                                    adia o julgamento.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="bg-blue-500/20 p-2 rounded-lg text-blue-400 mt-1"><i data-lucide="check"
+                                    class="w-4 h-4"></i></div>
+                            <div>
+                                <strong class="text-white">Medo do Fracasso:</strong>
+                                <p class="text-sm text-slate-400">Associar o valor pessoal à produtividade acadêmica.
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Structural Factors -->
+                <div
+                    class="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-red-500/50 transition-colors duration-300">
+                    <div class="absolute top-0 right-0 p-4 opacity-10"><i data-lucide="building-2"
+                            class="w-24 h-24 text-red-500"></i></div>
+                    <h3 class="text-xl font-bold text-red-400 mb-4 flex items-center gap-2">
+                        <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                        O Ecossistema Acadêmico
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="bg-red-500/20 p-2 rounded-lg text-red-400 mt-1"><i data-lucide="alert-triangle"
+                                    class="w-4 h-4"></i></div>
+                            <div>
+                                <strong class="text-white">Cultura "Publish or Perish":</strong>
+                                <p class="text-sm text-slate-400">Pressão por métricas quantitativas (Qualis A1/A2) cria
+                                    ansiedade constante.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="bg-red-500/20 p-2 rounded-lg text-red-400 mt-1"><i data-lucide="clock"
+                                    class="w-4 h-4"></i></div>
+                            <div>
+                                <strong class="text-white">Prazos Rígidos & Bolsas:</strong>
+                                <p class="text-sm text-slate-400">24/48 meses improrrogáveis. Medo de corte de bolsa
+                                    gera "paralisia por aposta alta".</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="bg-red-500/20 p-2 rounded-lg text-red-400 mt-1"><i data-lucide="users"
+                                    class="w-4 h-4"></i></div>
+                            <div>
+                                <strong class="text-white">Relação com Orientador:</strong>
+                                <p class="text-sm text-slate-400">Relações autoritárias ou negligentes aumentam
+                                    drasticamente a insegurança.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: The Vicious Cycle -->
+        <section class="bg-slate-800/50 rounded-3xl p-8 border border-slate-700">
+            <h2 class="text-3xl font-bold text-white text-center mb-12">O Ciclo Vicioso da Escrita</h2>
+
+            <div class="relative">
+                <!-- Connecting Line -->
+                <div
+                    class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-slate-700 -z-10 transform -translate-y-1/2">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+                    <!-- Step 1 -->
+                    <div
+                        class="bg-slate-900 p-6 rounded-2xl border border-slate-600 shadow-xl relative transform transition hover:-translate-y-2">
+                        <div
+                            class="bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl ring-4 ring-slate-800">
+                            1</div>
+                        <h4 class="font-bold text-white mb-2">Grandiosidade da Tarefa</h4>
+                        <p class="text-xs text-slate-400">"Preciso escrever a tese inteira." Sobrecarga cognitiva
+                            imediata.</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div
+                        class="bg-slate-900 p-6 rounded-2xl border border-slate-600 shadow-xl relative transform transition hover:-translate-y-2">
+                        <div
+                            class="bg-amber-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl ring-4 ring-slate-800">
+                            2</div>
+                        <h4 class="font-bold text-white mb-2">Ansiedade & Evitação</h4>
+                        <p class="text-xs text-slate-400">O cérebro busca alívio imediato (dopamina) em redes sociais ou
+                            tarefas domésticas.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div
+                        class="bg-slate-900 p-6 rounded-2xl border border-slate-600 shadow-xl relative transform transition hover:-translate-y-2">
+                        <div
+                            class="bg-red-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl ring-4 ring-slate-800">
+                            3</div>
+                        <h4 class="font-bold text-white mb-2">Culpa & Pânico</h4>
+                        <p class="text-xs text-slate-400">O prazo se aproxima. A autocrítica aumenta ("sou
+                            incompetente").</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div
+                        class="bg-slate-900 p-6 rounded-2xl border border-slate-600 shadow-xl relative transform transition hover:-translate-y-2">
+                        <div
+                            class="bg-purple-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl ring-4 ring-slate-800">
+                            4</div>
+                        <h4 class="font-bold text-white mb-2">Execução Apressada</h4>
+                        <p class="text-xs text-slate-400">Trabalho feito sob estresse extremo, com qualidade inferior ao
+                            potencial.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Solutions & Interventions -->
+        <section>
+            <h2 class="text-3xl font-bold text-white mb-8 flex items-center gap-3">
+                <i data-lucide="wrench" class="text-teal-400"></i>
+                Estratégias de Superação
+            </h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Strategy 1 -->
+                <div class="glass-panel p-6 rounded-xl border-t-4 border-teal-500">
+                    <h3 class="text-lg font-bold text-teal-300 mb-2">Fatiamento (Salami Slicing)</h3>
+                    <p class="text-slate-400 text-sm mb-4">Em vez de "Escrever Capítulo 1", meta: "Escrever 2 parágrafos
+                        sobre X".</p>
+                    <div class="bg-slate-800/50 p-3 rounded text-xs text-slate-300">
+                        <i data-lucide="check-circle" class="w-3 h-3 inline mr-1 text-teal-500"></i>
+                        Reduz a aversão à tarefa.
+                    </div>
+                </div>
+
+                <!-- Strategy 2 -->
+                <div class="glass-panel p-6 rounded-xl border-t-4 border-teal-500">
+                    <h3 class="text-lg font-bold text-teal-300 mb-2">Grupos de Escrita</h3>
+                    <p class="text-slate-400 text-sm mb-4">Socializar a produção. Combate o isolamento e a síndrome do
+                        impostor.</p>
+                    <div class="bg-slate-800/50 p-3 rounded text-xs text-slate-300">
+                        <i data-lucide="check-circle" class="w-3 h-3 inline mr-1 text-teal-500"></i>
+                        Ex: "Espaço da Escrita" (Unicamp).
+                    </div>
+                </div>
+
+                <!-- Strategy 3 -->
+                <div class="glass-panel p-6 rounded-xl border-t-4 border-teal-500">
+                    <h3 class="text-lg font-bold text-teal-300 mb-2">Separação Cognitiva</h3>
+                    <p class="text-slate-400 text-sm mb-4">Nunca escrever e editar ao mesmo tempo. Use a técnica de
+                        "Escrita Livre" (Freewriting).</p>
+                    <div class="bg-slate-800/50 p-3 rounded text-xs text-slate-300">
+                        <i data-lucide="check-circle" class="w-3 h-3 inline mr-1 text-teal-500"></i>
+                        Destrava o fluxo criativo.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Quote -->
+            <div
+                class="mt-12 p-8 bg-gradient-to-r from-slate-900 to-slate-a800 rounded-3xl border border-slate-700 text-center">
+                <blockquote class="text-xl md:text-2xl font-serif italic text-slate-300">
+                    "A saúde mental do pesquisador é pré-requisito para a ciência de excelência, não um obstáculo."
+                </blockquote>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-950 py-8 text-center border-t border-slate-800">
+        <p class="text-slate-500 text-sm">
+            Baseado no Relatório Técnico: "Procrastinação em Pós-Graduação Brasileira".<br>
+            <a
+                href="https://docs.google.com/document/d/e/2PACX-1vS5J89x0bawZzq2X-ogDiHCiARQOfQ0SRhe6RIMg8jrZXc51LAXQI_Z0jYht24o_LKEGfY6rz4U3Kgg/pub">acesse
+                a pesquisa completa nesse link</a>
+
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
