@@ -12,7 +12,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "abolition-work",
@@ -29,7 +29,7 @@
       "Metodologia & Ferramentas",
       "Sociedade & Futuro"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "ai-2027",
@@ -44,7 +44,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "AI-ECCO",
@@ -61,7 +61,7 @@
       "Inteligência Artificial",
       "Sociedade & Futuro"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "ANEXADO-PROMPT2",
@@ -78,7 +78,7 @@
       "NotebookLM & Prompts",
       "Humanidades Digitais"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "auditoria-git",
@@ -95,7 +95,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "autocompaixao",
@@ -110,7 +110,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "best-books-2025",
@@ -125,7 +125,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "bike-cba",
@@ -140,7 +140,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "bohm-krishnamurti",
@@ -155,7 +155,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "BREATHWORK-W",
@@ -170,7 +170,7 @@
     "concepts": [
       "Metodologia & Ferramentas"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "cannabis-cold-turkey",
@@ -185,7 +185,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "cannabis-et-motivacao",
@@ -200,7 +200,7 @@
     "concepts": [
       "Neurociência & Psicologia"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "chants-of-seenar",
@@ -215,7 +215,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "chequelista-nootropicos",
@@ -230,7 +230,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "cognitive-freedom-and-ia",
@@ -245,7 +245,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "curadoria-livros",
@@ -260,7 +260,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "escrever-com-ia-pesquisa",
@@ -277,7 +277,7 @@
       "Neurociência & Psicologia",
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "flashcards-notebooklm",
@@ -296,7 +296,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "geertz-ia",
@@ -313,7 +313,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "historiagit",
@@ -328,7 +328,7 @@
     "concepts": [
       "Metodologia & Ferramentas"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "humanidades-digitais",
@@ -343,7 +343,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "ia-e-neurodivergencia",
@@ -362,7 +362,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "ia-e-vc",
@@ -379,7 +379,22 @@
       "Inteligência Artificial",
       "Sociedade & Futuro"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
+  },
+  {
+    "id": "INFOGRAFICOS",
+    "title": "Framework de Infográficos - NotebookLM",
+    "description": "Experimento: Framework de Infográficos - NotebookLM",
+    "folderName": "INFOGRAFICOS",
+    "entryFile": "index.html",
+    "tags": [
+      "NotebookLM & Prompts"
+    ],
+    "emoji": "📚",
+    "concepts": [
+      "NotebookLM & Prompts"
+    ],
+    "date": "2025-12-10"
   },
   {
     "id": "l-tirosina",
@@ -394,7 +409,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "left-hand-git",
@@ -411,7 +426,7 @@
       "Inteligência Artificial",
       "Humanidades Digitais"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "manual-integrado-tecnicas-regulacao-emocional",
@@ -426,7 +441,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "microficcao",
@@ -441,7 +456,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "moutainhead-analise",
@@ -458,7 +473,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "notebooklm-academico",
@@ -475,7 +490,7 @@
       "NotebookLM & Prompts",
       "Metodologia & Ferramentas"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "notebooklm-can-quote",
@@ -494,7 +509,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "obsidian-mcp",
@@ -511,7 +526,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "padroes-respiratorios",
@@ -526,7 +541,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "procrastinacao-academica",
@@ -541,7 +556,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "progresso-pesquisa",
@@ -556,7 +571,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "prompt-relatorios",
@@ -571,7 +586,7 @@
     "concepts": [
       "NotebookLM & Prompts"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "rock-en-argentina-deep-research",
@@ -586,7 +601,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "roda-emocoes",
@@ -601,7 +616,7 @@
     "concepts": [
       "Metodologia & Ferramentas"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "supercolonias",
@@ -616,7 +631,7 @@
     "concepts": [
       "Sociedade & Futuro"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   },
   {
     "id": "work-life-balance",
@@ -631,6 +646,6 @@
     "concepts": [
       "Sociedade & Futuro"
     ],
-    "date": "2025-12-04"
+    "date": "2025-12-10"
   }
 ]

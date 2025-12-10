@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Framework de Infográficos - NotebookLM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #151922;
+            --bg-tertiary: #1f2633;
+            --accent-primary: #00d9ff;
+            --accent-secondary: #ff6b9d;
+            --accent-tertiary: #c1ff72;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0a6;
+            --border-color: #2f3540;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 0;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        nav {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 3rem;
+            position: sticky;
+            top: 0;
+            background: var(--bg-primary);
+            padding: 1rem 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-btn {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .principle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .principle-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .principle-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 217, 255, 0.15);
+        }
+
+        .principle-card h3 {
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .principle-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .principle-card li {
+            padding-left: 1.5rem;
+            position: relative;
+            margin-bottom: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .principle-card li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--accent-secondary);
+        }
+
+        .template-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .template-card:hover {
+            border-color: var(--accent-secondary);
+        }
+
+        .template-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .template-title {
+            font-size: 1.6rem;
+            color: var(--accent-secondary);
+        }
+
+        .template-badge {
+            background: var(--bg-tertiary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--accent-tertiary);
+            border: 1px solid var(--accent-tertiary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .template-badge:hover {
+            background: var(--accent-tertiary);
+            color: var(--bg-secondary);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(193, 255, 114, 0.3);
+        }
+
+        .template-badge.copy-success {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .template-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .template-section h4 {
+            color: var(--accent-primary);
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .code-block {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            color: var(--accent-tertiary);
+            line-height: 1.8;
+        }
+
+        .checklist {
+            background: var(--bg-tertiary);
+            border-left: 4px solid var(--accent-tertiary);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .checklist-item:hover {
+            transform: translateX(5px);
+            border-color: var(--accent-tertiary);
+        }
+
+        .checklist-item.checked {
+            background: rgba(193, 255, 114, 0.1);
+            border-color: var(--accent-tertiary);
+        }
+
+        .checklist-item.checked .checkbox {
+            background: var(--accent-tertiary);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a0e17' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+            background-size: 80%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--accent-tertiary);
+            border-radius: 4px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .quality-meter-container {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .meter-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .meter-bar-bg {
+            height: 12px;
+            background: var(--bg-primary);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .meter-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-tertiary), var(--accent-primary));
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .anti-pattern {
+            background: rgba(255, 107, 157, 0.1);
+            border-left: 4px solid var(--accent-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .anti-pattern::before {
+            content: "❌ ";
+            font-size: 1.2rem;
+        }
+
+        .optimization-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .optimization-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .optimization-card h4 {
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+        }
+
+        .formula-box {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.1), rgba(255, 107, 157, 0.1));
+            border: 2px dashed var(--accent-primary);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.1rem;
+            margin: 2rem 0;
+        }
+
+        .example-highlight {
+            background: var(--bg-tertiary);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .principle-grid,
+            .optimization-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                gap: 0.5rem;
+            }
+
+            .nav-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Meta-Estrutura para Infográficos</h1>
+            <p class="subtitle">Framework Modular para NotebookLM/Gemini | Máximo 4500 caracteres por prompt</p>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" onclick="showSection('principios')">Princípios</button>
+            <button class="nav-btn" onclick="showSection('templates')">Templates</button>
+            <button class="nav-btn" onclick="showSection('otimizacao')">Otimização</button>
+            <button class="nav-btn" onclick="showSection('checklist')">Checklist</button>
+            <button class="nav-btn" onclick="showSection('formula')">Fórmula</button>
+            <button class="nav-btn" onclick="showSection('antipadroes')">Anti-Padrões</button>
+        </nav>
+
+        <!-- PRINCÍPIOS -->
+        <section id="principios" class="section active">
+            <h2 style="margin-bottom: 2rem; color: var(--accent-primary);">I. Princípios Fundacionais</h2>
+
+            <div class="principle-grid">
+                <div class="principle-card">
+                    <h3>1. Hierarquia Cognitiva</h3>
+                    <ul>
+                        <li><strong>Lei de Prägnanz:</strong> Cérebro busca padrões simples primeiro</li>
+                        <li><strong>Carga cognitiva progressiva:</strong> Do geral ao específico em camadas</li>
+                        <li><strong>Pontos de entrada múltiplos:</strong> Leitores não lineares precisam "ganchos"
+                            visuais</li>
+                    </ul>
+                </div>
+
+                <div class="principle-card">
+                    <h3>2. Economia Semiótica</h3>
+                    <ul>
+                        <li><strong>Razão sinal/ruído alta:</strong> Cada elemento deve trabalhar</li>
+                        <li><strong>Redundância estratégica:</strong> Informação crítica em 2 modalidades (texto +
+                            ícone)</li>
+                        <li><strong>Espaço negativo como informação:</strong> Vazio organiza, não é desperdício</li>
+                    </ul>
+                </div>
+
+                <div class="principle-card">
+                    <h3>3. Ancoragem Documental</h3>
+                    <ul>
+                        <li><strong>Rastreabilidade visual:</strong> Marque visualmente de onde vem cada claim</li>
+                        <li><strong>Densidade informacional calibrada:</strong> Não repita o documento, destile-o</li>
+                        <li><strong>Síntese ≠ simplificação:</strong> Preserve nuances conceituais essenciais</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TEMPLATES -->
+        <section id="templates" class="section">
+            <h2 style="margin-bottom: 2rem; color: var(--accent-primary);">II. Templates Modulares</h2>
+
+            <div class="template-card">
+                <div class="template-header">
+                    <h3 class="template-title">A. ANALYTICAL DISSECTION</h3>
+                    <span class="template-badge" onclick="copyTemplate(this)"
+                        title="Clique para copiar o prompt">Dissecar Argumentos</span>
+                </div>
+
+                <div class="template-section">
+                    <h4>Quando usar:</h4>
+                    <p style="color: var(--text-secondary);">Documentos teóricos, papers acadêmicos, ensaios densos</p>
+                </div>
+
+                <div class="template-section">
+                    <h4>Estrutura Visual:</h4>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Layout: Grid 3x3 com fluxo Z
+                        </li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Centro: Tese/conceito nuclear
+                            (caixa destacada)</li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Satélites: Sub-argumentos
+                            conectados por setas ponderadas</li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Rodapé: Citações-chave com
+                            referência à source</li>
+                    </ul>
+                </div>
+
+                <div class="template-section">
+                    <h4>Prompt Modelo:</h4>
+                    <div class="code-block">
+                        "Create a structured argument map in Swiss minimalist style. Use a strict 3x3 grid on white
+                        background with slate grey (#708090) elements and burgundy (#800020) highlights for
+                        counterarguments. Central thesis in 18pt bold sans-serif, supporting claims in 12pt regular,
+                        direct quotes from [SOURCE] in 10pt serif with quotation marks. Connect elements with weighted
+                        arrows (thicker = stronger logical connection). Include source reference codes (S1, S2...) next
+                        to each claim."
+                    </div>
+                </div>
+            </div>
+
+            <div class="template-card">
+                <div class="template-header">
+                    <h3 class="template-title">B. TEMPORAL NARRATIVE</h3>
+                    <span class="template-badge" onclick="copyTemplate(this)"
+                        title="Clique para copiar o prompt">Processos e Cronologias</span>
+                </div>
+
+                <div class="template-section">
+                    <h4>Quando usar:</h4>
+                    <p style="color: var(--text-secondary);">Histórias, desenvolvimentos, sequências causais</p>
+                </div>
+
+                <div class="template-section">
+                    <h4>Estrutura Visual:</h4>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Layout: Linha serpentina
+                            vertical</li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Nós: Eventos/estágios com
+                            contexto mínimo</li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Espaçamento proporcional:
+                            Distância = intervalo temporal</li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Caixas laterais: Contexto
+                            adicional sem quebrar fluxo</li>
+                    </ul>
+                </div>
+
+                <div class="template-section">
+                    <h4>Prompt Modelo:</h4>
+                    <div class="code-block">
+                        "Design a vertical winding timeline with 60% central column, 40% annotation space. Use gradient
+                        from deep teal (#014451) at top to warm amber (#FFBF00) at bottom to show temporal progression.
+                        Plot [X events from SOURCE] with proportional vertical spacing. Each node: date in 14pt
+                        monospace, event title in 16pt sans-serif bold, 2-line context in 11pt regular. Side annotations
+                        in boxes with dashed borders for interpretive notes. Flat vector style, no shadows."
+                    </div>
+                </div>
+            </div>
+
+            <div class="template-card">
+                <div class="template-header">
+                    <h3 class="template-title">C. COMPARATIVE MATRIX</h3>
+                    <span class="template-badge" onclick="copyTemplate(this)"
+                        title="Clique para copiar o prompt">Contrastar Perspectivas</span>
+                </div>
+
+                <div class="template-section">
+                    <h4>Quando usar:</h4>
+                    <p style="color: var(--text-secondary);">Debates teóricos, múltiplas interpretações, análise de
+                        stakeholders</p>
+                </div>
+
+                <div class="template-section">
+                    <h4>Estrutura Visual:</h4>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Layout: Tabela expandida com
+                            células híbridas</li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Eixo Y:
+                            Perspectivas/autores/correntes</li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Eixo X: Dimensões de análise
+                        </li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Intersecções: Síntese +
+                            símbolo de convergência/divergência</li>
+                    </ul>
+                </div>
+
+                <div class="template-section">
+                    <h4>Prompt Modelo:</h4>
+                    <div class="code-block">
+                        "Create a comparative matrix with [N perspectives from SOURCE] on Y-axis and [M analytical
+                        dimensions] on X-axis. Use categorical colors: #2E86AB (perspective 1), #A23B72 (perspective 2),
+                        #F18F01 (perspective 3). Each cell: 60% icon representing position + 40% 2-sentence synthesis in
+                        10pt. Add convergence symbols (●) or divergence (✕) in top-right of cells. Grid lines in 20%
+                        grey, headers in 14pt condensed bold. Clean technical style, high contrast."
+                    </div>
+                </div>
+            </div>
+
+            <div class="template-card">
+                <div class="template-header">
+                    <h3 class="template-title">D. CONCEPTUAL CONSTELLATION</h3>
+                    <span class="template-badge" onclick="copyTemplate(this)" title="Clique para copiar o prompt">Redes
+                        de Ideias</span>
+                </div>
+
+                <div class="template-section">
+                    <h4>Quando usar:</h4>
+                    <p style="color: var(--text-secondary);">Conceitos interdependentes, frameworks teóricos, sistemas
+                        complexos</p>
+                </div>
+
+                <div class="template-section">
+                    <h4>Estrutura Visual:</h4>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Layout: Grafo não-hierárquico
+                            com clustering</li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Nós: Conceitos (tamanho
+                            proporcional à centralidade)</li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Arestas: Relações tipificadas
+                        </li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Legenda: Tipos de relação
+                            codificados por estilo de linha</li>
+                    </ul>
+                </div>
+
+                <div class="template-section">
+                    <h4>Prompt Modelo:</h4>
+                    <div class="code-block">
+                        "Generate a concept network on dark slate background (#2F4F4F). Extract [N key concepts from
+                        SOURCE], render as colored nodes: core concepts 40px diameter in #00D9FF, secondary 25px in
+                        #FF6B9D, tertiary 15px in #C1FF72. Connect with relationship lines: solid (causal), dashed
+                        (analogical), dotted (oppositional). Label each connection type. Node text in 10-14pt white
+                        sans-serif (size by importance). Cluster related concepts spatially. Technical graph aesthetic."
+                    </div>
+                </div>
+            </div>
+
+            <div class="template-card">
+                <div class="template-header">
+                    <h3 class="template-title">E. LAYERED SYNTHESIS</h3>
+                    <span class="template-badge" onclick="copyTemplate(this)"
+                        title="Clique para copiar o prompt">Múltiplos Níveis de Leitura</span>
+                </div>
+
+                <div class="template-section">
+                    <h4>Quando usar:</h4>
+                    <p style="color: var(--text-secondary);">Documentos que requerem overview + deep dive</p>
+                </div>
+
+                <div class="template-section">
+                    <h4>Estrutura Visual:</h4>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Layout: 3 camadas horizontais
+                            (macro → meso → micro)</li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Camada 1 (topo, 20%): Síntese
+                            ultra-condensada</li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Camada 2 (meio, 40%):
+                            Estrutura principal</li>
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Camada 3 (base, 40%):
+                            Detalhes críticos</li>
+                    </ul>
+                </div>
+
+                <div class="template-section">
+                    <h4>Prompt Modelo:</h4>
+                    <div class="code-block">
+                        "Design 3-tier synthesis infographic. TOP TIER (20% height): Single sentence core argument from
+                        [SOURCE] in 24pt light sans-serif on white. MIDDLE TIER (40%): Schematic with 4-6 main
+                        components in 16pt regular, medium grey background (#D3D3D3). BOTTOM TIER (40%): Grid of detail
+                        boxes with quotes and data in 11pt bold, dark grey background (#696969), white text. Use
+                        vertical guide lines in accent color (#FF4500) connecting related elements across tiers.
+                        Minimalist technical style."
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OTIMIZAÇÃO -->
+        <section id="otimizacao" class="section">
+            <h2 style="margin-bottom: 2rem; color: var(--accent-primary);">III. Otimização por Tipo de Source</h2>
+
+            <div class="optimization-grid">
+                <div class="optimization-card">
+                    <h4>📚 Textos Acadêmicos</h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Priorize <strong>Template A</strong>
+                        (Analytical Dissection)</p>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Preserve jargão técnico com
+                            glossário visual lateral</li>
+                        <li style="color: var(--text-secondary);">• Indique: "Based on [Author, Year] framework"</li>
+                    </ul>
+                </div>
+
+                <div class="optimization-card">
+                    <h4>📖 Narrativas/Crônicas</h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Priorize <strong>Template B</strong>
+                        (Temporal Narrative)</p>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Use micro-ilustrações
+                            contextuais (época, lugar)</li>
+                        <li style="color: var(--text-secondary);">• Mantenha "voz" do documento com citações destacadas
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="optimization-card">
+                    <h4>📊 Dados/Relatórios</h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Híbrido <strong>Template C +
+                            E</strong> (Matrix + Layered)</p>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Gráficos embutidos (barras,
+                            linhas) em estilo flat</li>
+                        <li style="color: var(--text-secondary);">• Hierarquia: número → contexto → implicação</li>
+                    </ul>
+                </div>
+
+                <div class="optimization-card">
+                    <h4>💡 Manifestos/Ensaios</h4>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Priorize <strong>Template D</strong>
+                        (Conceptual Constellation)</p>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="color: var(--text-secondary); margin-bottom: 0.5rem;">• Destaque tensões/contradições
+                            internas</li>
+                        <li style="color: var(--text-secondary);">• Use cor para "o que é" vs "o que deveria ser"</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHECKLIST -->
+        <section id="checklist" class="section">
+            <h2 style="margin-bottom: 2rem; color: var(--accent-primary);">IV. Checklist Pré-Geração</h2>
+
+            <div class="quality-meter-container">
+                <div class="meter-label">
+                    <span>Score de Qualidade Esperada</span>
+                    <span id="quality-score">0%</span>
+                </div>
+                <div class="meter-bar-bg">
+                    <div id="quality-bar" class="meter-bar-fill"></div>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                    Marque os itens abaixo para validar a robustez do seu prompt.
+                </p>
+            </div>
+
+            <div class="checklist">
+                <div class="checklist-item" onclick="toggleChecklist(this)">
+                    <div class="checkbox"></div>
+                    <div>O infográfico sobrevive sem o documento? (Não deve ser críptico isoladamente)</div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleChecklist(this)">
+                    <div class="checkbox"></div>
+                    <div>Informação crítica está em 2+ modalidades? (texto + forma + cor)</div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleChecklist(this)">
+                    <div class="checkbox"></div>
+                    <div>Hierarquia visual bate com hierarquia conceitual da source?</div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleChecklist(this)">
+                    <div class="checkbox"></div>
+                    <div>Há "respiro" (30%+ de espaço negativo)?</div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleChecklist(this)">
+                    <div class="checkbox"></div>
+                    <div>Paleta tem contraste mínimo 4.5:1 (WCAG AA)?</div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleChecklist(this)">
+                    <div class="checkbox"></div>
+                    <div>Toda citação tem marcador de source visível?</div>
+                </div>
+
+                <div class="checklist-item" onclick="toggleChecklist(this)">
+                    <div class="checkbox"></div>
+                    <div>Se remover 50% dos elementos, a mensagem central persiste?</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FÓRMULA -->
+        <section id="formula" class="section">
+            <h2 style="margin-bottom: 2rem; color: var(--accent-primary);">V. Fórmula Sintética</h2>
+
+            <div class="formula-box">
+                <strong>[ESTILO VISUAL]</strong> + <strong>[ESTRUTURA GEOMÉTRICA]</strong> + <strong>[PALETA
+                    ESPECIFICADA]</strong> +<br>
+                <strong>[HIERARQUIA TIPOGRÁFICA]</strong> + <strong>[ANCORAGEM À SOURCE]</strong> + <strong>[SAÍDA
+                    ESPERADA]</strong>
+            </div>
+
+            <div class="example-highlight">
+                <h4 style="color: var(--accent-primary); margin-bottom: 1rem;">Exemplo Aplicado:</h4>
+                <div class="code-block">
+                    "Swiss minimalist + 3-column layout + monochrome (black/white/grey #808080) + 18pt bold headers,
+                    12pt body + cite [SOURCE] with S1/S2 markers + comparative analysis of 3 theoretical positions on
+                    [TOPIC] from document"
+                </div>
+            </div>
+        </section>
+
+        <!-- ANTI-PADRÕES -->
+        <section id="antipadroes" class="section">
+            <h2 style="margin-bottom: 2rem; color: var(--accent-primary);">VI. Anti-Padrões (O Que Evitar)</h2>
+
+            <div class="anti-pattern">
+                <strong>Decorativismo:</strong> Ícones genéricos que não agregam (cuidado com "bonequinhos")
+            </div>
+
+            <div class="anti-pattern">
+                <strong>Sobre-saturação:</strong> Mais de 5 cores primárias = caos visual
+            </div>
+
+            <div class="anti-pattern">
+                <strong>Falsa precisão:</strong> Gráficos que inventam dados não presentes na source
+            </div>
+
+            <div class="anti-pattern">
+                <strong>Hierarquia invertida:</strong> Elementos decorativos maiores que informação
+            </div>
+
+            <div class="anti-pattern">
+                <strong>Texto ilegível:</strong> Fontes <10pt ou contraste insuficiente </div>
+
+                    <div class="anti-pattern">
+                        <strong>Desconexão documental:</strong> Infográfico que não referencia a fonte original ou
+                        inventa dados.
+                    </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Framework de Infográficos. MIT License.</p>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active class to clicked button
+            document.querySelector(`button[onclick="showSection('${sectionId}')"]`).classList.add('active');
+        }
+
+        async function copyTemplate(badgeElement) {
+            const card = badgeElement.closest('.template-card');
+            const codeBlock = card.querySelector('.code-block');
+
+            // Clean up text: remove outer quotes if present, trims whitespace
+            let textToCopy = codeBlock.innerText.trim();
+            if (textToCopy.startsWith('"') && textToCopy.endsWith('"')) {
+                textToCopy = textToCopy.slice(1, -1);
+            }
+
+            const originalText = badgeElement.innerText;
+            let success = false;
+
+            try {
+                // Try modern API
+                await navigator.clipboard.writeText(textToCopy);
+                success = true;
+            } catch (err) {
+                // Fallback for legacy/insecure contexts
+                const textArea = document.createElement("textarea");
+                textArea.value = textToCopy;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    success = true;
+                } catch (e) {
+                    console.error('Copy failed', e);
+                }
+                document.body.removeChild(textArea);
+            }
+
+            if (success) {
+                badgeElement.innerText = "Copiado!";
+                badgeElement.classList.add('copy-success');
+
+                setTimeout(() => {
+                    badgeElement.innerText = originalText;
+                    badgeElement.classList.remove('copy-success');
+                }, 2000);
+            }
+        }
+
+        function toggleChecklist(item) {
+            item.classList.toggle('checked');
+            updateQualityScore();
+        }
+
+        function updateQualityScore() {
+            const items = document.querySelectorAll('.checklist-item');
+            const checkedItems = document.querySelectorAll('.checklist-item.checked');
+
+            const total = items.length;
+            const checked = checkedItems.length;
+
+            const percentage = total === 0 ? 0 : Math.round((checked / total) * 100);
+
+            const qualityBar = document.getElementById('quality-bar');
+            const qualityScore = document.getElementById('quality-score');
+
+            qualityBar.style.width = `${percentage}%`;
+            qualityScore.innerText = `${percentage}%`;
+
+            // Optional: Change color based on score
+            if (percentage < 30) {
+                qualityBar.style.background = 'var(--accent-secondary)';
+            } else if (percentage < 70) {
+                qualityBar.style.background = 'var(--accent-primary)';
+            } else {
+                qualityBar.style.background = 'var(--accent-tertiary)';
+            }
+        }
+    </script>
+</body>
+
+</html>
