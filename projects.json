@@ -15,38 +15,6 @@
     "date": "2026-02-26"
   },
   {
-    "id": "abolition-work",
-    "title": "A Jornada do Trabalho: Uma Análise Interativa",
-    "description": "Experimento: A Jornada do Trabalho: Uma Análise Interativa",
-    "folderName": "abolition-work",
-    "entryFile": "site/index.html",
-    "tags": [
-      "Metodologia & Ferramentas",
-      "Sociedade & Futuro"
-    ],
-    "emoji": "🤖",
-    "concepts": [
-      "Metodologia & Ferramentas",
-      "Sociedade & Futuro"
-    ],
-    "date": "2026-02-26"
-  },
-  {
-    "id": "ai-2027",
-    "title": "Explorador: AI Futures Project & Cenário AI 2027",
-    "description": "Experimento: Explorador: AI Futures Project & Cenário AI 2027",
-    "folderName": "ai-2027",
-    "entryFile": "site/index.html",
-    "tags": [
-      "Inteligência Artificial"
-    ],
-    "emoji": "🤖",
-    "concepts": [
-      "Inteligência Artificial"
-    ],
-    "date": "2026-02-26"
-  },
-  {
     "id": "AI-ECCO",
     "title": "Infográfico: IA, Ética e Autenticidade Acadêmica",
     "description": "Experimento: Infográfico: IA, Ética e Autenticidade Acadêmica",
@@ -77,6 +45,113 @@
     "concepts": [
       "NotebookLM & Prompts",
       "Humanidades Digitais"
+    ],
+    "date": "2026-02-26"
+  },
+  {
+    "id": "BREATHWORK-W",
+    "title": "Análise Sistêmica: Prática de Breathwork",
+    "description": "Experimento: Análise Sistêmica: Prática de Breathwork",
+    "folderName": "BREATHWORK-W",
+    "entryFile": "index.html",
+    "tags": [
+      "Metodologia & Ferramentas"
+    ],
+    "emoji": "🤖",
+    "concepts": [
+      "Metodologia & Ferramentas"
+    ],
+    "date": "2026-02-26"
+  },
+  {
+    "id": "DETECTOR-DE-PADROES",
+    "title": "Detector de Padrões em Corpus",
+    "description": "Experimento: Detector de Padrões em Corpus",
+    "folderName": "DETECTOR-DE-PADROES",
+    "entryFile": "index.html",
+    "tags": [
+      "Outros Experimentos"
+    ],
+    "emoji": "🔬",
+    "concepts": [
+      "Outros Experimentos"
+    ],
+    "date": "2026-02-26"
+  },
+  {
+    "id": "INFOGRAFICOS",
+    "title": "Framework de Infográficos - NotebookLM",
+    "description": "Experimento: Framework de Infográficos - NotebookLM",
+    "folderName": "INFOGRAFICOS",
+    "entryFile": "index.html",
+    "tags": [
+      "NotebookLM & Prompts"
+    ],
+    "emoji": "📚",
+    "concepts": [
+      "NotebookLM & Prompts"
+    ],
+    "date": "2026-02-26"
+  },
+  {
+    "id": "ONE-TAB-ANALYSIS",
+    "title": "Sítio Bibliográfico — Pesquisa PPGECCO",
+    "description": "Experimento: Sítio Bibliográfico — Pesquisa PPGECCO",
+    "folderName": "ONE-TAB-ANALYSIS",
+    "entryFile": "index.html",
+    "tags": [
+      "Outros Experimentos"
+    ],
+    "emoji": "🔬",
+    "concepts": [
+      "Outros Experimentos"
+    ],
+    "date": "2026-02-26"
+  },
+  {
+    "id": "PROMPT-GENERATOR-UPDATE",
+    "title": "Laboratório de Prompts Acadêmicos",
+    "description": "Experimento: Laboratório de Prompts Acadêmicos",
+    "folderName": "PROMPT-GENERATOR-UPDATE",
+    "entryFile": "index.html",
+    "tags": [
+      "NotebookLM & Prompts"
+    ],
+    "emoji": "📚",
+    "concepts": [
+      "NotebookLM & Prompts"
+    ],
+    "date": "2026-02-26"
+  },
+  {
+    "id": "abolition-work",
+    "title": "A Jornada do Trabalho: Uma Análise Interativa",
+    "description": "Experimento: A Jornada do Trabalho: Uma Análise Interativa",
+    "folderName": "abolition-work",
+    "entryFile": "site/index.html",
+    "tags": [
+      "Metodologia & Ferramentas",
+      "Sociedade & Futuro"
+    ],
+    "emoji": "🤖",
+    "concepts": [
+      "Metodologia & Ferramentas",
+      "Sociedade & Futuro"
+    ],
+    "date": "2026-02-26"
+  },
+  {
+    "id": "ai-2027",
+    "title": "Explorador: AI Futures Project & Cenário AI 2027",
+    "description": "Experimento: Explorador: AI Futures Project & Cenário AI 2027",
+    "folderName": "ai-2027",
+    "entryFile": "site/index.html",
+    "tags": [
+      "Inteligência Artificial"
+    ],
+    "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
     ],
     "date": "2026-02-26"
   },
@@ -154,21 +229,6 @@
     "emoji": "🤖",
     "concepts": [
       "Inteligência Artificial"
-    ],
-    "date": "2026-02-26"
-  },
-  {
-    "id": "BREATHWORK-W",
-    "title": "Análise Sistêmica: Prática de Breathwork",
-    "description": "Experimento: Análise Sistêmica: Prática de Breathwork",
-    "folderName": "BREATHWORK-W",
-    "entryFile": "index.html",
-    "tags": [
-      "Metodologia & Ferramentas"
-    ],
-    "emoji": "🤖",
-    "concepts": [
-      "Metodologia & Ferramentas"
     ],
     "date": "2026-02-26"
   },
@@ -259,21 +319,6 @@
     "emoji": "🤖",
     "concepts": [
       "Inteligência Artificial"
-    ],
-    "date": "2026-02-26"
-  },
-  {
-    "id": "DETECTOR-DE-PADROES",
-    "title": "Detector de Padrões em Corpus",
-    "description": "Experimento: Detector de Padrões em Corpus",
-    "folderName": "DETECTOR-DE-PADROES",
-    "entryFile": "index.html",
-    "tags": [
-      "Outros Experimentos"
-    ],
-    "emoji": "🔬",
-    "concepts": [
-      "Outros Experimentos"
     ],
     "date": "2026-02-26"
   },
@@ -393,21 +438,6 @@
     "concepts": [
       "Inteligência Artificial",
       "Sociedade & Futuro"
-    ],
-    "date": "2026-02-26"
-  },
-  {
-    "id": "INFOGRAFICOS",
-    "title": "Framework de Infográficos - NotebookLM",
-    "description": "Experimento: Framework de Infográficos - NotebookLM",
-    "folderName": "INFOGRAFICOS",
-    "entryFile": "index.html",
-    "tags": [
-      "NotebookLM & Prompts"
-    ],
-    "emoji": "📚",
-    "concepts": [
-      "NotebookLM & Prompts"
     ],
     "date": "2026-02-26"
   },
@@ -585,21 +615,6 @@
     "emoji": "🤖",
     "concepts": [
       "Inteligência Artificial"
-    ],
-    "date": "2026-02-26"
-  },
-  {
-    "id": "PROMPT-GENERATOR-UPDATE",
-    "title": "Gerador de Prompts para NotebookLM",
-    "description": "Experimento: Gerador de Prompts para NotebookLM",
-    "folderName": "PROMPT-GENERATOR-UPDATE",
-    "entryFile": "index.html",
-    "tags": [
-      "NotebookLM & Prompts"
-    ],
-    "emoji": "📚",
-    "concepts": [
-      "NotebookLM & Prompts"
     ],
     "date": "2026-02-26"
   },
