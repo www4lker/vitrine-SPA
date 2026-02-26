@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detector de Padrões em Corpus</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f4ff;
+            min-height: 100vh;
+            color: #202124;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1a1f36;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.4rem;
+        }
+
+        .header .sub {
+            font-size: 0.9rem;
+            color: #5f6368;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .header .flow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: #5f6368;
+            background: white;
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .header .flow strong {
+            color: #1a73e8;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 1.75rem;
+            box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #3c4043;
+        }
+
+        textarea,
+        input {
+            width: 100%;
+            padding: 0.7rem 0.85rem;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #fff;
+            resize: vertical;
+        }
+
+        textarea:focus,
+        input:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+
+        textarea::placeholder,
+        input::placeholder {
+            color: #9aa0a6;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #5f6368;
+            margin-bottom: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e8eaed;
+        }
+
+        /* Heurística grid */
+        .heuristica-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.6rem;
+        }
+
+        .h-btn {
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 0.75rem 0.85rem;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .h-btn:hover {
+            border-color: #1a73e8;
+            background: #f0f6ff;
+            transform: translateY(-1px);
+        }
+
+        .h-btn.active {
+            border-color: #1a73e8;
+            background: linear-gradient(135deg, #e8f0fe, #d2e3fc);
+            box-shadow: 0 2px 8px rgba(26, 115, 232, 0.15);
+        }
+
+        .h-btn .ico {
+            font-size: 1.3rem;
+        }
+
+        .h-btn .nome {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #202124;
+            line-height: 1.3;
+        }
+
+        .h-btn .desc {
+            font-size: 0.73rem;
+            color: #5f6368;
+            line-height: 1.35;
+        }
+
+        .h-btn.active .nome {
+            color: #1967d2;
+        }
+
+        .h-btn.active .desc {
+            color: #4285f4;
+        }
+
+        /* Intensidade */
+        .intensity-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .int-btn {
+            flex: 1;
+            padding: 0.55rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 7px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            background: #fafafa;
+            transition: all 0.15s;
+            color: #5f6368;
+        }
+
+        .int-btn:hover {
+            border-color: #1a73e8;
+            color: #1a73e8;
+        }
+
+        .int-btn.active {
+            border-color: #1a73e8;
+            background: #e8f0fe;
+            color: #1967d2;
+            font-weight: 600;
+        }
+
+        /* Toggle guardrail */
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.8rem 1rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fafafa;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .toggle-row:hover {
+            border-color: #1a73e8;
+            background: #f0f6ff;
+        }
+
+        .toggle-row.on {
+            border-color: #e53935;
+            background: #fff8f7;
+        }
+
+        .toggle-sw {
+            width: 34px;
+            height: 19px;
+            border-radius: 10px;
+            background: #ccc;
+            position: relative;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+
+        .toggle-sw.on {
+            background: #e53935;
+        }
+
+        .toggle-knob {
+            position: absolute;
+            top: 2.5px;
+            left: 2.5px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: white;
+            transition: left 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+        }
+
+        .toggle-sw.on .toggle-knob {
+            left: 18px;
+        }
+
+        .toggle-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #3c4043;
+        }
+
+        .toggle-desc {
+            font-size: 0.78rem;
+            color: #80868b;
+            margin-left: auto;
+        }
+
+        .gen-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.2px;
+            box-shadow: 0 1px 3px rgba(26, 115, 232, 0.3);
+        }
+
+        .gen-btn:hover {
+            background: #1557b0;
+            box-shadow: 0 3px 10px rgba(26, 115, 232, 0.35);
+        }
+
+        .gen-btn:active {
+            background: #0d47a1;
+        }
+
+        /* Output */
+        .output-card {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.75rem 0;
+        }
+
+        .output-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .copy-btn {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #1557b0;
+        }
+
+        .copy-btn.ok {
+            background: #1e8e3e;
+        }
+
+        .output-box {
+            padding: 1.25rem 1.75rem;
+            font-family: 'Roboto Mono', 'Consolas', monospace;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            max-height: 540px;
+            overflow-y: auto;
+            color: #202124;
+            border-top: 1px solid #f1f3f4;
+            margin-top: 1rem;
+        }
+
+        .char-bar {
+            padding: 0.6rem 1.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .char-bar-inner {
+            flex: 1;
+            height: 5px;
+            background: #e8eaed;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .char-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.4s, background 0.4s;
+        }
+
+        .char-label {
+            font-size: 0.78rem;
+            color: #5f6368;
+            white-space: nowrap;
+        }
+
+        .char-label.over {
+            color: #e53935;
+            font-weight: 600;
+        }
+
+        @media(max-width:640px) {
+            .heuristica-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <h1>🔍 Detector de Padrões em Corpus</h1>
+            <p class="sub">Gera prompts para o NotebookLM identificar padrões transversais em múltiplas fontes
+                heterogêneas</p>
+            <div class="flow">
+                <span>Você</span> <span>→</span> <strong>este gerador</strong> <span>→</span> <span>prompt</span>
+                <span>→</span> <strong>NotebookLM</strong> <span>→</span> <span>fontes</span>
+            </div>
+        </div>
+
+        <!-- CORPUS -->
+        <div class="card">
+            <div class="section-title">1. Descreva seu corpus</div>
+            <div style="margin-bottom:1rem;">
+                <label for="corpusDesc">Que tipos de fontes estão no seu notebook? <span
+                        style="color:#9aa0a6;font-weight:400;">(opcional mas recomendado)</span></label>
+                <textarea id="corpusDesc" rows="2"
+                    placeholder="Ex: papers técnicos de ML, textos de sociologia da tecnologia e ensaios de filosofia da mente — todos sobre agência em sistemas autônomos."></textarea>
+            </div>
+            <div>
+                <label for="focalConcept">Conceito ou tema focal <span
+                        style="color:#9aa0a6;font-weight:400;">(opcional)</span></label>
+                <input type="text" id="focalConcept"
+                    placeholder="Ex: aprendizado supervisionado, agência, viés algorítmico...">
+            </div>
+        </div>
+
+        <!-- HEURÍSTICA -->
+        <div class="card">
+            <div class="section-title">2. Escolha a heurística de padrão</div>
+            <div class="heuristica-grid" id="hGrid">
+
+                <div class="h-btn" onclick="selH('convergencia',this)">
+                    <span class="ico">↔️</span>
+                    <span class="nome">Convergência Temática</span>
+                    <span class="desc">Temas que emergem em todas ou na maioria das fontes, independente da
+                        tradição</span>
+                </div>
+
+                <div class="h-btn" onclick="selH('divergencia',this)">
+                    <span class="ico">⚡</span>
+                    <span class="nome">Divergência Estrutural</span>
+                    <span class="desc">Onde fontes discordam ao nível de premissas — irredutível por mais dados</span>
+                </div>
+
+                <div class="h-btn" onclick="selH('silencios',this)">
+                    <span class="ico">🔇</span>
+                    <span class="nome">Silêncios Partilhados</span>
+                    <span class="desc">O que nenhuma fonte no corpus aborda — pontos cegos coletivos</span>
+                </div>
+
+                <div class="h-btn" onclick="selH('friccao',this)">
+                    <span class="ico">🔀</span>
+                    <span class="nome">Fricção Terminológica</span>
+                    <span class="desc">Mesma palavra, fenômenos diferentes — e palavras diferentes para o mesmo
+                        fenômeno</span>
+                </div>
+
+                <div class="h-btn" onclick="selH('clusters',this)">
+                    <span class="ico">🧩</span>
+                    <span class="nome">Clusters de Pressuposto</span>
+                    <span class="desc">Fontes que partilham premissas profundas apesar de diferenças superficiais</span>
+                </div>
+
+                <div class="h-btn" onclick="selH('saturacao',this)">
+                    <span class="ico">📊</span>
+                    <span class="nome">Saturação Temática</span>
+                    <span class="desc">Temas exaustivos vs. underdeveloped — onde o corpus está denso vs.
+                        rarefeito</span>
+                </div>
+
+                <div class="h-btn" onclick="selH('assimetria',this)">
+                    <span class="ico">⚖️</span>
+                    <span class="nome">Assimetria de Atenção</span>
+                    <span class="desc">O que umas fontes tratam como central e outras como periférico ou
+                        irrelevante</span>
+                </div>
+
+                <div class="h-btn" onclick="selH('evolucao',this)">
+                    <span class="ico">📈</span>
+                    <span class="nome">Evolução Conceitual</span>
+                    <span class="desc">Como um conceito se transforma, migra ou se deforma ao longo das fontes</span>
+                </div>
+
+                <div class="h-btn" onclick="selH('exclusao',this)">
+                    <span class="ico">🚫</span>
+                    <span class="nome">Padrões de Exclusão</span>
+                    <span class="desc">O que é sistematicamente marginalizado, descartado ou tornado impensável</span>
+                </div>
+
+                <div class="h-btn" onclick="selH('hierarquia',this)">
+                    <span class="ico">🏛️</span>
+                    <span class="nome">Hierarquia Conceitual</span>
+                    <span class="desc">Quais conceitos funcionam como âncoras que estruturam os demais no corpus</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- INTENSIDADE + GUARDRAIL -->
+        <div class="card">
+            <div class="section-title">3. Configurações do prompt</div>
+
+            <div style="margin-bottom:1.1rem;">
+                <label style="margin-bottom:0.6rem;">Profundidade analítica</label>
+                <div class="intensity-row">
+                    <div class="int-btn active" id="int-rapido" onclick="selInt('rapido')">⚡ Rápido<br><span
+                            style="font-weight:400;font-size:0.72rem;">Mapa inicial</span></div>
+                    <div class="int-btn" id="int-medio" onclick="selInt('medio')">🔬 Padrão<br><span
+                            style="font-weight:400;font-size:0.72rem;">Análise completa</span></div>
+                    <div class="int-btn" id="int-exaustivo" onclick="selInt('exaustivo')">🧠 Exaustivo<br><span
+                            style="font-weight:400;font-size:0.72rem;">Arqueologia total</span></div>
+                </div>
+            </div>
+
+            <div class="toggle-row" id="grToggle" onclick="toggleGR()">
+                <div class="toggle-sw" id="grSw">
+                    <div class="toggle-knob"></div>
+                </div>
+                <span class="toggle-label">🛡️ Guardrail epistêmico</span>
+                <span class="toggle-desc" id="grDesc">Injeta regras anti-alucinação no prompt</span>
+            </div>
+        </div>
+
+        <button class="gen-btn" onclick="generate()">🚀 Gerar Prompt para NotebookLM</button>
+
+        <div style="margin-top:1.25rem;" id="outputWrap" style="display:none;">
+            <div class="output-card" id="outputCard">
+                <div class="output-header">
+                    <h3 id="outputTitle">Prompt Gerado</h3>
+                    <button class="copy-btn" id="copyBtn" onclick="doCopy()">📋 Copiar</button>
+                </div>
+                <div class="output-box" id="outputBox"></div>
+                <div class="char-bar">
+                    <div class="char-bar-inner">
+                        <div class="char-fill" id="charFill"></div>
+                    </div>
+                    <span class="char-label" id="charLabel"></span>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /container -->
+    <script>
+        let activeH = null;
+        let activeInt = 'rapido';
+        let grOn = false;
+
+        function selH(k, el) {
+            document.querySelectorAll('.h-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            activeH = k;
+        }
+
+        function selInt(k) {
+            ['rapido', 'medio', 'exaustivo'].forEach(i => document.getElementById('int-' + i).classList.remove('active'));
+            document.getElementById('int-' + k).classList.add('active');
+            activeInt = k;
+        }
+
+        function toggleGR() {
+            grOn = !grOn;
+            document.getElementById('grSw').classList.toggle('on', grOn);
+            document.getElementById('grToggle').classList.toggle('on', grOn);
+            document.getElementById('grDesc').textContent = grOn
+                ? 'Ativo — diretrizes anti-alucinação incluídas'
+                : 'Injeta regras anti-alucinação no prompt';
+        }
+
+        // ─── GUARDRAIL CONDENSADO ──────────────────────────────────────────────────
+        const GR = `
+**GUARDRAILS EPISTÊMICOS**:
+• Cada afirmação sobre padrões = citação inline [n] na mesma frase.
+• Mapeie o que CADA fonte diz separadamente ANTES de qualquer síntese cross-fonte.
+• Distinga: convergência genuína (mesmo fenômeno) vs. convergência aparente (mesma palavra, significados distintos).
+• Divergências: exponha sem harmonizar. Se as premissas são incompatíveis, diga isso.
+• Silêncios e ausências: declare explicitamente — não inferir o que as fontes não dizem.
+• Sínteses marcadas como interpretação sua, não como o que as fontes afirmam diretamente.
+• Lembre o usuário de verificar citações clicando nos [números].`;
+
+        // ─── BLOCOS BASE POR HEURÍSTICA ───────────────────────────────────────────
+        const H = {
+
+            convergencia: {
+                nome: 'Convergência Temática',
+                base: (corpus, focal, prof) => `Faça uma análise de CONVERGÊNCIA TEMÁTICA em todas as fontes deste notebook.${corpus ? `\n\nCORPUS: ${corpus}` : ''}${focal ? `\nFOCO CONCEITUAL: ${focal}` : ''}
+
+**OBJETIVO**: Identificar temas, argumentos ou conclusões que emergem em múltiplas fontes de forma independente — especialmente quando essas fontes vêm de tradições intelectuais distintas.
+
+**ETAPA 1 — INVENTÁRIO POR FONTE**
+Para cada fonte, liste os 3-5 temas/argumentos centrais que ela desenvolve. Seja específico: não "fala sobre X", mas "argumenta que X porque Y". Cite [n] inline.
+
+**ETAPA 2 — MAPEAMENTO DE RECORRÊNCIAS**
+Identifique temas que aparecem em 2 ou mais fontes. Para cada recorrência:
+- Quais fontes a compartilham [n]
+- Como cada uma formula o tema (use as palavras de cada fonte, não as suas)
+- ${prof === 'rapido' ? 'Classificação preliminar: convergência genuína ou aparente?' : prof === 'medio' ? 'Classificação: **genuína** (mesmo fenômeno, abordagens independentes) ou **aparente** (mesma palavra, premissas diferentes)? Argumento para a classificação.' : 'Classificação rigorosa: **genuína** / **aparente** / **incerta**. Para genuínas: que fortaleza epistêmica isso confere? Para aparentes: onde exatamente a superfície engana?'}
+
+**ETAPA 3 — PADRÃO EMERGENTE**
+${prof === 'rapido' ? 'Qual tema é mais amplamente compartilhado? Que isso sugere sobre o campo?' : prof === 'medio' ? 'Quais convergências genuínas são mais significativas? O que revelam sobre consensos (explícitos ou implícitos) no campo? Que convergências aparentes são mais armadilhas para um leitor interdisciplinar?' : 'Análise em três níveis:\n(a) Convergências de superfície: vocabulário compartilhado\n(b) Convergências estruturais: mesma lógica argumentativa, terminologias distintas\n(c) Convergências de pressuposto: mesmas premissas fundantes, sem que as fontes se citem\nPara cada nível: exemplos específicos com citações.'}
+
+${prof === 'exaustivo' ? '\n**ETAPA 4 — ANÁLISE DE ROBUSTEZ**\nQuais convergências sobreviveriam a: (a) inclusão de fontes de tradições ausentes neste corpus? (b) um crítico que argumente que são convergências aparentes? Sinalize as convergências mais frágeis.' : ''}`,
+            },
+
+            divergencia: {
+                nome: 'Divergência Estrutural',
+                base: (corpus, focal, prof) => `Faça uma análise de DIVERGÊNCIA ESTRUTURAL em todas as fontes deste notebook.${corpus ? `\n\nCORPUS: ${corpus}` : ''}${focal ? `\nFOCO CONCEITUAL: ${focal}` : ''}
+
+**OBJETIVO**: Identificar onde as fontes discordam ao nível de premissas, não apenas de dados ou métodos. Divergências estruturais são irredutíveis: mais evidência empírica não as resolve.
+
+**ETAPA 1 — IDENTIFICAÇÃO DE TESES**
+Para cada fonte, extraia 2-3 teses centrais formuladas com precisão. Distingua: tese ontológica (o que existe), epistemológica (como conhecemos), metodológica (como investigamos), normativa (o que importa). Cite [n].
+
+**ETAPA 2 — MAPEAMENTO DE CONFLITOS**
+Para cada par ou conjunto de fontes em conflito:
+- Ponto exato de divergência (formulação precisa, não vaga)
+- Tipo do conflito: premissas? dados? valores? método? definição?
+- ${prof === 'rapido' ? 'Irredutível ou resolúvel? (uma linha)' : prof === 'medio' ? '**Irredutível**: desacordo de premissas — nenhuma evidência adicional resolve. **Resolúvel**: desacordo empírico, terminológico ou de escopo — especifique o que mediaria.' : '**Irredutível**: qual é o núcleo exato do desacordo? Que pressuposto cada lado recusa ceder? **Resolúvel**: que informação, experimento conceitual ou clarificação terminológica mediaria? **Diagnóstico**: é divergência real ou artefato de tradições disciplinares diferentes usando palavras diferentes?'}
+- Cite as passagens específicas que evidenciam o conflito [n]
+
+${prof !== 'rapido' ? `**ETAPA 3 — ANATOMIA DAS DIVERGÊNCIAS IRREDUTÍVEIS**
+Para cada divergência marcada como irredutível:
+- Que cada lado VÊ que o outro não vê (não que um esteja errado — que cada um ilumina)
+- Que questões o campo precisaria enfrentar para fazer progresso apesar do desacordo
+- Se existe terceira posição que o corpus não representa, mas que seria logicamente possível` : ''}
+
+${prof === 'exaustivo' ? `\n**ETAPA 4 — IMPLICAÇÕES PARA PESQUISA INTERDISCIPLINAR**
+Um pesquisador trabalhando com todas essas fontes ao mesmo tempo: que conflitos precisaria declarar explicitamente em vez de tentar harmonizar? Que escolhas de premissa precisaria fazer antes de avançar?` : ''}`,
+            },
+
+            silencios: {
+                nome: 'Silêncios Partilhados',
+                base: (corpus, focal, prof) => `Faça uma análise de SILÊNCIOS PARTILHADOS em todas as fontes deste notebook.${corpus ? `\n\nCORPUS: ${corpus}` : ''}${focal ? `\nFOCO CONCEITUAL: ${focal}` : ''}
+
+**OBJETIVO**: Identificar o que nenhuma fonte aborda — não por acaso, mas por exclusão estrutural. Silêncios partilhados revelam os limites coletivos do que um corpus consegue pensar.
+
+**ETAPA 1 — PERÍMETRO DO CORPUS**
+Mapeie o que o corpus COBRE: temas presentes, perspectivas representadas, tipos de evidência mobilizados, vozes citadas. Seja específico — isso define a borda a partir da qual os silêncios se tornam visíveis. Cite [n] para cada elemento.
+
+**ETAPA 2 — IDENTIFICAÇÃO DE SILÊNCIOS**
+${prof === 'rapido' ? 'Liste 4-6 temas, perspectivas ou questões que NENHUMA fonte aborda, organizados por tipo: (a) ausências temáticas, (b) vozes/perspectivas ausentes, (c) questões que o corpus não consegue formular.' : `Identifique silêncios em quatro categorias:
+
+(a) **Ausências temáticas**: tópicos relevantes ao domínio que nenhuma fonte toca
+(b) **Perspectivas ausentes**: tradições intelectuais, grupos, geografias não representados
+(c) **Questões informuláveis**: perguntas que os pressupostos do corpus tornam impensáveis
+(d) **Evidências descartadas**: tipos de dado ou argumento que o corpus sistematicamente ignora
+
+Para cada silêncio: por que é significativo? Que distorção a ausência introduz na análise?`}
+
+${prof === 'exaustivo' ? `
+**ETAPA 3 — ARQUEOLOGIA DOS SILÊNCIOS**
+Para os 3-4 silêncios mais significativos: por que esse silêncio existe? É efeito de:
+- Tradição disciplinar (o campo não desenvolveu ferramentas para isso)?
+- Viés de seleção de fontes (poderia ser corrigido com outras fontes)?
+- Ponto cego estrutural (nenhuma fonte desse tipo conseguiria abordar)?
+- Consenso implícito (o campo descartou isso, talvez equivocadamente)?
+
+**ETAPA 4 — IMPLICAÇÕES**
+Que conclusões do corpus seriam diferentes se os silêncios fossem preenchidos? Que perguntas de pesquisa os silêncios sugerem?` : prof === 'medio' ? `
+**ETAPA 3 — SIGNIFICÂNCIA**
+Quais são os 2-3 silêncios mais consequentes — cuja ausência mais distorce o que é possível concluir a partir deste corpus? Por quê?` : ''}`,
+            },
+
+            friccao: {
+                nome: 'Fricção Terminológica',
+                base: (corpus, focal, prof) => `Faça uma análise de FRICÇÃO TERMINOLÓGICA em todas as fontes deste notebook.${corpus ? `\n\nCORPUS: ${corpus}` : ''}${focal ? `\nFOCO CONCEITUAL: ${focal}` : ''}
+
+**OBJETIVO**: Mapear dois fenômenos complementares: (1) mesma palavra usada com significados distintos por fontes diferentes; (2) palavras distintas usadas para o mesmo fenômeno. Ambos geram mal-entendidos invisíveis em leitura interdisciplinar.
+
+**ETAPA 1 — INVENTÁRIO TERMINOLÓGICO**
+Liste os 10-15 termos técnicos mais frequentes ou centrais no corpus. Para cada um: quais fontes o usam [n].
+
+**ETAPA 2 — FALSOS COGNATOS** (mesma palavra, fenômenos distintos)
+Para cada falso cognato identificado:
+- Palavra compartilhada
+- Definição/uso em Fonte A [n] vs. Fonte B [n] — use as palavras das fontes
+- Em que exatamente divergem: extensão do conceito? pressupostos embutidos? teoria de fundo?
+- Que confusão concreta isso geraria num leitor que não percebe a diferença?
+${prof !== 'rapido' ? '- Proposta de desambiguação: termos que poderiam substituir cada uso?' : ''}
+
+**ETAPA 3 — COGNATOS GENUÍNOS** (palavras distintas, mesmo fenômeno)
+Para cada par/grupo identificado:
+- Termos em cada tradição [n]
+- Argumento de que se referem ao mesmo fenômeno
+${prof !== 'rapido' ? '- O que cada terminologia captura que a outra não? (Pode haver razão para manter ambas)\n- Tradução possível: qual termo seria mais preciso para um leitor interdisciplinar?' : ''}
+
+${prof === 'exaustivo' ? `
+**ETAPA 4 — MAPA DE FRICÇÕES**
+Produza uma tabela consolidada:
+
+| Fenômeno/Conceito | Tradição A | Tradição B | Tipo (falso/genuíno) | Risco de confusão |
+|-------------------|-----------|-----------|---------------------|------------------|
+
+**ETAPA 5 — IMPLICAÇÕES**
+Que mal-entendidos entre tradições são mais prováveis dado esse mapa? Onde um pesquisador precisaria de nota explícita de tradução terminológica?` : ''}`,
+            },
+
+            clusters: {
+                nome: 'Clusters de Pressuposto',
+                base: (corpus, focal, prof) => `Faça uma análise de CLUSTERS DE PRESSUPOSTO em todas as fontes deste notebook.${corpus ? `\n\nCORPUS: ${corpus}` : ''}${focal ? `\nFOCO CONCEITUAL: ${focal}` : ''}
+
+**OBJETIVO**: Identificar quais fontes compartilham premissas profundas — mesmo que se oponham na superfície, mesmo que venham de disciplinas diferentes. Fontes no mesmo cluster "habitam o mesmo mundo" epistemicamente.
+
+**ETAPA 1 — ARQUEOLOGIA DE PRESSUPOSTOS**
+Para cada fonte, identifique 3-4 pressupostos que ela não argumenta, mas assume:
+- Ontológicos: que tipo de entidades existem e são relevantes?
+- Epistemológicos: o que conta como evidência válida? Quem pode produzir conhecimento?
+- Metodológicos: que abordagens são legítimas?
+- Normativos: que valores estruturam o que é visto como problema?
+Cite [n] passagens que REVELAM (sem enunciar) esses pressupostos.
+
+**ETAPA 2 — AGRUPAMENTO**
+${prof === 'rapido' ? 'Agrupe as fontes em 2-4 clusters com base em pressupostos compartilhados. Para cada cluster: que premissa central une as fontes? Que fontes pertencem a mais de um cluster?' : `Agrupe as fontes em clusters. Para cada cluster:
+- Nome descritivo (não disciplinar — descreva o pressuposto, não a área)
+- Fontes membros [n]
+- Pressuposto central compartilhado (formulado com precisão)
+- Por que fontes aparentemente distintas estão no mesmo cluster?
+- Que fontes são casos-limite ou pertencem parcialmente a dois clusters?`}
+
+${prof !== 'rapido' ? `
+**ETAPA 3 — ENTRE CLUSTERS**
+- Que pressuposto separa mais radicalmente os clusters identificados?
+- Existe fonte que desafia os pressupostos de seu próprio cluster?
+- Que cluster está mais representado no corpus? Que viés isso introduz?` : ''}
+
+${prof === 'exaustivo' ? `
+**ETAPA 4 — IMPLICAÇÕES PARA SÍNTESE**
+Uma síntese entre fontes de clusters diferentes requer: aceitar pressupostos incompatíveis? escolher um conjunto de premissas como base? criar nova ontologia? Mapeie as opções e seus custos.` : ''}`,
+            },
+
+            saturacao: {
+                nome: 'Saturação Temática',
+                base: (corpus, focal, prof) => `Faça uma análise de SATURAÇÃO TEMÁTICA em todas as fontes deste notebook.${corpus ? `\n\nCORPUS: ${corpus}` : ''}${focal ? `\nFOCO CONCEITUAL: ${focal}` : ''}
+
+**OBJETIVO**: Mapear a densidade do corpus — onde há excesso de atenção, onde há desenvolvimento insuficiente, e o que isso revela sobre o estado do campo.
+
+**ETAPA 1 — INVENTÁRIO TEMÁTICO**
+Liste todos os temas/subtemas abordados no corpus. Para cada um: quais fontes o abordam [n] e com que profundidade (central / tangencial / mencionado).
+
+**ETAPA 2 — MAPA DE DENSIDADE**
+${prof === 'rapido' ? 'Identifique: (a) 3-4 temas supersaturados — muitas fontes, pouca novidade adicional; (b) 3-4 temas rarefeitos — importantes mas subdesenvolvidos. Uma frase de justificativa para cada.' : `Classifique cada tema em:
+- **Supersaturado**: muitas fontes, argumentos repetitivos — o corpus não avança mais aqui
+- **Bem desenvolvido**: cobertura equilibrada, múltiplas perspectivas
+- **Rarefeito**: presente mas insuficientemente desenvolvido
+- **Ausente-esperado**: dado o domínio, deveria estar aqui mas não está
+
+Para supersaturados: o que as fontes adicionais ainda acrescentam, se algo?
+Para rarefeitos: que fontes externas complementariam melhor?`}
+
+${prof !== 'rapido' ? `
+**ETAPA 3 — ANÁLISE DE PADRÃO**
+A distribuição de densidade é: acidental (seleção de fontes)? estrutural (o campo mesmo está assim)? ou intencional (o corpus foi montado com determinado viés)?
+
+Que temas rarefeitos têm maior potencial de desenvolvimento para pesquisa original?` : ''}
+
+${prof === 'exaustivo' ? `
+**ETAPA 4 — AGENDA DERIVADA**
+Com base na análise de saturação: que 3-5 questões de pesquisa teriam maior retorno epistêmico — por explorar zonas rarefeitas onde o corpus deixou espaço aberto?` : ''}`,
+            },
+
+            assimetria: {
+                nome: 'Assimetria de Atenção',
+                base: (corpus, focal, prof) => `Faça uma análise de ASSIMETRIA DE ATENÇÃO em todas as fontes deste notebook.${corpus ? `\n\nCORPUS: ${corpus}` : ''}${focal ? `\nFOCO CONCEITUAL: ${focal}` : ''}
+
+**OBJETIVO**: Identificar o que umas fontes tratam como central e outras tratam como periférico, irrelevante ou nem mencionam — e o que essa assimetria revela sobre como diferentes tradições constroem o problema.
+
+**ETAPA 1 — MAPEAMENTO DE CENTRALIDADES**
+Para cada fonte: o que ela trata como o PROBLEMA CENTRAL do domínio? Que aspectos são estruturantes versus acessórios? Cite [n] a passagem que melhor evidencia essa hierarquia de atenção.
+
+**ETAPA 2 — IDENTIFICAÇÃO DE ASSIMETRIAS**
+${prof === 'rapido' ? 'Liste 3-4 assimetrias: o que Fonte A trata como central que Fonte B ignora ou marginaliza? Uma linha de explicação para cada.' : `Para cada assimetria significativa:
+- Elemento X: central em [fontes] [n], periférico/ausente em [fontes] [n]
+- Como cada lado justificaria sua escolha de atenção?
+- Essa assimetria é de: escopo disciplinar? pressuposto teórico? valor implícito? método?
+- O que fica invisível para cada lado por causa dessa distribuição de atenção?`}
+
+${prof !== 'rapido' ? `
+**ETAPA 3 — CONSEQUÊNCIAS ANALÍTICAS**
+Quais assimetrias têm maior impacto nas conclusões possíveis? Se as fontes que marginalizam X tivessem dado a X a atenção que as outras dão, que conclusões diferentes seriam possíveis?` : ''}
+
+${prof === 'exaustivo' ? `
+**ETAPA 4 — POLÍTICA DE ATENÇÃO**
+As assimetrias são: neutras (diferentes escopos legítimos) ou políticas (algumas perspectivas sistematicamente apagam certas questões)? Que interesses ou valores estruturam o que é tratado como central vs. marginal em cada tradição?` : ''}`,
+            },
+
+            evolucao: {
+                nome: 'Evolução Conceitual',
+                base: (corpus, focal, prof) => `Faça uma análise de EVOLUÇÃO CONCEITUAL em todas as fontes deste notebook.${corpus ? `\n\nCORPUS: ${corpus}` : ''}${focal ? `\nFOCO CONCEITUAL: "${focal}" — rastreie especialmente este conceito.` : ''}
+
+**OBJETIVO**: Rastrear como um ou mais conceitos centrais se transformam, migram, se deformam ou se enriquecem ao longo das fontes — seja em sentido cronológico, disciplinar ou argumentativo.
+
+**ETAPA 1 — IDENTIFICAÇÃO DE CONCEITOS A RASTREAR**
+${focal ? `Foco principal: "${focal}". Identifique também 2-3 conceitos satélites que co-evoluem com ele.` : 'Identifique 2-4 conceitos centrais do corpus que aparecem em múltiplas fontes e admitem variação de sentido.'}
+Para cada conceito: lista de fontes onde aparece [n].
+
+**ETAPA 2 — MAPEAMENTO DE VARIAÇÕES**
+Para cada conceito rastreado, descreva como aparece em cada fonte:
+- Definição ou uso específico [n] — nas palavras da fonte
+- Função no argumento: central / instrumental / contestado / pressuposto
+- Carga teórica: que teoria de fundo o conceito carrega nessa fonte?
+
+${prof !== 'rapido' ? `
+**ETAPA 3 — ANÁLISE DE TRAJETÓRIA**
+- Há progressão identificável (o conceito se complexifica, se refina)?
+- Há ruptura (o conceito muda de natureza entre fontes, não apenas de definição)?
+- Há degradação (o conceito perde precisão ou se esvazia ao migrar)?
+- Há bifurcação (o conceito se divide em dois conceitos distintos)?
+Cite evidências específicas [n] para cada padrão identificado.` : ''}
+
+${prof === 'exaustivo' ? `
+**ETAPA 4 — GENEALOGIA E IMPLICAÇÕES**
+- Que versão do conceito é mais produtiva para trabalho interdisciplinar e por quê?
+- Quais transformações são ganhos epistêmicos? Quais são perdas?
+- Se você precisasse propor uma definição de trabalho para usar todas as fontes juntas, que elementos de cada versão preservaria? Que sacrificaria? Marque isso como INTERPRETAÇÃO sua.` : ''}`,
+            },
+
+            exclusao: {
+                nome: 'Padrões de Exclusão',
+                base: (corpus, focal, prof) => `Faça uma análise de PADRÕES DE EXCLUSÃO em todas as fontes deste notebook.${corpus ? `\n\nCORPUS: ${corpus}` : ''}${focal ? `\nFOCO CONCEITUAL: ${focal}` : ''}
+
+**OBJETIVO**: Identificar o que é sistematicamente marginalizado, descartado como não-científico, tratado como óbvio demais para merecer atenção, ou tornado estruturalmente impensável pelo corpus.
+
+**ETAPA 1 — IDENTIFICAÇÃO DE EXCLUSÕES**
+Examine o corpus em busca de:
+- Argumentos descartados sem refutação detalhada [n]
+- Perspectivas mencionadas apenas para ser desconsideradas [n]
+- Questões tratadas como já resolvidas ou irrelevantes [n]
+- Tipos de evidência não reconhecidos como legítimos [n]
+- Vozes citadas apenas como contraste negativo [n]
+
+**ETAPA 2 — PADRÕES**
+${prof === 'rapido' ? 'As exclusões formam algum padrão? O que sistematicamente "não conta" para este corpus?' : `Classifique as exclusões:
+- **Disciplinar**: o que outras áreas fariam mas este campo descarta metodologicamente?
+- **Epistemológica**: que tipos de conhecimento (experiencial, tácito, não-formalizado) são invisibilizados?
+- **Política**: que perspectivas de grupos específicos são sistematicamente marginalizadas?
+- **Histórica**: que posições "superadas" poderiam ainda ter valor e por quê foram descartadas?
+
+Para cada exclusão significativa: há alguma fonte no corpus que resiste parcialmente ao padrão? [n]`}
+
+${prof !== 'rapido' ? `
+**ETAPA 3 — CUSTO DAS EXCLUSÕES**
+Para as 3 exclusões mais consequentes: que análises se tornariam possíveis se o corpus incluísse o excluído? Que conclusões do corpus dependem de manter essas exclusões?` : ''}
+
+${prof === 'exaustivo' ? `
+**ETAPA 4 — REFLEXÃO CRÍTICA**
+Os padrões de exclusão são: necessários (limites legítimos de escopo)? contingentes (resultado de história e poder no campo)? ou funcionais (o campo precisa excluir isso para manter sua coerência interna)?
+
+Que fontes externas ao corpus representariam mais diretamente o excluído?` : ''}`,
+            },
+
+            hierarquia: {
+                nome: 'Hierarquia Conceitual',
+                base: (corpus, focal, prof) => `Faça uma análise de HIERARQUIA CONCEITUAL em todas as fontes deste notebook.${corpus ? `\n\nCORPUS: ${corpus}` : ''}${focal ? `\nFOCO CONCEITUAL: ${focal}` : ''}
+
+**OBJETIVO**: Identificar quais conceitos funcionam como âncoras que estruturam os demais — os "conceitos-mestre" que, se mudassem, mudariam tudo abaixo deles.
+
+**ETAPA 1 — INVENTÁRIO CONCEITUAL**
+Liste os 15-20 conceitos mais frequentes e centrais no corpus. Para cada: quais fontes o usam [n].
+
+**ETAPA 2 — MAPEAMENTO DE DEPENDÊNCIAS**
+Identifique relações de dependência: que conceitos pressupõem outros para fazer sentido?
+${prof === 'rapido' ? 'Identifique 3-5 conceitos-âncora: conceitos que, se removidos, fazem outros desmoronar. Uma linha de justificativa para cada.' : `Para cada relação de dependência identificada:
+- Conceito A pressupõe Conceito B: cite [n] onde isso é evidente
+- A dependência é: lógica (A não tem sentido sem B)? empírica (A só funciona se B for verdadeiro)? metodológica (A só é mensurável via B)?
+- A dependência é reconhecida pelas fontes ou implícita?`}
+
+${prof !== 'rapido' ? `
+**ETAPA 3 — CONCEITOS-ÂNCORA**
+Identifique os 3-5 conceitos no topo da hierarquia — aqueles de que mais outros dependem. Para cada:
+- Que conceitos dependem dele [n]
+- Que fontes o contestam vs. aceitam como dado [n]
+- O que aconteceria ao restante do corpus se esse conceito fosse rejeitado?` : ''}
+
+${prof === 'exaustivo' ? `
+**ETAPA 4 — HIERARQUIAS ALTERNATIVAS**
+As fontes de diferentes tradições organizam os mesmos conceitos em hierarquias diferentes? Mapeie: o que é conceito-âncora para a Tradição A pode ser conceito derivado para a Tradição B? Que implicações isso tem para o diálogo interdisciplinar?
+
+**ETAPA 5 — PONTOS DE ALAVANCAGEM**
+Para pesquisa original: que conceito-âncora, se reelaborado, ofereceria maior potencial de transformação do campo?` : ''}`,
+            },
+
+        };
+
+        function generate() {
+            if (!activeH) { alert('Selecione uma heurística de padrão.'); return; }
+            const corpus = document.getElementById('corpusDesc').value.trim();
+            const focal = document.getElementById('focalConcept').value.trim();
+
+            let prompt = H[activeH].base(corpus, focal, activeInt);
+            if (grOn) prompt += GR;
+
+            document.getElementById('outputBox').textContent = prompt;
+            document.getElementById('outputTitle').textContent = `Prompt — ${H[activeH].nome}`;
+
+            const len = prompt.length;
+            const pct = Math.min(len / 5000 * 100, 100);
+            const fill = document.getElementById('charFill');
+            fill.style.width = pct + '%';
+            fill.style.background = len > 5000 ? '#e53935' : len > 3800 ? '#f9a825' : '#1e8e3e';
+            const lbl = document.getElementById('charLabel');
+            lbl.className = 'char-label' + (len > 5000 ? ' over' : '');
+            lbl.textContent = len > 5000
+                ? `⚠️ ${len}/5000 — excede limite NotebookLM`
+                : `${len} / 5000 chars`;
+
+            document.getElementById('outputWrap').style.display = 'block';
+            document.getElementById('outputWrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function doCopy() {
+            navigator.clipboard.writeText(document.getElementById('outputBox').textContent).then(() => {
+                const btn = document.getElementById('copyBtn');
+                btn.classList.add('ok');
+                btn.textContent = '✓ Copiado!';
+                setTimeout(() => { btn.classList.remove('ok'); btn.textContent = '📋 Copiar'; }, 2000);
+            }).catch(() => alert('Erro ao copiar. Selecione manualmente.'));
+        }
+    </script>
+</body>
+
+</html>
