@@ -66,15 +66,19 @@
   {
     "id": "DETECTOR-DE-PADROES",
     "title": "Detector de Padrões em Corpus",
-    "description": "Experimento: Detector de Padrões em Corpus",
+    "description": "Ferramenta para detectar padrões recorrentes em corpus de textos, otimizada para uso com NotebookLM e prompts de análise qualitativa.",
     "folderName": "DETECTOR-DE-PADROES",
     "entryFile": "index.html",
     "tags": [
-      "Outros Experimentos"
+      "NotebookLM & Prompts",
+      "Humanidades Digitais",
+      "Metodologia & Ferramentas"
     ],
-    "emoji": "🔬",
+    "emoji": "📚",
     "concepts": [
-      "Outros Experimentos"
+      "NotebookLM & Prompts",
+      "Humanidades Digitais",
+      "Metodologia & Ferramentas"
     ],
     "date": "2026-02-26"
   },
