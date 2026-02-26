@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Prompts para NotebookLM</title>
+    <title>Laboratório de Prompts Acadêmicos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,10 +16,10 @@
         }
 
         body {
-            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f8f9fa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
             min-height: 100vh;
-            color: #202124;
+            color: #e0e0e0;
             padding: 2rem 1rem;
         }
 
@@ -32,28 +35,43 @@
 
         .header h1 {
             font-size: 2rem;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 0.5rem;
-            color: #202124;
+            color: #f0f0f0;
             letter-spacing: -0.5px;
         }
 
         .header p {
             font-size: 0.95rem;
-            color: #5f6368;
+            color: #a0a0b8;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.55rem;
+            border-radius: 6px;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         .card {
-            background: white;
+            background: #16213e;
             border-radius: 12px;
             padding: 2rem;
-            box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 2px 6px 1px rgba(0, 0, 0, 0.25);
             margin-bottom: 1.5rem;
             transition: box-shadow 0.2s ease;
+            border: 1px solid #2a2a4a;
         }
 
         .card:hover {
-            box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+            box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.4), 0 6px 16px 4px rgba(124, 58, 237, 0.1);
         }
 
         .input-section {
@@ -64,7 +82,7 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
-            color: #202124;
+            color: #c8c8d8;
             font-size: 0.9rem;
         }
 
@@ -72,24 +90,25 @@
         textarea {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid #dadce0;
+            border: 1px solid #2a2a4a;
             border-radius: 8px;
             font-size: 0.95rem;
             font-family: inherit;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            background: #fff;
+            background: #1e1e3a;
+            color: #e0e0e0;
         }
 
         input:focus,
         textarea:focus {
             outline: none;
-            border-color: #1a73e8;
-            box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
         }
 
         input::placeholder,
         textarea::placeholder {
-            color: #80868b;
+            color: #6b6b8a;
         }
 
         .section-label {
@@ -97,7 +116,7 @@
             align-items: center;
             gap: 0.75rem;
             font-weight: 600;
-            color: #202124;
+            color: #c8c8d8;
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -109,15 +128,15 @@
             content: '';
             flex: 1;
             height: 1px;
-            background: #e8eaed;
+            background: #2a2a4a;
         }
 
         .section-label.interdisciplinar {
-            color: #1967d2;
+            color: #a78bfa;
         }
 
         .section-label.interdisciplinar::after {
-            background: #d2e3fc;
+            background: #3b2d6b;
         }
 
         .templates {
@@ -128,15 +147,15 @@
         }
 
         .template-btn {
-            background: #f8f9fa;
-            border: 1px solid #dadce0;
+            background: #1e1e3a;
+            border: 1px solid #2a2a4a;
             padding: 0.85rem 1rem;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
             text-align: left;
             font-size: 0.875rem;
-            color: #202124;
+            color: #d0d0e0;
             font-weight: 500;
             display: flex;
             align-items: center;
@@ -144,31 +163,31 @@
         }
 
         .template-btn:hover {
-            background: #f1f3f4;
-            border-color: #1a73e8;
+            background: #252548;
+            border-color: #7c3aed;
             transform: translateY(-1px);
         }
 
         .template-btn.active {
-            background: linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%);
-            border-color: #1a73e8;
-            color: #1967d2;
+            background: linear-gradient(135deg, #2d1b69 0%, #1e1145 100%);
+            border-color: #7c3aed;
+            color: #c4b5fd;
         }
 
         .template-btn.inter {
-            border-color: #c5cae9;
-            background: #f3f4ff;
+            border-color: #3b2d6b;
+            background: #1e1845;
         }
 
         .template-btn.inter:hover {
-            border-color: #3949ab;
-            background: #e8eaf6;
+            border-color: #a78bfa;
+            background: #2a2060;
         }
 
         .template-btn.inter.active {
-            background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
-            border-color: #3949ab;
-            color: #283593;
+            background: linear-gradient(135deg, #3b2d6b 0%, #2d1b69 100%);
+            border-color: #a78bfa;
+            color: #ddd6fe;
         }
 
         .template-btn span {
@@ -177,26 +196,26 @@
         }
 
         .generate-btn {
-            background: #1a73e8;
+            background: #7c3aed;
             color: white;
             border: none;
             padding: 0.875rem 2rem;
             border-radius: 8px;
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             width: 100%;
-            box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            box-shadow: 0 2px 8px 0 rgba(124, 58, 237, 0.3);
         }
 
         .generate-btn:hover {
-            background: #1765cc;
-            box-shadow: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+            background: #6d28d9;
+            box-shadow: 0 4px 16px 0 rgba(124, 58, 237, 0.4);
         }
 
         .generate-btn:active {
-            background: #1557b0;
+            background: #5b21b6;
         }
 
         .toggle-row {
@@ -204,9 +223,9 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.9rem 1rem;
-            border: 1px solid #dadce0;
+            border: 1px solid #2a2a4a;
             border-radius: 8px;
-            background: #f8f9fa;
+            background: #1e1e3a;
             cursor: pointer;
             transition: all 0.2s ease;
             margin-bottom: 1.25rem;
@@ -214,13 +233,13 @@
         }
 
         .toggle-row:hover {
-            border-color: #1a73e8;
-            background: #f0f4ff;
+            border-color: #7c3aed;
+            background: #252548;
         }
 
         .toggle-row.on {
-            border-color: #ea4335;
-            background: #fff8f7;
+            border-color: #f59e0b;
+            background: #2a2415;
         }
 
         .toggle-switch {
@@ -234,7 +253,7 @@
         }
 
         .toggle-switch.on {
-            background: #ea4335;
+            background: #f59e0b;
         }
 
         .toggle-knob {
@@ -256,12 +275,12 @@
         .toggle-label {
             font-size: 0.875rem;
             font-weight: 500;
-            color: #202124;
+            color: #d0d0e0;
         }
 
         .toggle-desc {
             font-size: 0.8rem;
-            color: #5f6368;
+            color: #8888a8;
             margin-left: auto;
         }
 
@@ -275,12 +294,12 @@
         .output-header h3 {
             font-size: 1.1rem;
             font-weight: 500;
-            color: #202124;
+            color: #e0e0e0;
         }
 
         .output-box {
-            background: #f8f9fa;
-            border: 1px solid #dadce0;
+            background: #121228;
+            border: 1px solid #2a2a4a;
             border-radius: 8px;
             padding: 1.25rem;
             font-family: 'Roboto Mono', 'Consolas', 'Monaco', monospace;
@@ -289,11 +308,11 @@
             white-space: pre-wrap;
             max-height: 520px;
             overflow-y: auto;
-            color: #202124;
+            color: #d0d0e0;
         }
 
         .copy-btn {
-            background: #1a73e8;
+            background: #7c3aed;
             color: white;
             border: none;
             padding: 0.625rem 1.25rem;
@@ -308,35 +327,35 @@
         }
 
         .copy-btn:hover {
-            background: #1765cc;
+            background: #6d28d9;
         }
 
         .copy-btn.copied {
-            background: #1e8e3e;
+            background: #059669;
         }
 
         .char-count {
             font-size: 0.8rem;
-            color: #5f6368;
+            color: #8888a8;
             margin-top: 0.75rem;
             padding: 0.5rem 0.75rem;
-            background: #f1f3f4;
+            background: #1e1e3a;
             border-radius: 6px;
             display: inline-block;
         }
 
         .warning {
-            color: #ea4335;
+            color: #f87171;
             font-weight: 500;
         }
 
         .focus-recommended {
-            border-color: #1a73e8 !important;
-            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+            border-color: #7c3aed !important;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
         }
 
         .recommended-badge {
-            color: #1a73e8;
+            color: #a78bfa;
             font-weight: 600;
             font-size: 0.85rem;
         }
@@ -356,8 +375,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📚 Gerador de Prompts para NotebookLM</h1>
-            <p>Análise acadêmica, arqueologia conceitual, roteiros narrativos e síntese interdisciplinar</p>
+            <h1>🔬 Laboratório de Prompts Acadêmicos <span class="version-badge">v2.0</span></h1>
+            <p>Toolkit avançado para análise profunda, síntese interdisciplinar e guardrails epistêmicos</p>
         </div>
 
         <div class="card">

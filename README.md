@@ -23,7 +23,7 @@ Sempre que possível (mas não em todos os casos), o pesquisador tentou incluir 
 O autor está **aberto a remover ou retificar qualquer fato que estiver incorreto e for danoso**. 
 
 Para correções, sugestões ou dúvidas:
-- **Email**: [barros@mdcc.walker.eco.br](mailto:barros@mdcc.walker.eco.br)
+- **Email**: [walker.dantas@sou.ufmt.br](mailto:walker.dantas@sou.ufmt.br)
 - **Bluesky**: [@walker.eco.br](https://bsky.app/profile/walker.eco.br)
 
 ## 🌐 Manifesto

@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sítio Bibliográfico — Pesquisa PPGECCO</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+    :root {
+      --bg: #100d0a;
+      --bg2: #171310;
+      --bg3: #1e1a16;
+      --border: #2a2420;
+      --text: #d4c9b8;
+      --muted: #7a6f63;
+      --faint: #3a3028;
+      --accent: #C84B2F;
+      --accent2: #4A6FA5;
+      --mono: 'IBM Plex Mono', monospace;
+      --serif: 'IM Fell English', Georgia, serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--serif);
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    #nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #0a0806;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 28px 12px;
+    }
+
+    .nav-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .nav-title {
+      font-size: 17px;
+      color: #f0e8d8;
+      letter-spacing: .03em;
+    }
+
+    .nav-meta {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+    }
+
+    .tab-btn {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 5px 14px;
+      border-radius: 3px;
+      cursor: pointer;
+      border: 1px solid var(--faint);
+      background: transparent;
+      color: var(--muted);
+      transition: all .15s;
+    }
+
+    .tab-btn:hover {
+      border-color: #555;
+      color: #aaa;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* VIEWS */
+    #main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 24px 28px 60px;
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    /* SECTION LABEL */
+    .sec-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    /* ITEM CARD */
+    .item-card {
+      border-left: 3px solid var(--faint);
+      padding: 7px 11px;
+      margin-bottom: 3px;
+      cursor: pointer;
+      border-radius: 0 3px 3px 0;
+      transition: background .12s;
+    }
+
+    .item-card:hover {
+      background: rgba(255, 255, 255, .05);
+    }
+
+    .item-title {
+      font-size: 12px;
+      color: #d4c9b8;
+      line-height: 1.45;
+    }
+
+    .item-meta {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 2px;
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .item-cat {}
+
+    .item-domain {
+      color: #555;
+    }
+
+    /* ===== ESTRATIGRAFIA ===== */
+    .strat-row {
+      margin-bottom: 2px;
+    }
+
+    .strat-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 3px 0;
+    }
+
+    .strat-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      width: 56px;
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .strat-bar-wrap {
+      flex: 1;
+      max-width: 320px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+    }
+
+    .strat-bar {
+      height: 100%;
+      border-radius: 2px;
+      transition: opacity .2s;
+      opacity: .65;
+      min-width: 4px;
+    }
+
+    .strat-header:hover .strat-bar {
+      opacity: 1;
+    }
+
+    .strat-count {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      width: 32px;
+      flex-shrink: 0;
+    }
+
+    .strat-cats {
+      font-size: 10px;
+      color: #444;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .strat-items {
+      margin-left: 66px;
+      margin-top: 3px;
+      margin-bottom: 6px;
+      border-left: 1px solid var(--faint);
+      padding-left: 10px;
+      display: none;
+    }
+
+    .strat-items.open {
+      display: block;
+    }
+
+    .strat-toggle {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--muted);
+      width: 12px;
+      flex-shrink: 0;
+    }
+
+    /* ===== TEMÁTICO ===== */
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 7px;
+      margin-bottom: 22px;
+    }
+
+    .cat-card {
+      border: 1px solid var(--faint);
+      border-radius: 5px;
+      padding: 11px 12px;
+      cursor: pointer;
+      transition: all .15s;
+      background: transparent;
+    }
+
+    .cat-card:hover,
+    .cat-card.active {
+      background: rgba(255, 255, 255, .03);
+    }
+
+    .cat-num {
+      font-family: var(--mono);
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .cat-name {
+      font-size: 10px;
+      color: #b0a898;
+      margin-top: 5px;
+      line-height: 1.35;
+    }
+
+    #cat-items-area .sec-label {
+      margin-top: 4px;
+    }
+
+    /* ===== GARIMPO ===== */
+    .search-row {
+      display: flex;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+
+    #search-input {
+      flex: 1;
+      padding: 9px 13px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--text);
+      font-size: 13px;
+      font-family: var(--serif);
+      outline: none;
+      transition: border-color .15s;
+    }
+
+    #search-input:focus {
+      border-color: var(--accent2);
+    }
+
+    #search-cat {
+      padding: 9px 10px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      font-family: var(--mono);
+      cursor: pointer;
+      outline: none;
+    }
+
+    #search-count {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    /* ===== ESTATÍSTICAS ===== */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+      margin-bottom: 26px;
+    }
+
+    .stat-box {
+      background: var(--bg2);
+      border: 1px solid var(--faint);
+      border-radius: 6px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: var(--mono);
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .stat-lbl {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+
+    .spark-wrap {
+      margin-bottom: 24px;
+    }
+
+    .spark-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 56px;
+      margin-bottom: 4px;
+    }
+
+    .spark-bar {
+      flex: 1;
+      border-radius: 2px 2px 0 0;
+      transition: opacity .2s;
+      cursor: default;
+    }
+
+    .spark-bar:hover {
+      opacity: 1 !important;
+    }
+
+    .spark-axis {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: #444;
+    }
+
+    .two-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .domain-row,
+    .cat-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 5px;
+    }
+
+    .domain-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      width: 22px;
+      text-align: right;
+      color: var(--accent);
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 12px;
+      background: var(--bg2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 2px;
+    }
+
+    .domain-name {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      width: 130px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .observation {
+      margin-top: 24px;
+      padding: 14px 16px;
+      background: var(--bg2);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 5px 5px 0;
+      font-size: 12px;
+      color: #9a8f82;
+      line-height: 1.75;
+    }
+
+    .observation strong {
+      color: #d4c9b8;
+    }
+
+    /* MODAL */
+    #modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+    }
+
+    #modal-overlay.open {
+      display: flex;
+    }
+
+    #modal-box {
+      background: var(--bg2);
+      border-radius: 7px;
+      padding: 24px;
+      max-width: 540px;
+      width: 100%;
+      border: 1px solid var(--faint);
+    }
+
+    #modal-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    #modal-title {
+      font-size: 15px;
+      color: #f0e8d8;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    #modal-meta {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    #modal-open {
+      padding: 7px 15px;
+      border: none;
+      border-radius: 3px;
+      font-size: 12px;
+      cursor: pointer;
+      color: #fff;
+      text-decoration: none;
+      display: inline-block;
+      margin-right: 7px;
+    }
+
+    #modal-close {
+      padding: 7px 15px;
+      background: transparent;
+      border: 1px solid var(--faint);
+      color: var(--muted);
+      font-size: 12px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-family: var(--mono);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="nav">
+    <div class="nav-top">
+      <span class="nav-title">Sítio Bibliográfico</span>
+      <span class="nav-meta" id="nav-count">274 FRAGMENTOS · DEZ/2021–FEV/2026</span>
+    </div>
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchView('estratigrafia')">Estratigrafia</button>
+      <button class="tab-btn" onclick="switchView('tematico')">Temático</button>
+      <button class="tab-btn" onclick="switchView('garimpo')">Garimpo</button>
+      <button class="tab-btn" onclick="switchView('estatisticas')">Estatísticas</button>
+    </div>
+  </div>
+
+  <div id="main">
+    <!-- ESTRATIGRAFIA -->
+    <div id="view-estratigrafia" class="view active">
+      <div class="sec-label">↓ Estratigrafia temporal — mais recente no topo</div>
+      <div id="strat-container"></div>
+    </div>
+
+    <!-- TEMÁTICO -->
+    <div id="view-tematico" class="view">
+      <div class="cat-grid" id="cat-grid"></div>
+      <div id="cat-items-area"></div>
+    </div>
+
+    <!-- GARIMPO -->
+    <div id="view-garimpo" class="view">
+      <div class="search-row">
+        <input id="search-input" type="text" placeholder="Garimpar por palavra-chave..." oninput="runSearch()"
+          autofocus>
+        <select id="search-cat" onchange="runSearch()">
+          <option value="">Todas as categorias</option>
+        </select>
+      </div>
+      <div id="search-count" style="display:none"></div>
+      <div id="search-results"></div>
+    </div>
+
+    <!-- ESTATÍSTICAS -->
+    <div id="view-estatisticas" class="view">
+      <div class="stat-grid" id="stat-grid"></div>
+      <div class="spark-wrap">
+        <div class="sec-label">Intensidade da pesquisa por mês</div>
+        <div class="spark-bars" id="spark"></div>
+        <div class="spark-axis">
+          <span>Jun/2022</span>
+          <span style="color:#C84B2F">▲ Out/2025 (pico: 57)</span>
+          <span>Fev/2026</span>
+        </div>
+      </div>
+      <div class="two-cols">
+        <div>
+          <div class="sec-label">Domínios mais frequentes</div>
+          <div id="domain-bars"></div>
+        </div>
+        <div>
+          <div class="sec-label">Distribuição temática</div>
+          <div id="cat-bars"></div>
+        </div>
+      </div>
+      <div class="observation">
+        <strong>Leitura arqueológica:</strong> O corpus exibe dois estratos distintos.
+        O primeiro (2022–2024) revela fragmentos espaçados — exploração casual do campo.
+        O segundo (set/2025–fev/2026) evidencia intensificação abrupta:
+        <strong>57 itens apenas em outubro/2025</strong>, coincidindo com a aproximação da qualificação.
+        O domínio <em>pangram.com</em> aparece 8× no pico — índice da centralidade empírica
+        dos detectores no argumento final. A proporção v1/v2 (88/186) revela que a primeira
+        curadoria capturou apenas 32% do corpus relevante total.
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal-overlay" onclick="closeModal()">
+    <div id="modal-box" onclick="event.stopPropagation()">
+      <div id="modal-tag"></div>
+      <div id="modal-title"></div>
+      <div id="modal-meta"></div>
+      <a id="modal-open" href="#" target="_blank" rel="noopener">Abrir →</a>
+      <button id="modal-close" onclick="closeModal()">Fechar</button>
+    </div>
+  </div>
+
+  <script>
+    const MONTHS = ["", "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+    const CAT_COLORS = {
+      "Detectores de IA": "#C84B2F",
+      "Dissertação/Infra": "#4A6FA5",
+      "Debate Público": "#2A8C6E",
+      "Quadro Teórico": "#9B5E9B",
+      "Consolidação Teórica": "#7B4EA0",
+      "Integridade Acadêmica": "#C47A1E",
+      "Empiria Metodológica": "#C05028",
+      "Exploração e Fundamentos": "#3A7CA5",
+      "IA na Educação": "#2D8A72",
+      "Teoria Crítica": "#8B4513",
+      "Pré-Qualificação": "#556B2F",
+      "Brasil Institucional": "#2A6E4E",
+      "Fontes Periféricas": "#665",
+      "Slop e Deepfakes": "#8B3A3A",
+    };
+
+    const DATA = [{ "t": "AI, plagiarism — Semantic Scholar", "u": "https://www.semanticscholar.org/search?fos%5B0%5D=education&q=AI%2C+plagiarism&sort=relevance", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "Ethics and AI-Plagiarism in an Academic Environment — Semantic Scholar", "u": "https://www.semanticscholar.org/paper/Ethics-and-AI-Plagiarism-in-an-Academic-Students%E2%80%99-Sysoyev/2fff285ab3d532223000809711661c07d369149b", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "Rethinking Plagiarism in the Era of Generative AI — Semantic Scholar", "u": "https://www.semanticscholar.org/paper/Rethinking-Plagiarism-in-the-Era-of-Generative-AI-Hutson/ee8a32a290641a9832c38009bd15fa1f663c40c3", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "An Art Professor Says AI Is the Future. It's the Students Who Need Convincing — NYT (archive.ph)", "u": "https://archive.ph/hmSJw", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "What Kind of Writer Is ChatGPT? — The New Yorker (archive.ph)", "u": "https://archive.ph/ycIdR#selection-475.0-604.0", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "What Students Are Saying About Learning to Write in the Age of A.I. — NYT (archive.ph)", "u": "https://archive.ph/8zjDT", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "Alarmed by A.I. Chatbots, Universities Start Revamping How They Teach — NYT (archive.ph)", "u": "https://archive.ph/8EXkM", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "What Michael Crichton Reveals About Big Tech and A.I. — New Yorker (archive.ph)", "u": "https://archive.ph/M5GnH#selection-1745.37-1749.566", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "Elicit: The AI Research Assistant", "u": "https://elicit.com/?redirected=true", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "Consensus: AI-powered Academic Search Engine", "u": "https://consensus.app/", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "The Unpredictable Abilities Emerging From Large AI Models — Quanta Magazine", "u": "https://www.quantamagazine.org/the-unpredictable-abilities-emerging-from-large-ai-models-20230316/", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "How Quickly Do Large Language Models Learn Unexpected Skills? — Quanta Magazine", "u": "https://www.quantamagazine.org/how-quickly-do-large-language-models-learn-unexpected-skills-20240213/", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "The Poetry Fan Who Taught an LLM to Read and Write DNA — Quanta Magazine", "u": "https://www.quantamagazine.org/the-poetry-fan-who-taught-an-llm-to-read-and-write-dna-20250205/", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "Oh Shit, Git!?! — PT-BR", "u": "https://ohshitgit.com/pt_br/swears/", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "Mermaid User Guide", "u": "https://mermaid.js.org/intro/getting-started.html", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "Diagram Syntax — Mermaid", "u": "https://mermaid.js.org/intro/syntax-reference.html", "y": 2025, "m": 1, "c": "Exploração e Fundamentos", "s": "v1" }, { "t": "Ética e IA Acadêmica — ChatGPT", "u": "https://chatgpt.com/c/67dc2a72-5a30-8000-ba12-f981560a48c5", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Sumário Ética, Tecnologia e Sociedade — Google AI Studio", "u": "https://aistudio.google.com/prompts/1BcdGO8TSGnDFEelPecCxAnKv0WTcxTJJ", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "The Unbelievable Scale of AI's Pirated-Books Problem — The Atlantic (archive.ph)", "u": "https://archive.ph/xCYPn", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Generative AI Might Finally Bend Copyright Past the Breaking Point — The Atlantic (archive.ph)", "u": "https://archive.ph/aqrxw", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "The Flaw That Could Ruin Generative AI — The Atlantic (archive.ph)", "u": "https://archive.ph/nrAjc#selection-747.0-792.0", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Data Revolts Break Out Against A.I. — NYT (archive.ph)", "u": "https://archive.ph/Uhv5W#selection-583.0-602.0", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Revealed: The Authors Whose Pirated Books Are Powering Generative AI — The Atlantic (archive.ph)", "u": "https://archive.ph/g17UA#selection-797.0-826.0", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "These 183,000 Books Are Fueling the Biggest Fight in Publishing and Tech — The Atlantic (archive.ph)", "u": "https://archive.ph/ZIOQf", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Why The NYT Might Win Its Copyright Lawsuit Against OpenAI — Ars Technica (archive.ph)", "u": "https://archive.ph/qusY7#selection-601.0-1563.125", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "A Test So Hard No AI System Can Pass It — Yet — NYT (archive.ph)", "u": "https://archive.ph/Eg2Fo", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Análise da Hibridização de Haraway e Relação Humano-Ciborgue — Grok", "u": "https://grok.com/chat/180a9609-5441-46cc-a5af-43b2d188a489", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Análise interdisciplinar Deleuze/Rhizome, Brasil vs EUA — Perplexity", "u": "https://www.perplexity.ai/search/35a4747c-6e80-4de3-bd4d-d954d22113a3", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Interdisciplinary Humanities: Brazil vs. US, Deleuzian Perspectives — Grok", "u": "https://grok.com/chat/13a06774-3efa-42b3-82e6-14b7f8158e55", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Título Provisório: Inteligência Artificial Generativa, Vieses Epistêmicos e Saberes Situados — Google Docs", "u": "https://docs.google.com/document/d/1z8uC1KB2S1ImbHPP_xkNQRCq73LPXv5qIHvXxVM6Y1Q/edit", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Verbete Fictício: DSM-VI-AI (2028) — Google Docs", "u": "https://docs.google.com/document/d/1HpxPGjURwduD_4E9YoN3oCiXSOQeXTlS_thavSJ8Xqk/edit", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "AI Agents for Deep Research — Google Docs", "u": "https://docs.google.com/document/d/1bTF35ptXjYSkgwe0GwjoLToBTYXtC1GJpSCCNkWpP9w/edit", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "XML TAG PARA UM CHATBOT MAIS HONESTO — GitHub Gist", "u": "https://gist.github.com/www4lker/3004a7e5fde78b9cfafd89f8ea838b99", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "ChatGPT: Potencial, Limites e Implicações para a Universidade — IEA USP", "u": "http://www.iea.usp.br/eventos/chatgpt-potencial-limites-implicacoes-universidade", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Dora Kaufman — IEA USP", "u": "http://www.iea.usp.br/pessoas/pasta-pessoad/dora-kaufman", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Currículo Lattes — Dora Kaufman", "u": "https://buscatextual.cnpq.br/buscatextual/visualizacv.do;jsessionid=82899746B408361E800AFBB0DD3ADDA2.buscatextual_0", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Curso: IA — USP Extensão", "u": "https://cursosextensao.usp.br/course/view.php?id=3867", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "ORIENTAÇÃO ACADÊMICA — NotebookLM", "u": "https://notebooklm.google.com/notebook/e06c2f70-48f6-45c6-b162-58608b5904a9", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "OpenAI's Deep Research Agent Is Coming for White-Collar Work — WIRED", "u": "https://www.wired.com/story/openais-deep-research-agent-is-coming-for-white-collar-work/", "y": 2025, "m": 3, "c": "Quadro Teórico", "s": "v1" }, { "t": "Artificial intelligence and dichotomania — Cambridge Core", "u": "https://www.cambridge.org/core/journals/judgment-and-decision-making/article/artificial-intelligence-and-dichotomania/0421D2310727D73FAB47069FD1620AA1", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "AI, Materials, and Fraud, Oh My! — The BS Detector (Substack)", "u": "https://thebsdetector.substack.com/p/ai-materials-and-fraud-oh-my", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "Ética Pesquisa IA — ChatGPT", "u": "https://chatgpt.com/c/683f3d5a-45bc-8000-ab8c-81519a085404", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "Values in the Wild: Discovering and Analyzing Values in Real-World LLM Interactions — Anthropic", "u": "https://www.anthropic.com/research/values-wild", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "Detecting and Countering Malicious Uses of Claude — Anthropic", "u": "https://www.anthropic.com/news/detecting-and-countering-malicious-uses-of-claude-march-2025", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "Anthropic Console — Workbench", "u": "https://console.anthropic.com/workbench/06265822-025b-4df3-b921-bebade2a0e4d", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "Microsoft Study Finds AI Makes Human Cognition \"Atrophied and Unprepared\" — 404 Media", "u": "https://www.404media.co/microsoft-study-finds-ai-makes-human-cognition-atrophied-and-unprepared-3/", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "The Impact of Generative AI on Critical Thinking — Microsoft Research (PDF)", "u": "https://www.microsoft.com/en-us/research/wp-content/uploads/2025/01/lee_2025_ai_critical_thinking_survey.pdf", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "Podcast: AI Is Breaking Our Brains — 404 Media", "u": "https://www.404media.co/podcast-ai-is-breaking-our-brains/", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "Reasoning Skills of LLMs Are Often Overestimated — MIT News", "u": "https://news.mit.edu/2024/reasoning-skills-large-language-models-often-overestimated-0711", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "Modelos de raciocínio na pesquisa humanística — Google Docs", "u": "https://docs.google.com/document/d/1uQBfHROYTOEZp7RNpyg5IlSb6rVAI7pe6KvU9ZsWvOs/edit", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "Inside OpenAI's Plan to Embed ChatGPT Into College Students' Lives — NYT (archive.ph)", "u": "https://archive.ph/lGrkn", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "How Students Are Fending Off Accusations That They Used A.I. to Cheat — NYT (archive.ph)", "u": "https://archive.ph/yoxbL", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "As pessoas que se recusam a usar IA — BBC Brasil", "u": "https://www.bbc.com/portuguese/articles/cm2e27dp52ro", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "r/Professors — Reddit", "u": "https://www.reddit.com/r/Professors/", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "Zotero → Obsidian → Dataview Workflow — Obsidian Forum", "u": "https://forum.obsidian.md/t/zotero-zotfile-mdnotes-obsidian-dataview-workflow/15536", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "Notebooklm limitations — Reddit", "u": "https://www.reddit.com/r/notebooklm/comments/1l2aosy/i_now_understand_notebook_llms_limitations_and/", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "A 2024 study by Nayera Mohamed Hamed Ibrahim in AI — Perplexity", "u": "https://www.perplexity.ai/search/a-2024-study-by-nayera-mohamed-fhNHzsQbTXqLV8laZmfp5A", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "Research — DAIR Institute", "u": "https://www.dair-institute.org/research/", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "AI Art and its Impact on Artists — ACM", "u": "https://dl.acm.org/doi/fullHtml/10.1145/3600211.3604681", "y": 2025, "m": 4, "c": "Empiria Metodológica", "s": "v1" }, { "t": "Atlas of AI — Kate Crawford (Yale Books)", "u": "https://yalebooks.yale.edu/book/9780300264630/atlas-of-ai/", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "The Eye of the Master: A Social History of Artificial Intelligence — Verso Books", "u": "https://www.versobooks.com/en-gb/products/735-the-eye-of-the-master", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Inhuman Power — Pluto Books", "u": "https://www.plutobooks.com/9780745338606/inhuman-power/", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Cyber-Proletariat — Pluto Books", "u": "https://www.plutobooks.com/9780745334035/cyber-proletariat/", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Colonialismo Digital — Boitempo Editorial", "u": "https://www.boitempoeditorial.com.br/produto/colonialismo-digital-152312", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "The TESCREAL Bundle: Eugenics and the Promise of Utopia Through AGI — First Monday", "u": "https://firstmonday.org/ojs/index.php/fm/article/view/13636/11599", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Tarcízio Silva — Pesquisa, ciência, tecnologia e sociedade, racismo algorítmico", "u": "https://tarciziosilva.com.br/blog/", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Celebridades brasileiras viram alvo de deepfakes de IA — Núcleo Jor", "u": "https://nucleo.jor.br/reportagem/2025-06-12-famosas-brasileiras-viram-alvo-de-deepfakes-ia/", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "C4AI USP — Canal YouTube", "u": "https://www.youtube.com/@C4AIUSP", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Federal Judge Rules Copyrighted Books Are Fair Use for AI Training — NBC News", "u": "https://www.nbcnews.com/tech/tech-news/federal-judge-rules-copyrighted-books-are-fair-use-ai-training-rcna214766", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Reddit Sues Anthropic Over AI Scraping — Ars Technica", "u": "https://arstechnica.com/tech-policy/2025/06/reddit-sues-anthropic-over-ai-scraping-that-retained-users-deleted-posts/", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Musk's Apparent Power Grab at the Copyright Office — The Verge", "u": "https://www.theverge.com/politics/666179/maga-elon-musk-sacks-copyright-office-perlmutter", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Agentic Misalignment Research — Anthropic (Claude chat)", "u": "https://claude.ai/chat/d496c9a6-1b3b-42f8-b72e-b63333adf828", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Anthropic on X: Agentic Misalignment Research", "u": "https://x.com/AnthropicAI/status/1936144602446082431", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Geoffrey Miller on X: AI models willing to blackmail users", "u": "https://x.com/primalpoly/status/1936431726730813559", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "\"Godfather\" of AI Calls Out Latest Models for Lying to Users — Ars Technica", "u": "https://arstechnica.com/ai/2025/06/godfather-of-ai-calls-out-latest-models-for-lying-to-users/", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Anthropic CEO Opposes Decade-Long Freeze on State AI Laws — Ars Technica", "u": "https://arstechnica.com/ai/2025/06/in-10-years-all-bets-are-off-anthropic-ceo-opposes-decade-long-freeze-on-state-ai-laws/", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Anthropic Purchased Millions of Print Books to Scan for Claude — X", "u": "https://x.com/Sauers_/status/1937579878313852966", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "ChatGPT Use Linked to Cognitive Decline: MIT Research — Reddit/r/technology", "u": "https://www.reddit.com/r/technology/comments/1lg7j2y/chatgpt_use_linked_to_cognitive_decline_mit/", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "How to Survive the A.I. Revolution — New Yorker (archive.ph)", "u": "https://archive.ph/ERAjj", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Absurd AI Slop About How Elon Musk Will Fix America Is Megaviral on Facebook — 404 Media", "u": "https://www.404media.co/absurd-ai-slop-about-how-elon-musk-will-fix-america-is-megaviral-on-facebook/", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Where Facebook's AI Slop Comes From — 404 Media", "u": "https://www.404media.co/where-facebooks-ai-slop-comes-from/", "y": 2025, "m": 5, "c": "Consolidação Teórica", "s": "v1" }, { "t": "Pangram AI Detector for Research Access — Claude", "u": "https://claude.ai/chat/fe03dd74-7443-4934-873f-e07b3ce9c41f", "y": 2025, "m": 7, "c": "Pré-Qualificação", "s": "v1" }, { "t": "Academic Research Tools Configuration — Claude", "u": "https://claude.ai/chat/53ec5912-91d4-4fea-b1d7-36e8ce6cb686", "y": 2025, "m": 7, "c": "Pré-Qualificação", "s": "v1" }, { "t": "OPUS Deep Research — Curadoria, Síntese Bibliográfica IA, Dados Empíricos Estudantes — Claude", "u": "https://claude.ai/chat/59dfc1af-b249-4eb5-b390-75ae33978c91", "y": 2025, "m": 7, "c": "Pré-Qualificação", "s": "v1" }, { "t": "Perguntas Investigativas Críticas — Epistemologia e Natureza da Agência — Perplexity", "u": "https://www.perplexity.ai/search/perguntas-investigativas-criti-xCvI9vyaSLe_BAskOJi6cQ", "y": 2025, "m": 7, "c": "Pré-Qualificação", "s": "v1" }, { "t": "HTML Style Analysis — Google AI Studio", "u": "https://aistudio.google.com/prompts/1uUDvCEEMnd2mEJETDEryltZ5xjBybH64", "y": 2025, "m": 7, "c": "Pré-Qualificação", "s": "v1" }, { "t": "DeepL Translate", "u": "https://www.deepl.com/pt-BR/translator", "y": 2025, "m": 7, "c": "Pré-Qualificação", "s": "v1" }, { "t": "Análise de Critério e Estilo do Blog — Google Docs", "u": "https://docs.google.com/document/d/1mnwwGQphnlMndxpMzQ4SGxJEMp7TIYDcr9xQocCGGRc/edit", "y": 2025, "m": 7, "c": "Pré-Qualificação", "s": "v1" }, { "t": "Pricing | Pangram Labs", "u": "https://www.pangram.com/pricing?category=developers", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Pangram Research Request - walker.dantas@sou.ufmt.br - E-mail de Universidade Federal de Mato Grosso - UFMT", "u": "https://mail.google.com/mail/u/2/#search/pangram+api/FMfcgzQcqbbRwLNNHTPBpzcqPJnTcpsz", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "Pangram Labs | Accurate AI Detector for ChatGPT & More", "u": "https://www.pangram.com/", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "Pangram Labs Quickstart Guide — pangram documentation", "u": "https://pangram.readthedocs.io/en/latest/tutorial.html", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "Pangram Labs Documentation — pangram documentation", "u": "https://pangram.readthedocs.io/en/latest/index.html#", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "GPTZero | Stoplight", "u": "https://gptzero.stoplight.io/", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "GPTZero Dashboard", "u": "https://app.gptzero.me/api", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "API Key - Pangram Labs", "u": "https://www.pangram.com/apikey", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "AI-detection on an array of files | GPTZero API", "u": "https://gptzero.stoplight.io/docs/gptzero-api/0a8e7efa751a6-ai-detection-on-an-array-of-files", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "AI Detector - Free AI Checker for ChatGPT, GPT-5 & Gemini", "u": "https://gptzero.me/", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "pesquise sobre o humanizador de texto de IA chamado \"Waler writes\": sua...", "u": "https://www.perplexity.ai/search/pesquise-sobre-o-humanizador-d-cTYfNV9LRTmOBRdID_ysow", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "Yes, AI detection can be accurate | Pangram Labs", "u": "https://www.pangram.com/blog/ai-detection-actually-works", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "How well does Pangram perform on humanizers? (Updated August 2025) | Pangram Labs", "u": "https://www.pangram.com/blog/humanizers-aug-25", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Deedy on X: \"New research shows which AI detectors actually detect work. The #1 has a &lt; 0.5% false positive and negat", "u": "https://x.com/deedydas/status/1982658543489831080", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Compare Text for AI Plagiarism - Pangram Labs", "u": "https://www.pangram.com/compare", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "qual o estado da arte em humanização de textos hoje", "u": "https://www.perplexity.ai/search/qual-o-estado-da-arte-em-human-2U3E5sWXSzyu0i1IyqYJGQ", "y": 2026, "m": 2, "c": "Detectores de IA", "s": "v2" }, { "t": "o estado da arte em detectores de texto por IA HOJE: top cinco", "u": "https://www.perplexity.ai/search/a77700f2-56d5-44f4-b7ab-82e35c696ba2", "y": 2026, "m": 2, "c": "Detectores de IA", "s": "v2" }, { "t": "View of THE ROLE OF AI DETECTION TOOLS IN UPHOLDING ACADEMIC INTEGRITY: AN EVALUATION OF THEIR EFFECTIVENESS", "u": "https://contemporaryjournal.com/index.php/14/article/view/379/323", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "THE ROLE OF AI DETECTION TOOLS IN UPHOLDING ACADEMIC INTEGRITY: AN EVALUATION OF THEIR EFFECTIVENESS | Contemporary Jour", "u": "https://contemporaryjournal.com/index.php/14/article/view/379", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "AI Could Have Written This: Birth of a Classist Slur in Knowledge Work | Proceedings of the Extended Abstracts of the CH", "u": "https://dl.acm.org/doi/abs/10.1145/3706599.3716239?casa_token=KI8vnVYzdSoAAAAA:WCr2pMdkMu7HcVjN6AGJJUkqeQ4gymJhnshR3POu_U1CIguz6GnVtpEadV6xvF9GYn2vT1RQp8nM", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "University rolling out AI-detection tool, calls any AI use “fraud\". How are your schools handling this? : r/Bard", "u": "https://www.reddit.com/r/Bard/comments/1p50cfz/university_rolling_out_aidetection_tool_calls_any/", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "Turnitin Originality | O novo padrão em Integridade Acadêmica | Turnitin", "u": "https://www.turnitin.com.br/products/originality/", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Turnitin 2025 AI Detection Update | Can You Still Bypass AI? Detection, Rewrites & Humanizers Tested", "u": "https://www.scientificpakistan.com/post/turnitin-2025-ai-detection-update-can-you-still-bypass-ai-detection-rewrites-humanizers-tested", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Testing Turnitin's New AI Detector: How Accurate Is It? | BestColleges", "u": "https://www.bestcolleges.com/news/analysis/testing-turnitin-new-ai-detector/", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "T-detector | Turnitin AI Detector & Plagiarism Reports", "u": "https://www.turnitindetector.com/", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Recursos | Turnitin", "u": "https://www.turnitin.com.br/recursos/", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Qual é o potencial da escrita por IA? Apoiar a má conduta é seu maior objetivo?", "u": "https://www.turnitin.com.br/blog/qual-potencial-da-escrita-por-ia-apoiar-ma-conduta-e-seu-maior-objetivo", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "O lançamento do detector de escrita por IA da Turnitin e o que ainda está por vir", "u": "https://www.turnitin.com.br/blog/lancamento-do-detector-de-escrita-por-ia-da-turnitin", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "O crescimento do plágio: Compra e Venda de trabalhos acadêmicos | Turnitin", "u": "https://www.turnitin.com.br/products/originality/fraude-academica", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Integridade Acadêmica", "u": "https://www.turnitin.com.br/ebooks/integridade-academica-linkedin", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Escrita por IA | Ferramentas de IA | Turnitin", "u": "https://www.turnitin.com.br/solutions/topicos/escrita-com-ia", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Como promover avaliação autêntica, com integridade", "u": "https://www.turnitin.com.br/blog/como-promover-avaliacao-autentica-com-integridade", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Como estabelecer uma cultura de Integridade e evitar a má conduta acadêmica", "u": "https://www.turnitin.com.br/blog/como-estabelecer-cultura-de-integridade-e-evitar-a-ma-conduta-academica", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Cinco maneiras de preparar conteúdos acadêmicos na era da IA", "u": "https://www.turnitin.com.br/blog/cinco-maneiras-de-preparar-conteudos-academicos-na-era-da-ia", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "COMO EU POSSO TESTAR UM DETECTOR DE TEXTO ESCRITO POR IA DA TURNITIN?", "u": "https://www.perplexity.ai/search/como-eu-posso-testar-um-detect-unCq1UM6TGGoXlnIVeYLBQ", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Atualizações sobre a detecção de escrita por IA, pela Diretora de Produto da Turnitin", "u": "https://www.turnitin.com.br/blog/atualizacoes-sobre-deteccao-escrita-ia-pela-diretora-produto-turnitin", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "(16) How to Get Access to Turnitin AI Detector | LinkedIn", "u": "https://www.linkedin.com/pulse/how-get-access-turnitin-ai-detector-careernext-tech-bh6jc/", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "detectores de texto gerado por IA, hoje, ainda trabalham apenas com texto ou...", "u": "https://www.perplexity.ai/search/detectores-de-texto-gerado-por-0zmkaOGSTTSv1_ofokMeRA", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "o humanizador de textos de IA mais imbatível de todos. top 5. pesquisa...", "u": "https://www.perplexity.ai/search/o-humanizador-de-textos-de-ia-zIqd75BDSHu4LY7u9PFhYQ", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "StealthGPT: IA Invisível, Humanizador de IA e Verificador de IA Gratuito", "u": "https://www.stealthgpt.ai/pt/dashboard", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "Módulo 1: Genealogia do Turnitin como Infraestrutura de Controle Duração...", "u": "https://www.perplexity.ai/search/modulo-1-genealogia-do-turniti-ZwA9nUr.TCW.7wS4FRJZ3w", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "Avaliação do Detector de IA Turnitin - Documentos Google", "u": "https://docs.google.com/document/d/1xeDdcvwilvOKiA0AH7ZWXbqgf4tv_Dud3QL_GAcN5lo/edit?tab=t.0", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "AI Detection Tools Falsely Accuse International Students of Cheating – The Markup", "u": "https://themarkup.org/machine-learning/2023/08/14/ai-detection-tools-falsely-accuse-international-students-of-cheating", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "GPTZero", "u": "https://app.gptzero.me/app/welcome", "y": 2024, "m": 4, "c": "Detectores de IA", "s": "v2" }, { "t": "Remix de Fluxograma: Metodologia Pangram - Testes com Detectores de IA - Claude", "u": "https://claude.ai/chat/16849447-afc8-436c-a67c-c447a1d2d350?artifactId=remixed-dc6e63db", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "Pangram Labs Documentation — pangram documentation", "u": "https://pangram.readthedocs.io/en/latest/", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "AI Detection Dashboard - Pangram Labs", "u": "https://www.pangram.com/dashboard", "y": 2025, "m": 11, "c": "Detectores de IA", "s": "v2" }, { "t": "Pangram Predicts 21% of ICLR Reviews are AI-Generated | Pangram Labs", "u": "https://www.pangram.com/blog/pangram-predicts-21-of-iclr-reviews-are-ai-generated", "y": 2025, "m": 12, "c": "Detectores de IA", "s": "v2" }, { "t": "Análise comparativa de achados sobre pangram e evasão - Claude", "u": "https://claude.ai/chat/63912554-7565-45fd-97e3-40783b3409ab", "y": 2025, "m": 12, "c": "Detectores de IA", "s": "v2" }, { "t": "AI tool detects LLM-generated text in research papers and peer reviews", "u": "https://www.nature.com/articles/d41586-025-02936-6", "y": 2025, "m": 12, "c": "Detectores de IA", "s": "v2" }, { "t": "zero gptzero? - Documentos Google", "u": "https://docs.google.com/document/d/134iepiPfzTeBXJb6oHzopw7LG8P35XZV2yMfw4GaLqI/edit?tab=t.0", "y": 2025, "m": 10, "c": "Detectores de IA", "s": "v2" }, { "t": "youtube.com/redirect?event=video_description&redir_token=QUFFLUhqa1B1TEtTZkUzS0pWdTVhVnE5Vk10ZUg2d2NTUXxBQ3Jtc0trSFlMYWV", "u": "https://www.turnitin.com/static/efficacy-2018/higher-education/#all++", "y": 2023, "m": 2, "c": "Detectores de IA", "s": "v2" }, { "t": "Turnitin - Pesquisa Google", "u": "https://www.google.com/search?client=firefox-b-d&q=Turnitin", "y": 2023, "m": 2, "c": "Detectores de IA", "s": "v2" }, { "t": "Tipos de trabalho não originais mais frequentes | Turnitin", "u": "https://www.turnitin.com/pt/infographics/os-10-tipos-de-plagio-mais-comuns", "y": 2023, "m": 2, "c": "Detectores de IA", "s": "v2" }, { "t": "Sneak preview of Turnitin’s AI writing and ChatGPT detection capability | Turnitin", "u": "https://www.turnitin.com/blog/sneak-preview-of-turnitins-ai-writing-and-chatgpt-detection-capability", "y": 2023, "m": 2, "c": "Detectores de IA", "s": "v2" }, { "t": "Integridade Acadêmica | Turnitin", "u": "https://www.turnitin.com/pt/ebooks/integridade-academica", "y": 2023, "m": 2, "c": "Detectores de IA", "s": "v2" }, { "t": "Apoie alunos a produzir com qualidade e originalidade | Turnitin", "u": "https://www.turnitin.com/pt", "y": 2023, "m": 2, "c": "Detectores de IA", "s": "v2" }, { "t": "Repositorio Institucional: Vidas exemplares : um estudo dos perfis biográficos publicados na Revista Veja entre 1990 e 2", "u": "https://ri.ufmt.br/handle/1/3871", "y": 2024, "m": 4, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Repositorio Institucional: Telejornalismo e migrações : desafios e dinâmicas dos venezuelanos em Cuiabá-MT", "u": "https://ri.ufmt.br/handle/1/3935", "y": 2024, "m": 4, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Teses e Dissertações - Estudos de Cultura Contemporânea", "u": "https://ecco.ufmt.br/teses-e-dissertacoes/", "y": 2025, "m": 7, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Plano de Pesquisa em Cinco Pontos: A Realidade Brasileira 1. Mapeamento das...", "u": "https://www.perplexity.ai/search/plano-de-pesquisa-em-cinco-pon-9RJ8DAJFTAytagU_0neHvQ", "y": 2025, "m": 10, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Produções - Estudos de Cultura Contemporânea", "u": "https://ecco.ufmt.br/producoes/producoes/", "y": 2025, "m": 9, "c": "Dissertação/Infra", "s": "v2" }, { "t": "DOSSIÊ ESTRATÉGICO INTEGRAL: A VIRADA PARRÉSIÁSTICA NO PPGECCO - Documentos Google", "u": "https://docs.google.com/document/d/1YWFfMDcPM6vQsJK4Licpf3QSZ8SCsO3PVTe9hDmq_Ec/edit?tab=t.0", "y": 2025, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "1 - Taxonomias Intervenção IA-Escrita - NotebookLM", "u": "https://notebooklm.google.com/notebook/44c7835a-0c9a-466f-8f84-32eb5886f60e", "y": 2025, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Teses e Dissertações - Estudos de Cultura Contemporânea", "u": "https://ufmt.br/ecco/teses-e-dissertacoes/", "y": 2022, "m": 10, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Repositorio Institucional: El video-ensayo como forma de comunicación audiovisual académica en Iberoamérica", "u": "https://ri.ufmt.br/handle/1/3484", "y": 2022, "m": 10, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Produções - Estudos de Cultura Contemporânea", "u": "https://ufmt.br/ecco/producoes/", "y": 2022, "m": 10, "c": "Dissertação/Infra", "s": "v2" }, { "t": "eixo 2 - autoetnográfico-performático - NotebookLM", "u": "https://notebooklm.google.com/notebook/a922c58d-bcce-4122-a5fd-cf087eae75d5", "y": 2025, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "eixo 1 - EMPÍRICO-CRÍTIC0 - NotebookLM", "u": "https://notebooklm.google.com/notebook/1e2cb599-c87c-4e17-b30d-8e16e057ec1e", "y": 2025, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "EIXO 3: PROPOSITIVO-NORMATIVO - NotebookLM", "u": "https://notebooklm.google.com/notebook/df3b27a4-cfe0-4aae-ad67-7c4076b83de0", "y": 2025, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "MAPEAMENTO EPISTÊMICO COMPLETO: PESQUISA SOBRE DETECTORES DE IA - Documentos Google", "u": "https://docs.google.com/document/d/11WY_ynsVJBvrrl6tHuhmJjmQ34TJkG4ZWvTpV-XVv_E/edit?tab=t.0#heading=h.m509wdg104ke", "y": 2025, "m": 10, "c": "Dissertação/Infra", "s": "v2" }, { "t": "CLAUDE - INVESTIGAÇÃO PRELIMINAR - DISSERTAÇÃO DE MESTRADO - Google Docs", "u": "https://docs.google.com/document/d/1hT4rMAQJkTtja7Hht1yqjytuPoDBg9tsxqJyZhKNSPw/edit?tab=t.2cz8mys4ywld", "y": 2025, "m": 9, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Análise Interativa do NotebookLM para Humanidades", "u": "https://notebooklm-academico.yay.boo/", "y": 2025, "m": 10, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Docentes - Estudos de Cultura Contemporânea", "u": "https://ecco.ufmt.br/docentes/#", "y": 2025, "m": 8, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Docentes - Estudos de Cultura Contemporânea", "u": "https://ecco.ufmt.br/docentes/", "y": 2025, "m": 8, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Editais - Estudos de Cultura Contemporânea", "u": "https://ecco.ufmt.br/editais/", "y": 2023, "m": 10, "c": "Dissertação/Infra", "s": "v2" }, { "t": "ecco - pontos cegos 1 - Google Docs", "u": "https://docs.google.com/document/d/14qwiQjtrWUVrdEP1ddQDke04O_g0_XF9oW5AY_fVeCA/edit?tab=t.0", "y": 2025, "m": 12, "c": "Dissertação/Infra", "s": "v2" }, { "t": "GUIA EXECUTIVO: DA DISSERTAÇÃO ATUAL PARA QUALIFICAÇÃO PALPÁVEL - Google Docs", "u": "https://docs.google.com/document/d/1XsIY8pX4NjRKDYt4CHTpJPWWRMRp-ebilm9_pm5pbBs/edit?tab=t.0#heading=h.swqu4uyfmuwl", "y": 2025, "m": 12, "c": "Dissertação/Infra", "s": "v2" }, { "t": "ECCO - DISSERTACOES QUE CONVERSAM COM A MINHA - Google Docs", "u": "https://docs.google.com/document/d/1QOVdFPKpk81UKGbCRToKyqrfB97MUm7cf9q48sGul5A/edit?tab=t.0#heading=h.imuy67mwsnim", "y": 2025, "m": 12, "c": "Dissertação/Infra", "s": "v2" }, { "t": "ADENDO - GUIA EXECUTIVO: DA DISSERTAÇÃO ATUAL PARA QUALIFICAÇÃO PALPÁVEL - Google Docs", "u": "https://docs.google.com/document/d/1gEuxDq8FggQeYMRaREEmVLAXR-d6aYrTrSFk5qrKOGY/edit?tab=t.0", "y": 2025, "m": 12, "c": "Dissertação/Infra", "s": "v2" }, { "t": "PESQUISA_ESTABELECIDA - Análise de dissertações PPGECCO", "u": "https://chatgpt.com/g/g-p-68ed186a64e881919add2cb0bf17969d-pesquisa-estabelecida/c/69100256-a2d8-8326-bbc9-f6d25a8e116b", "y": 2025, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Walker Barros: \"aew crl descobri como vou escrever minh dissertação e comprovar que fui eu quem fiz: usarei aquela parad", "u": "https://bsky.app/profile/walker.eco.br/post/3l6sazwtl672t", "y": 2024, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Linhas de Pesquisa - Estudos de Cultura Contemporânea", "u": "https://ecco.ufmt.br/linhas-de-pesquisa/", "y": 2024, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Dissertação usando Git e Python", "u": "https://chatgpt.com/c/67126d79-499c-8000-88ca-b53e2a76ebe5", "y": 2024, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "O que é um Texto de Qualificação no Contexto do PPGECCO-UFMT - Documentos Google", "u": "https://docs.google.com/document/d/1QvTTzFMDdaHCw6nVOWX2Az9DetFJ-JJVL2mbHe6f2p8/edit?tab=t.0#heading=h.40vlpaoch5io", "y": 2025, "m": 10, "c": "Dissertação/Infra", "s": "v2" }, { "t": "PESQUISA_ESTABELECIDA - Análise de dissertações relacionadas", "u": "https://chatgpt.com/g/g-p-68ed186a64e881919add2cb0bf17969d-pesquisa-estabelecida/c/690a80b0-f024-8325-a8e1-bb370625adf1", "y": 2025, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "ECCO - pontos cegos 2 - Documentos Google", "u": "https://docs.google.com/document/d/1-ntA7J5Zz_72rIth_4U_KVG6xXsr7MVfAjACyXPFPHY/edit?tab=t.0#heading=h.iva06meq16dg", "y": 2025, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "FAZENDO AI-generated text detection research - Claude", "u": "https://claude.ai/chat/f288ac12-20de-461e-bb76-cb037d557c1b", "y": 2025, "m": 10, "c": "Dissertação/Infra", "s": "v2" }, { "t": "www4lker/projeto-mestrado-GIT-VERIFICADO: APRENDIZADO PÚBLICO - DISSERTAÇÃO ESCRITA VIA GIT", "u": "https://github.com/www4lker/projeto-mestrado-GIT-VERIFICADO", "y": 2024, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Repositorio Institucional: O ciberespaço como lugar de contracultura", "u": "https://ri.ufmt.br/handle/1/122", "y": 2025, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Repositorio Institucional: Espaços não formais de educação : Youtube como ferramenta de apoio à educação formal", "u": "https://ri.ufmt.br/handle/1/3483", "y": 2025, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Repositorio Institucional: Buscando no repositório", "u": "https://ri.ufmt.br/browse?type=program&sort_by=2&order=ASC&rpp=100&etal=-1&value=Programa+de+P%C3%B3s-Gradua%C3%A7%C3%A3o+em+Estudos+de+Cultura+Contempor%C3%A2nea&offset=0", "y": 2025, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "WALKER_DISSERTAÇÃO_ECCO - Online LaTeX Editor Overleaf", "u": "https://www.overleaf.com/project/682626a2d91b0b65c3ebb649", "y": 2025, "m": 12, "c": "Dissertação/Infra", "s": "v2" }, { "t": "HANDOFF TÉCNICO: Sistema de Auditoria Git Reflexiva para Dissertação com IA - Documentos Google", "u": "https://docs.google.com/document/d/1OBzVXSGmBZzrhV4ZzZyO-XRHNevSvHUJWbM3giRj3eQ/edit?tab=t.d8k1yot4uuy5", "y": 2025, "m": 11, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Tecnologias de Álibi: O Paradoxo da Eficácia dos Detectores de IA e a Reconfiguração da Escrita e do Julgamento Pedagógi", "u": "https://docs.google.com/document/d/1eHUQPf2WJrMQgbLJjvS4GkQ-ux2maT1w9_Vb90hW-P0/edit?tab=t.0", "y": 2025, "m": 10, "c": "Dissertação/Infra", "s": "v2" }, { "t": "Characterizing Web Search in The Age of Generative AI", "u": "https://arxiv.org/html/2510.11560v1", "y": 2025, "m": 10, "c": "Fontes Periféricas", "s": "v2" }, { "t": "How WIRED Will Use Generative AI Tools | WIRED", "u": "https://www.wired.com/about/generative-ai-policy/", "y": 2024, "m": 2, "c": "Fontes Periféricas", "s": "v2" }, { "t": "Tech companies don’t care that students use their AI agents to cheat | The Verge", "u": "https://archive.ph/15wsy", "y": 2025, "m": 11, "c": "Fontes Periféricas", "s": "v2" }, { "t": "How WIRED Will Use Generative AI Tools | WIRED", "u": "https://www.wired.com/story/how-wired-will-use-generative-ai-tools/", "y": 2023, "m": 3, "c": "Fontes Periféricas", "s": "v2" }, { "t": "Emergent introspective awareness in large language models \\ Anthropic", "u": "https://www.anthropic.com/research/introspection", "y": 2025, "m": 11, "c": "Fontes Periféricas", "s": "v2" }, { "t": "Rampant AI Cheating Is Ruining Education Alarmingly Fast", "u": "https://archive.ph/NzwUu", "y": 2025, "m": 9, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "Let's Talk About ChatGPT and Cheating in the Classroom | WIRED", "u": "https://archive.ph/Ux2Ok#selection-2139.0-8353.401", "y": 2025, "m": 9, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "Does A.I. Really Encourage Cheating in Schools? | The New Yorker", "u": "https://archive.ph/APxMb", "y": 2025, "m": 9, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "The Atlantic", "u": "https://www.theatlantic.com/search/?q=plagiarism", "y": 2025, "m": 1, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "What Happened When I Set A Trap To Catch Students Cheating With AI | HuffPost UK Parents", "u": "https://www.huffingtonpost.co.uk/entry/set-trap-to-catch-students-cheating-ai_uk_691f20d1e4b00ed8a94f4c01", "y": 2025, "m": 11, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "The Simpsons season 37 episode tackles AI cheating and Chalmers slime craze", "u": "https://tribune.com.pk/story/2571087/the-simpsons-season-37-episode-tackles-ai-cheating-and-chalmers-slime-craze", "y": 2025, "m": 11, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "Academic integrity and artificial intelligence: is ChatGPT hype, hero or heresy? - ScienceDirect", "u": "https://www.sciencedirect.com/science/article/abs/pii/S0001299823000363?casa_token=EduMfG0xpS8AAAAA:B08KcXfG48gOwrBweT0yKRYtGy4QHmH8wRl5omHIZB_TopOjaWtqZvhBGLGn_e_I_I7co_ImZQ", "y": 2025, "m": 11, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "‘I received a first but it felt tainted and undeserved’: inside the university AI cheating crisis | Artificial intellige", "u": "https://www.theguardian.com/technology/2024/dec/15/i-received-a-first-but-it-felt-tainted-and-undeserved-inside-the-university-ai-cheating-crisis", "y": 2025, "m": 10, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "Why Students Cheat and How Understanding This Can Help Reduce the Frequency of Academic Misconduct in Higher Education: ", "u": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10653228/", "y": 2025, "m": 10, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "The Schools Without ChatGPT Plagiarism - The Atlantic", "u": "https://archive.ph/VO9i4", "y": 2026, "m": 2, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "Colleges Still Don’t Have a Plan for AI Cheating - The Atlantic", "u": "https://archive.ph/f8GHB", "y": 2026, "m": 2, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "**Transparency in the Use of AI:** In which contexts (e.g., research versus composition) is it ethically imperative to d", "u": "https://www.perplexity.ai/search/transparency-in-the-use-of-ai-hTXTeVEKRQyNqXXi1ey1xA", "y": 2025, "m": 2, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "Parents Sue School After Son Gets Bad Grade for Using AI on Homework", "u": "https://www.vice.com/en/article/using-ai-for-homework-cheating-lawsuit/", "y": 2025, "m": 1, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "View of Academic Integrity considerations of AI Large Language Models in the post-pandemic era: ChatGPT and beyond", "u": "https://open-publishing.org/journals/index.php/jutlp/article/view/635/635", "y": 2025, "m": 10, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "Software antiplágio popular promete identificar textos do ChatGPT : Revista Pesquisa Fapesp", "u": "https://revistapesquisa.fapesp.br/software-antiplagio-popular-promete-identificar-textos-do-chatgpt/", "y": 2025, "m": 10, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "O plágio encoberto em textos do ChatGPT : Revista Pesquisa Fapesp", "u": "https://revistapesquisa.fapesp.br/o-plagio-encoberto-em-textos-do-chatgpt/", "y": 2025, "m": 10, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "Estudante é falsamente acusado por detectores de IA: Falso positivo", "u": "https://undetectable.ai/blog/br/estudante-falsamente-acusado-por-detectores-de-ia/", "y": 2025, "m": 10, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "accused of plagiarism - Reddit Search!", "u": "https://www.reddit.com/r/ChatGPT/search/?q=accused+of+plagiarism&type=link&cId=df6486a6-6306-42fb-a380-65733d8f45e7&iId=cfc11394-c01d-408d-853c-63e256468b20", "y": 2024, "m": 4, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "There's literally no way to get caught plagiarizing with Chat GPT : r/ChatGPT", "u": "https://www.reddit.com/r/ChatGPT/comments/110ih6y/theres_literally_no_way_to_get_caught/", "y": 2024, "m": 4, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "I feel like people keep neglecting the fact that OpenAI themselves says that what ChatGPT writes is intellectually your ", "u": "https://www.reddit.com/r/ChatGPT/comments/13ezbx1/i_feel_like_people_keep_neglecting_the_fact_that/", "y": 2024, "m": 4, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "AI is complicating plagiarism. How should scientists respond?", "u": "https://www.nature.com/articles/d41586-024-02371-z", "y": 2024, "m": 11, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "Tech companies don’t care that students use their AI agents to cheat | The Verge", "u": "https://www.theverge.com/ai-artificial-intelligence/812906/ai-agents-cheating-school-students#comments", "y": 2025, "m": 11, "c": "Integridade Acadêmica", "s": "v2" }, { "t": "Rate my AI teacher? Students’ perceptions of chatbots will influence how they learn with AI", "u": "https://theconversation.com/rate-my-ai-teacher-students-perceptions-of-chatbots-will-influence-how-they-learn-with-ai-265163", "y": 2025, "m": 10, "c": "IA na Educação", "s": "v2" }, { "t": "English professors double down on requiring printed copies of readings | Yale Daily News", "u": "https://yaledailynews.com/articles/english-professors-double-down-on-requiring-printed-copies-of-readings", "y": 2026, "m": 1, "c": "IA na Educação", "s": "v2" }, { "t": "Teach Students How to Think, Not What to Think - The Atlantic", "u": "https://archive.ph/xxi2I", "y": 2025, "m": 10, "c": "IA na Educação", "s": "v2" }, { "t": "AI is Killing Critical Thinking—But it Doesn’t Have to Be That Way - EdTech Digest", "u": "https://www.edtechdigest.com/2025/05/27/ai-is-killing-critical-thinking-but-it-doesnt-have-to-be-that-way/", "y": 2025, "m": 10, "c": "IA na Educação", "s": "v2" }, { "t": "To Trust or to Think: Cognitive Forcing Functions Can Reduce Overreliance on AI in AI-assisted Decision-making: Proceedi", "u": "https://dl.acm.org/doi/abs/10.1145/3449287?casa_token=oTHby2oh3tgAAAAA:w77YYjOPg8dhANlPZd1g-kZh_UfnnjQHIiRM6PHkJUraGTSiCyJwTMfPUDqnGgMIb7iciKCw5oMZ", "y": 2025, "m": 11, "c": "IA na Educação", "s": "v2" }, { "t": "Learning in the Panopticon | Proceedings of the 34th Australian Conference on Human-Computer Interaction", "u": "https://dl.acm.org/doi/10.1145/3572921.3572937", "y": 2025, "m": 10, "c": "IA na Educação", "s": "v2" }, { "t": "AI tools like ChatGPT popular among students who struggle with concentration and attention", "u": "https://www.frontiersin.org/news/2024/08/28/chatgpt-popular-students-concentration", "y": 2025, "m": 7, "c": "IA na Educação", "s": "v2" }, { "t": "scite Search", "u": "https://scite.ai/search?mode=all&q=Revisiting%20Foucault%27s%20panopticon:%20how%20does%20AI%20surveillance%20transform%20educational%20norms?", "y": 2025, "m": 10, "c": "IA na Educação", "s": "v2" }, { "t": "Revisiting Foucault's panopticon: how does AI surveillance transform educational norms? | Elicit", "u": "https://elicit.com/find-papers/58b34a6d-9169-4a87-acbb-fbdf878b86e4", "y": 2025, "m": 10, "c": "IA na Educação", "s": "v2" }, { "t": "How Students Are Fending Off Accusations That They Used A.I. to Cheat - The New York Times", "u": "https://archive.ph/Gkoxt", "y": 2025, "m": 10, "c": "IA na Educação", "s": "v2" }, { "t": "As corporações querem professores-robôs | Outras Palavras", "u": "https://outraspalavras.net/trabalhoeprecariado/trabalho-as-corporacoes-querem-professores-robos/", "y": 2025, "m": 10, "c": "IA na Educação", "s": "v2" }, { "t": "What is the relationship between neoliberal university reforms and changes in student assessment practices?\" - Consensus", "u": "https://consensus.app/search/what-is-the-relationship-between-neoliberal-univer/V00OPrl_SXOwzGiQRgOtJA/?lang=en", "y": 2025, "m": 10, "c": "IA na Educação", "s": "v2" }, { "t": "Why AI Breaks Bad | WIRED", "u": "https://www.wired.com/story/ai-black-box-interpretability-problem/", "y": 2025, "m": 10, "c": "Teoria Crítica", "s": "v2" }, { "t": "Inteligência artificial: a ciência rumo à obsolescência? | Nexo Jornal", "u": "https://www.nexojornal.com.br/colunistas/2023/Intelig%C3%AAncia-artificial-a-ci%C3%AAncia-rumo-%C3%A0-obsolesc%C3%AAncia", "y": 2023, "m": 4, "c": "Teoria Crítica", "s": "v2" }, { "t": "Kate Crawford on “Atlas of AI: Power, Politics, and the Planetary Costs of Artificial Intelligence” - YouTube", "u": "https://www.youtube.com/watch?v=KcefG-0InLE", "y": 2025, "m": 11, "c": "Teoria Crítica", "s": "v2" }, { "t": "A aceleração do tempo não é um acaso: ela porta um projeto neofascista — Paul B. Preciado (tradução) | by luaquinomar | ", "u": "https://medium.com/@kenuilucas/a-acelera%C3%A7%C3%A3o-do-tempo-n%C3%A3o-%C3%A9-um-acaso-ela-porta-um-projeto-neofascista-paul-b-4584b295c3dd", "y": 2026, "m": 2, "c": "Teoria Crítica", "s": "v2" }, { "t": "A Cibernética Política de Paul B. Preciado - Google Docs", "u": "https://docs.google.com/document/d/1-tnxwTDgB_wAu7ZBKkOjEXNolQIfC1IhUAextHetCNk/edit?tab=t.57h3hs9oigaz", "y": 2026, "m": 2, "c": "Teoria Crítica", "s": "v2" }, { "t": "Verdade e coragem: uma leitura crítica da parrhesía socrática e cínica em Michel Foucault", "u": "https://repositorio.ufsc.br/handle/123456789/106950", "y": 2022, "m": 6, "c": "Teoria Crítica", "s": "v2" }, { "t": "strong reading: Michel Foucault - The Order of Things - Part 1", "u": "http://strongreading.blogspot.com/2012/01/michel-foucault-order-of-things-part-1.html", "y": 2022, "m": 6, "c": "Teoria Crítica", "s": "v2" }, { "t": "Inteligência artificial: revolução para o bem ou para o mal? | Nexo Jornal", "u": "https://www.nexojornal.com.br/colunistas/2023/Intelig%C3%AAncia-artificial-revolu%C3%A7%C3%A3o-para-o-bem-ou-para-o-mal", "y": 2023, "m": 7, "c": "Teoria Crítica", "s": "v2" }, { "t": "‘O afropessimismo sonha de uma maneira radical’ - Nexo Jornal", "u": "https://www.nexojornal.com.br/entrevista/2024/11/19/afropessimismo-violencia-racial-frank-wilderson", "y": 2025, "m": 11, "c": "Teoria Crítica", "s": "v2" }, { "t": "Capitalismo de Vigilância e Racionalidade Neoliberal - NotebookLM", "u": "https://notebooklm.google.com/notebook/16c5bad9-6baf-4537-b282-c1ddd5a40777", "y": 2025, "m": 10, "c": "Teoria Crítica", "s": "v2" }, { "t": "Parresía e Risco Ontológico Acadêmico - NotebookLM", "u": "https://notebooklm.google.com/notebook/0f152400-415a-4987-9ad5-bab29df50ec6", "y": 2025, "m": 10, "c": "Teoria Crítica", "s": "v2" }, { "t": "How Charlie Kirk’s Killer Poisoned Everyone With Meme-Slop - POLITICO", "u": "https://www.politico.com/news/magazine/2025/09/17/how-charlie-kirks-killer-poisoned-everyone-with-meme-slop-00569200", "y": 2025, "m": 9, "c": "Slop e Deepfakes", "s": "v2" }, { "t": "Slop Evader - Tega Brain", "u": "https://tegabrain.com/Slop-Evader", "y": 2025, "m": 12, "c": "Slop e Deepfakes", "s": "v2" }, { "t": "Deepnude: a última fronteira virtual da violência de gênero - Nexo Jornal", "u": "https://www.nexojornal.com.br/podcast/2025/12/03/deepnude-deepfake-ia-inteligencia-artificial-violencia-de-genero-mulher", "y": 2025, "m": 12, "c": "Slop e Deepfakes", "s": "v2" }, { "t": "Brace Yourself for the 2024 Deepfake Election | WIRED", "u": "https://www.wired.com/story/chatgpt-generative-ai-deepfake-2024-us-presidential-election/", "y": 2023, "m": 6, "c": "Slop e Deepfakes", "s": "v2" }, { "t": "Why deepfakes pose less of a threat than many predict | Psyche Ideas", "u": "https://psyche.co/ideas/why-deepfakes-pose-less-of-a-threat-than-many-predict", "y": 2025, "m": 10, "c": "Slop e Deepfakes", "s": "v2" }, { "t": "O uso de inteligência artificial pelos estudantes brasileiros - Nexo Jornal", "u": "https://www.nexojornal.com.br/grafico/2025/10/02/educacao-ia-inteligencia-artificial-escola-pesquisa", "y": 2025, "m": 11, "c": "Brasil Institucional", "s": "v2" }, { "t": "Qual a fase atual da regulação da IA no Brasil - Nexo Jornal", "u": "https://www.nexojornal.com.br/expresso/2025/05/23/qual-a-fase-atual-da-regulacao-da-ia-no-brasil", "y": 2025, "m": 9, "c": "Brasil Institucional", "s": "v2" }, { "t": "Anthropic Economic Index report: Uneven geographic and enterprise AI adoption \\ Anthropic", "u": "https://www.anthropic.com/research/anthropic-economic-index-september-2025-report?_hsmi=381104618", "y": 2025, "m": 9, "c": "Brasil Institucional", "s": "v2" }, { "t": "Os desafios do ChatGPT ao ensino e à pesquisa — Instituto de Estudos Avançados da Universidade de São Paulo", "u": "https://www.iea.usp.br/noticias/os-desafios-do-chatgpt-para-a-universidade?searchterm=Chat+GPT", "y": 2025, "m": 10, "c": "Brasil Institucional", "s": "v2" }, { "t": "Márcia Aparecida Jacomini — Instituto de Estudos Avançados da Universidade de São Paulo", "u": "https://www.iea.usp.br/pessoas/pasta-pessoam/marcia-aparecida-jacomini", "y": 2025, "m": 10, "c": "Brasil Institucional", "s": "v2" }, { "t": "Universidades brasileiras discutem regras de uso de inteligência artificial : Revista Pesquisa Fapesp", "u": "https://revistapesquisa.fapesp.br/universidades-brasileiras-discutem-regras-de-uso-de-inteligencia-artificial/", "y": 2025, "m": 10, "c": "Brasil Institucional", "s": "v2" }, { "t": "‘Seremos dados’: a filosofia da perda do ser humano para a IA - Nexo Jornal", "u": "https://www.nexojornal.com.br/estante-trechos/2026/01/23/livro-seremos-dados-marcus-bruzzo-ia-intelegencia-artificial-trecho", "y": 2026, "m": 1, "c": "Debate Público", "s": "v2" }, { "t": "Os países em que o DeepSeek é mais popular - Nexo Jornal", "u": "https://www.nexojornal.com.br/grafico/2026/01/27/deepseek-mhc-ia-ias-mais-populares-no-mundo", "y": 2026, "m": 1, "c": "Debate Público", "s": "v2" }, { "t": "Como utilizar IA para monitorar desmatamentos - Nexo Jornal", "u": "https://www.nexojornal.com.br/academico/2026/01/14/ia-inteligencia-artificial-desmatamento-monitorar-imagem-satelite", "y": 2026, "m": 1, "c": "Debate Público", "s": "v2" }, { "t": "Seres humanos e inteligência artificial: quem está no controle?", "u": "https://www.nexojornal.com.br/colunistas/2024/05/09/seres-humanos-e-inteligencia-artificial-quem-esta-no-controle", "y": 2025, "m": 11, "c": "Debate Público", "s": "v2" }, { "t": "Quem são os cientistas japoneses pioneiros da inteligência artificial - Nexo Jornal", "u": "https://www.nexojornal.com.br/externo/2024/12/16/ia-inteligencia-artificial-japao-ciencia-pioneiros", "y": 2025, "m": 11, "c": "Debate Público", "s": "v2" }, { "t": "Pesquisadores usam inteligência artificial em tarefas acadêmicas - Nexo Jornal", "u": "https://www.nexojornal.com.br/externo/2025/06/30/pesquisadores-ferramentas-inteligencia-artificial-tarefas-academicas", "y": 2025, "m": 11, "c": "Debate Público", "s": "v2" }, { "t": "O plano de criar uma inteligência artificial latino-americana - Nexo Jornal", "u": "https://www.nexojornal.com.br/externo/2025/10/31/ia-inteligencia-artificial-america-latina-contribuicao", "y": 2025, "m": 11, "c": "Debate Público", "s": "v2" }, { "t": "Um site para navegar sem a influência de algoritmos | Nexo Jornal", "u": "https://www.nexojornal.com.br/expresso/2022/03/25/Um-site-para-navegar-sem-a-influ%C3%AAncia-de-algoritmos", "y": 2022, "m": 6, "c": "Debate Público", "s": "v2" }, { "t": "Por que 2027 é apontado como um ano de virada para a IA - Nexo Jornal", "u": "https://www.nexojornal.com.br/expresso/2025/08/16/ia-inteligencia-artificial-2027-ano-de-virada-motivo", "y": 2025, "m": 9, "c": "Debate Público", "s": "v2" }, { "t": "Como a inteligência artificial acelera descobertas científicas  - Nexo Jornal", "u": "https://www.nexojornal.com.br/expresso/2024/06/09/inteligencia-artificial-ciencia-descobertas-cientificas", "y": 2025, "m": 9, "c": "Debate Público", "s": "v2" }, { "t": "Para que as pessoas estão usando o ChatGPT e o Claude - Nexo Jornal", "u": "https://www.nexojornal.com.br/expresso/2025/09/23/ia-inteligencia-artificial-chatgpt-claude-para-que-usar", "y": 2025, "m": 11, "c": "Debate Público", "s": "v2" }, { "t": "Os erros do ChatGPT. E as questões quanto à inteligência artificial - Nexo Jornal", "u": "https://www.nexojornal.com.br/podcast/2023/04/05/os-erros-do-chatgpt-e-as-questoes-quanto-a-inteligencia-artificial", "y": 2025, "m": 9, "c": "Debate Público", "s": "v2" }, { "t": "O estouro da bolha da inteligência artificial nas startups", "u": "https://www.nexojornal.com.br/ensaio/2025/03/02/ia-inteligencia-artificial-em-startups", "y": 2025, "m": 9, "c": "Debate Público", "s": "v2" }, { "t": "Especialistas analisam riscos e vantagens de usar inteligência artificial para medir o desempenho de pesquisadores - Nex", "u": "https://www.nexojornal.com.br/externo/2025/01/22/inteligencia-artificial-avaliar-bolsa-de-pesquisa", "y": 2025, "m": 9, "c": "Debate Público", "s": "v2" }, { "t": "Educação digital e midiática: por onde começar?", "u": "https://www.nexojornal.com.br/colunistas/2025/07/10/educacao-midiatica-digital-como-comecar", "y": 2025, "m": 9, "c": "Debate Público", "s": "v2" }, { "t": "Como a inteligência artificial afeta as relações corporativas", "u": "https://www.nexojornal.com.br/ensaio/2025/03/29/ia-inteligencia-artificial-relacoes-corporativas", "y": 2025, "m": 9, "c": "Debate Público", "s": "v2" }, { "t": "A importância da expertise humana num mundo pós-IA", "u": "https://www.nexojornal.com.br/colunistas/2026/02/18/claude-code-ia-trabalho-emprego-desafios-filipe-campante-opiniao", "y": 2026, "m": 2, "c": "Debate Público", "s": "v2" }, { "t": "A inteligência artificial que cria imagens a partir de descrições | Nexo Jornal", "u": "https://www.nexojornal.com.br/expresso/2022/08/14/A-intelig%C3%AAncia-artificial-que-cria-imagens-a-partir-de-descri%C3%A7%C3%B5es", "y": 2022, "m": 8, "c": "Debate Público", "s": "v2" }, { "t": "A liberdade cognitiva na era da inteligência artificial | Nexo Jornal", "u": "https://www.nexojornal.com.br/expresso/2023/08/21/A-liberdade-cognitiva-na-era-da-intelig%C3%AAncia-artificial1", "y": 2023, "m": 9, "c": "Debate Público", "s": "v2" }, { "t": "O desfile de moda afrofuturista criado com IA | Nexo Jornal", "u": "https://www.nexojornal.com.br/expresso/2023/02/11/O-desfile-de-moda-afrofuturista-criado-com-IA", "y": 2023, "m": 2, "c": "Debate Público", "s": "v2" }, { "t": "Inteligência Artificial generativa: reflexos no mercado e desafios | Nexo Jornal", "u": "https://www.nexojornal.com.br/ensaio/2023/02/10/Intelig%C3%AAncia-Artificial-generativa-reflexos-no-mercado-e-desafios?position-home=1", "y": 2023, "m": 2, "c": "Debate Público", "s": "v2" }, { "t": "O estilo de escrever artigos do ChatGPT - Nexo Jornal", "u": "https://www.nexojornal.com.br/externo/2025/07/12/estilo-artigo-chatgpt-area-biomedica-produzidos-inteligencia-artificial", "y": 2025, "m": 10, "c": "Debate Público", "s": "v2" }, { "t": "Como a inteligência artificial pode ser usada na educação - Nexo Jornal", "u": "https://www.nexojornal.com.br/expresso/2023/10/23/como-a-inteligencia-artificial-pode-ser-usada-na-educacao", "y": 2025, "m": 10, "c": "Debate Público", "s": "v2" }, { "t": "O networking entre algoritmos e conexões reais", "u": "https://www.nexojornal.com.br/ensaio/2025/02/09/networking-como-criar-conexoes-reais", "y": 2025, "m": 8, "c": "Debate Público", "s": "v2" }, { "t": "A ferramenta para navegar pela internet antes da IA - Nexo Jornal", "u": "https://www.nexojornal.com.br/expresso/2025/12/02/ia-inteligencia-artificial-internet-slop-evader-buscadores-pesquisa", "y": 2025, "m": 12, "c": "Debate Público", "s": "v2" }, { "t": "Como IA e redes sociais podem ajudar a preservar corais | Nexo Jornal", "u": "https://www.nexojornal.com.br/expresso/2023/11/06/Como-IA-e-redes-sociais-podem-ajudar-a-preservar-corais?posicao-home-esquerda=2", "y": 2023, "m": 11, "c": "Debate Público", "s": "v2" }, { "t": "A incursão do ‘executivo mais odiado do mundo’ na IA | Nexo Jornal", "u": "https://www.nexojornal.com.br/expresso/2023/08/04/A-incurs%C3%A3o-do-%E2%80%98executivo-mais-odiado-do-mundo%E2%80%99-na-IA", "y": 2023, "m": 8, "c": "Debate Público", "s": "v2" }, { "t": "Previsões para a morte da inteligência artificial | Nexo Jornal", "u": "https://www.nexojornal.com.br/colunistas/2023/Previs%C3%B5es-para-a-morte-da-intelig%C3%AAncia-artificial", "y": 2023, "m": 3, "c": "Debate Público", "s": "v2" }, { "t": "GPT-3, inteligência artificial e direitos autorais | Nexo Jornal", "u": "https://www.nexojornal.com.br/ensaio/2021/GPT-3-intelig%C3%AAncia-artificial-e-direitos-autorais", "y": 2022, "m": 7, "c": "Debate Público", "s": "v2" }, { "t": "A inteligência artificial que transforma textos em imagens | Nexo Jornal", "u": "https://www.nexojornal.com.br/expresso/2021/02/23/A-intelig%C3%AAncia-artificial-que-transforma-textos-em-imagens", "y": 2022, "m": 7, "c": "Debate Público", "s": "v2" }];
+
+    function getDomain(url) {
+      try { return new URL(url).hostname.replace(/^www\./, ''); }
+      catch { return url; }
+    }
+
+    function color(cat) { return CAT_COLORS[cat] || "#666"; }
+
+    function makeCard(item) {
+      const d = document.createElement('div');
+      d.className = 'item-card';
+      d.style.borderLeftColor = color(item.c);
+      d.innerHTML = `
+    <div class="item-title">${escHtml(item.t)}</div>
+    <div class="item-meta">
+      <span class="item-cat" style="color:${color(item.c)}">${escHtml(item.c)}</span>
+      <span>·</span>
+      <span class="item-domain">${escHtml(getDomain(item.u))}</span>
+      ${item.y ? `<span>·</span><span>${MONTHS[item.m]}/${item.y}</span>` : ''}
+    </div>`;
+      d.onclick = () => openModal(item);
+      return d;
+    }
+
+    function escHtml(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    /* ====== VIEWS ====== */
+    function switchView(v) {
+      document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById('view-' + v).classList.add('active');
+      event.target.classList.add('active');
+      if (v === 'garimpo') setTimeout(() => document.getElementById('search-input').focus(), 50);
+    }
+
+    /* ====== ESTRATIGRAFIA ====== */
+    function buildStratigrafia() {
+      const grouped = {};
+      DATA.forEach(x => {
+        const k = `${x.y}-${String(x.m).padStart(2, '0')}`;
+        if (!grouped[k]) grouped[k] = [];
+        grouped[k].push(x);
+      });
+      const keys = Object.keys(grouped).sort().reverse();
+      const maxN = Math.max(...keys.map(k => grouped[k].length));
+
+      const container = document.getElementById('strat-container');
+      keys.forEach(k => {
+        const items = grouped[k];
+        const [y, m] = k.split('-');
+        const pct = Math.max(2, (items.length / maxN) * 100);
+        const catCounts = {};
+        items.forEach(x => { catCounts[x.c] = (catCounts[x.c] || 0) + 1; });
+        const topCat = Object.entries(catCounts).sort((a, b) => b[1] - a[1])[0][0];
+        const topTwo = Object.entries(catCounts).sort((a, b) => b[1] - a[1]).slice(0, 2);
+        const c = color(topCat);
+
+        const row = document.createElement('div');
+        row.className = 'strat-row';
+
+        const hdr = document.createElement('div');
+        hdr.className = 'strat-header';
+        hdr.innerHTML = `
+      <span class="strat-label">${MONTHS[parseInt(m)]}/${y.slice(2)}</span>
+      <div class="strat-bar-wrap">
+        <div class="strat-bar" style="width:${pct}%;background:${c}" title="${items.length} itens"></div>
+      </div>
+      <span class="strat-count">${items.length} <span class="strat-toggle">▼</span></span>
+      <span class="strat-cats">${topTwo.map(([c2, n]) => `<span style="color:${color(c2)}">■</span> ${c2.split(' ')[0]}`).join(' ')}</span>`;
+
+        const itemsDiv = document.createElement('div');
+        itemsDiv.className = 'strat-items';
+        items.forEach(item => itemsDiv.appendChild(makeCard(item)));
+
+        let open = false;
+        hdr.onclick = () => {
+          open = !open;
+          itemsDiv.classList.toggle('open', open);
+          hdr.querySelector('.strat-toggle').textContent = open ? '▲' : '▼';
+          hdr.querySelector('.strat-bar').style.opacity = open ? '1' : '0.65';
+        };
+
+        row.appendChild(hdr);
+        row.appendChild(itemsDiv);
+        container.appendChild(row);
+      });
+    }
+
+    /* ====== TEMÁTICO ====== */
+    function buildTematico() {
+      const catData = {};
+      DATA.forEach(x => {
+        if (!catData[x.c]) catData[x.c] = [];
+        catData[x.c].push(x);
+      });
+      const sorted = Object.entries(catData).sort((a, b) => b[1].length - a[1].length);
+
+      const grid = document.getElementById('cat-grid');
+      sorted.forEach(([cat, items]) => {
+        const c = color(cat);
+        const card = document.createElement('div');
+        card.className = 'cat-card';
+        card.style.borderColor = c + '40';
+        card.innerHTML = `<div class="cat-num" style="color:${c}">${items.length}</div><div class="cat-name">${escHtml(cat)}</div>`;
+        card.onclick = () => {
+          document.querySelectorAll('.cat-card').forEach(el => el.classList.remove('active'));
+          card.classList.add('active');
+          card.style.borderColor = c;
+          const area = document.getElementById('cat-items-area');
+          area.innerHTML = `<div class="sec-label" style="color:${c}">▶ ${escHtml(cat)} — ${items.length} itens</div>`;
+          items.forEach(item => area.appendChild(makeCard(item)));
+          area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        };
+        grid.appendChild(card);
+      });
+
+      // Populate search category select
+      const sel = document.getElementById('search-cat');
+      sorted.forEach(([cat]) => {
+        const o = document.createElement('option');
+        o.value = cat; o.textContent = cat;
+        sel.appendChild(o);
+      });
+    }
+
+    /* ====== GARIMPO ====== */
+    function runSearch() {
+      const q = document.getElementById('search-input').value.toLowerCase().trim();
+      const cat = document.getElementById('search-cat').value;
+      const countEl = document.getElementById('search-count');
+      const resultsEl = document.getElementById('search-results');
+      resultsEl.innerHTML = '';
+
+      if (!q && !cat) { countEl.style.display = 'none'; return; }
+
+      const results = DATA.filter(x => {
+        const matchText = !q || x.t.toLowerCase().includes(q) || getDomain(x.u).includes(q);
+        const matchCat = !cat || x.c === cat;
+        return matchText && matchCat;
+      });
+
+      countEl.style.display = 'block';
+      countEl.textContent = results.length + ' resultado' + (results.length !== 1 ? 's' : '') + ' encontrado' + (results.length !== 1 ? 's' : '');
+
+      if (!results.length) {
+        resultsEl.innerHTML = '<div style="font-size:13px;color:#555;padding:20px;text-align:center">Nenhum fragmento encontrado.</div>';
+        return;
+      }
+      results.forEach(item => resultsEl.appendChild(makeCard(item)));
+    }
+
+    /* ====== ESTATÍSTICAS ====== */
+    function buildEstatisticas() {
+      const v1 = DATA.filter(x => x.s === 'v1').length;
+      const v2 = DATA.filter(x => x.s === 'v2').length;
+
+      // Monthly
+      const monthly = {};
+      DATA.forEach(x => {
+        const k = `${x.y}-${String(x.m).padStart(2, '0')}`;
+        monthly[k] = (monthly[k] || 0) + 1;
+      });
+      const months = Object.keys(monthly).sort();
+      const maxM = Math.max(...Object.values(monthly));
+
+      // Domains
+      const domains = {};
+      DATA.forEach(x => {
+        const d = getDomain(x.u);
+        domains[d] = (domains[d] || 0) + 1;
+      });
+      const topDomains = Object.entries(domains).sort((a, b) => b[1] - a[1]).slice(0, 10);
+
+      // Categories
+      const cats = {};
+      DATA.forEach(x => { cats[x.c] = (cats[x.c] || 0) + 1; });
+      const sortedCats = Object.entries(cats).sort((a, b) => b[1] - a[1]);
+
+      // Stat boxes
+      const statGrid = document.getElementById('stat-grid');
+      [
+        { label: "Itens curados", value: DATA.length, color: "#C84B2F" },
+        { label: "Meses cobertos", value: months.length, color: "#4A6FA5" },
+        { label: "Corpus v1", value: v1, color: "#9B5E9B" },
+        { label: "Corpus v2", value: v2, color: "#2A8C6E" },
+      ].forEach(s => {
+        const b = document.createElement('div');
+        b.className = 'stat-box';
+        b.style.borderColor = s.color + '30';
+        b.innerHTML = `<div class="stat-num" style="color:${s.color}">${s.value}</div><div class="stat-lbl">${s.label}</div>`;
+        statGrid.appendChild(b);
+      });
+
+      // Sparkline
+      const spark = document.getElementById('spark');
+      months.forEach(k => {
+        const n = monthly[k];
+        const h = Math.max(2, (n / maxM) * 100);
+        const isPeak = n === maxM;
+        const bar = document.createElement('div');
+        bar.className = 'spark-bar';
+        bar.title = k + ': ' + n + ' itens';
+        bar.style.cssText = `height:${h}%;background:${isPeak ? '#C84B2F' : '#4A6FA5'};opacity:${isPeak ? 1 : 0.55}`;
+        spark.appendChild(bar);
+      });
+
+      // Domain bars
+      const domEl = document.getElementById('domain-bars');
+      const maxD = topDomains[0][1];
+      topDomains.forEach(([d, n]) => {
+        const row = document.createElement('div');
+        row.className = 'domain-row';
+        row.innerHTML = `
+      <span class="domain-num">${n}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${(n / maxD) * 100}%;background:#2A4A6A"></div></div>
+      <span class="domain-name" title="${d}">${d}</span>`;
+        domEl.appendChild(row);
+      });
+
+      // Cat bars
+      const catEl = document.getElementById('cat-bars');
+      const maxC = sortedCats[0][1];
+      sortedCats.forEach(([cat, n]) => {
+        const c = color(cat);
+        const row = document.createElement('div');
+        row.className = 'cat-row';
+        row.innerHTML = `
+      <span class="domain-num" style="color:${c}">${n}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${(n / maxC) * 100}%;background:${c};opacity:.7"></div></div>
+      <span class="domain-name" title="${cat}">${cat}</span>`;
+        catEl.appendChild(row);
+      });
+    }
+
+    /* ====== MODAL ====== */
+    function openModal(item) {
+      const c = color(item.c);
+      document.getElementById('modal-tag').style.color = c;
+      document.getElementById('modal-tag').textContent = item.c + ' · ' + getDomain(item.u);
+      document.getElementById('modal-title').textContent = item.t;
+      document.getElementById('modal-meta').textContent =
+        (item.s === 'v1' ? '◆ Curadoria Fase (v1)' : '◈ Corpus Principal (v2)') +
+        (item.y ? ` · ${MONTHS[item.m]} ${item.y}` : '');
+      const link = document.getElementById('modal-open');
+      link.href = item.u;
+      link.style.background = c;
+      document.getElementById('modal-overlay').classList.add('open');
+      document.getElementById('modal-box').style.boxShadow = `0 0 40px ${c}20`;
+      document.getElementById('modal-box').style.borderColor = c + '40';
+    }
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('open');
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    /* ====== INIT ====== */
+    buildStratigrafia();
+    buildTematico();
+    buildEstatisticas();
+    document.getElementById('nav-count').textContent = DATA.length + ' FRAGMENTOS · DEZ/2021–FEV/2026';
+  </script>
+</body>
+
+</html>
