@@ -96,6 +96,25 @@ Este script é o coração do sistema de atualização. Ele:
     ```
 3.  As alterações serão copiadas para `projects/` e refletidas no site.
 
+### 4. Trabalhando em Múltiplos Dispositivos (Importante!)
+
+> **Por que isso importa?** A pasta `CORPUS/` é ignorada pelo Git (ver `.gitignore`). Isso significa que ela **não é sincronizada** entre máquinas via `git pull`. Se você clonar o repositório em um novo computador, o `CORPUS/` estará vazio — e rodar o sync apagaria todos os projetos públicos.
+
+**Ao configurar uma nova máquina, faça isso UMA vez antes de qualquer edição:**
+
+```bash
+# 1. Clone o repositório normalmente
+git clone <url-do-repositorio>
+cd vitrine-SPA
+
+# 2. Reconstitua o CORPUS a partir dos arquivos públicos já existentes
+cp -r projects/* CORPUS/
+```
+
+A partir daí, o fluxo normal de edição volta a funcionar: edite em `CORPUS/`, rode o sync, faça commit.
+
+> ⚠️ **Atenção**: se você fizer alterações num dispositivo A (sem commitar a versão atualizada do projeto em `projects/`), elas **não chegarão** ao dispositivo B. O Git rastreia a pasta `projects/`, não o `CORPUS/`. Então sempre rode o sync e faça commit antes de trocar de máquina.
+
 ---
 
 ## 🏗️ Arquitetura Simples
