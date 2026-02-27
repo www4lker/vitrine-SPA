@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartografia: O Fim da Escala 6x1 e o Capitaloceno</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Estética de Papel e Tipografia Editorial */
+        :root {
+            --paper-bg: #f4f1ea;
+            --ink-main: #2c2825;
+            --ink-light: #5a524b;
+            --fault-red: #8b3a3a;
+            --bridge-green: #4a5d23;
+            --topo-line: rgba(44, 40, 37, 0.08);
+        }
+
+        body {
+            background-color: var(--paper-bg);
+            color: var(--ink-main);
+            font-family: 'Lora', serif;
+            /* Padrão de linhas topográficas em SVG */
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,50 Q50,20 100,50 T200,50 M0,150 Q50,180 100,150 T200,150 M50,0 Q20,50 50,100 T50,200 M150,0 Q180,50 150,100 T150,200' fill='none' stroke='rgba(44, 40, 37, 0.05)' stroke-width='1'/%3E%3C/svg%3E");
+            background-attachment: fixed;
+            overflow: hidden;
+            /* Prevent body scroll, manage scroll inside panels */
+        }
+
+        h1,
+        h2,
+        h3,
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .map-font {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Caderno de Cartografia (Scroll customizado) */
+        .journal-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .journal-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .journal-scroll::-webkit-scrollbar-thumb {
+            background-color: var(--ink-light);
+            border-radius: 4px;
+        }
+
+        /* Elementos Cartográficos Interativos */
+        .map-node {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .map-node:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.1));
+        }
+
+        .map-node.active {
+            ring: 2px solid var(--ink-main);
+            background-color: #e6e1d6;
+        }
+
+        .fault-line {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, var(--fault-red) 5px, var(--fault-red) 10px);
+            opacity: 0.6;
+            animation: pulse-fault 4s infinite alternate;
+        }
+
+        .bridge-line {
+            border-top: 3px dashed var(--bridge-green);
+            opacity: 0.8;
+        }
+
+        @keyframes pulse-fault {
+            0% {
+                opacity: 0.4;
+            }
+
+            100% {
+                opacity: 0.8;
+            }
+        }
+
+        /* Borda estilo pergaminho para o layout */
+        .editorial-border {
+            border: 1px solid var(--ink-light);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.03);
+        }
+    </style>
+</head>
+
+<body class="h-screen w-screen flex flex-col md:flex-row p-4 md:p-6 gap-6">
+
+    <!-- Lado Esquerdo: O Mapa Geoconceitual -->
+    <main
+        class="w-full md:w-3/5 lg:w-2/3 h-1/2 md:h-full relative editorial-border bg-[#faf8f5] bg-opacity-80 rounded-sm overflow-hidden flex items-center justify-center p-4">
+
+        <!-- Bússola Decorativa -->
+        <div class="absolute top-6 left-6 opacity-30 pointer-events-none flex items-center justify-center">
+            <i data-lucide="compass" class="w-16 h-16 text-[var(--ink-main)]"></i>
+        </div>
+
+        <!-- Título do Mapa -->
+        <div class="absolute bottom-6 right-6 text-right pointer-events-none">
+            <h1 class="map-font text-2xl font-bold tracking-widest text-[var(--ink-main)]">Atlas do Tempo</h1>
+            <p class="text-sm italic text-[var(--ink-light)]">Cartografia do Trabalho e do Capitaloceno</p>
+        </div>
+
+        <!-- Elementos do Mapa (Posicionamento Relativo para simular geografia) -->
+        <div class="relative w-full max-w-3xl aspect-square md:aspect-auto md:h-full flex items-center justify-center">
+
+            <!-- Nó 1: Território da Antropologia (Noroeste) -->
+            <button onclick="loadContent('antropologia')" id="btn-antropologia"
+                class="map-node absolute top-[15%] left-[10%] w-32 h-32 rounded-full border border-[var(--ink-light)] bg-[#f4f1ea] flex flex-col items-center justify-center shadow-lg z-20 group">
+                <i data-lucide="tent-tree"
+                    class="w-8 h-8 mb-2 text-[var(--ink-light)] group-hover:text-[var(--ink-main)]"></i>
+                <span class="map-font text-xs font-bold text-center leading-tight">Território
+                    da<br>Antropologia<br>Política</span>
+            </button>
+
+            <!-- Nó 2: Capitaloceno (Nordeste) -->
+            <button onclick="loadContent('capitaloceno')" id="btn-capitaloceno"
+                class="map-node absolute top-[20%] right-[10%] w-36 h-36 rounded-full border border-[var(--ink-light)] bg-[#f4f1ea] flex flex-col items-center justify-center shadow-lg z-20 group">
+                <i data-lucide="factory"
+                    class="w-8 h-8 mb-2 text-[var(--ink-light)] group-hover:text-[var(--ink-main)]"></i>
+                <span class="map-font text-xs font-bold text-center leading-tight">Fronteira do<br>Capitaloceno</span>
+            </button>
+
+            <!-- Falha Geológica: Divergências (Entre 1 e 2) -->
+            <button onclick="loadContent('falha')" id="btn-falha"
+                class="map-node absolute top-[18%] left-[45%] w-16 h-16 rounded-sm bg-transparent flex flex-col items-center justify-center z-30 group"
+                title="Falha Geológica">
+                <div class="w-full h-2 fault-line transform -rotate-12 mb-1"></div>
+                <div class="w-full h-2 fault-line transform -rotate-12"></div>
+                <span class="text-[10px] font-bold text-[var(--fault-red)] mt-2 uppercase tracking-wider">Falha
+                    de<br>Rousseau</span>
+            </button>
+
+            <!-- Ponte: Convergências (Centro) -->
+            <button onclick="loadContent('ponte')" id="btn-ponte"
+                class="map-node absolute top-[45%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 w-48 h-12 bg-transparent flex flex-col items-center justify-center z-30 group"
+                title="Zonas de Contato">
+                <div class="w-full bridge-line"></div>
+                <span
+                    class="text-[10px] font-bold text-[var(--bridge-green)] mt-1 uppercase tracking-wider bg-[#faf8f5] px-2 rounded-full">Ponte
+                    da Sazonalidade</span>
+            </button>
+
+            <!-- Nó 3: A Tensão Dialética (Sudoeste) -->
+            <button onclick="loadContent('dialetica')" id="btn-dialetica"
+                class="map-node absolute bottom-[25%] left-[20%] w-28 h-28 rounded-full border border-[var(--ink-light)] bg-[#f4f1ea] flex flex-col items-center justify-center shadow-lg z-20 group">
+                <i data-lucide="scale"
+                    class="w-7 h-7 mb-2 text-[var(--ink-light)] group-hover:text-[var(--ink-main)]"></i>
+                <span class="map-font text-[11px] font-bold text-center leading-tight">Embates
+                    do<br>Estado<br>Cerealista</span>
+            </button>
+
+            <!-- Nó 4: Síntese e Fuga (Sudeste) -->
+            <button onclick="loadContent('sintese')" id="btn-sintese"
+                class="map-node absolute bottom-[15%] right-[25%] w-32 h-32 rounded-full border-2 border-[var(--ink-main)] bg-[#e8e4d9] flex flex-col items-center justify-center shadow-xl z-20 group">
+                <i data-lucide="sprout"
+                    class="w-8 h-8 mb-2 text-[var(--bridge-green)] group-hover:text-[var(--ink-main)]"></i>
+                <span class="map-font text-xs font-bold text-center leading-tight">Terra Nova:<br>A
+                    Transição<br>Sazonal</span>
+            </button>
+
+            <!-- Conexões visuais (SVG em background para não atrapalhar o clique) -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" preserveAspectRatio="none">
+                <!-- Linhas conectando os nós -->
+                <path d="M 25% 25% Q 50% 50% 30% 70%" fill="none" stroke="var(--ink-light)" stroke-width="1"
+                    stroke-dasharray="4 4" opacity="0.5" />
+                <path d="M 75% 30% Q 50% 50% 65% 80%" fill="none" stroke="var(--ink-light)" stroke-width="1"
+                    stroke-dasharray="4 4" opacity="0.5" />
+            </svg>
+
+        </div>
+    </main>
+
+    <!-- Lado Direito: Caderno de Cartografia (Leitura) -->
+    <aside
+        class="w-full md:w-2/5 lg:w-1/3 h-1/2 md:h-full bg-white editorial-border flex flex-col overflow-hidden shadow-sm">
+
+        <!-- Header do Caderno -->
+        <header class="p-6 border-b border-[var(--ink-light)] bg-[#fdfcfa]">
+            <div class="flex items-center gap-3 mb-2 text-[var(--ink-light)]">
+                <i data-lucide="book-open" class="w-5 h-5"></i>
+                <span class="text-xs uppercase tracking-widest font-bold">Caderno de Notas</span>
+            </div>
+            <h2 id="journal-title" class="title-font text-2xl font-bold leading-tight">Bem-vindo à Expedição</h2>
+        </header>
+
+        <!-- Conteúdo do Caderno (Scrollável) -->
+        <div class="p-6 overflow-y-auto journal-scroll bg-[#fdfcfa] h-full" id="journal-content">
+            <!-- Conteúdo injetado via JS -->
+        </div>
+
+    </aside>
+
+    <script>
+        // Inicializar os ícones do Lucide
+        lucide.createIcons();
+
+        // Banco de dados conceitual (Os territórios cartografados)
+        const cartographyData = {
+            'intro': {
+                title: "Carta de Navegação",
+                content: `
+                    <p class="mb-4 text-lg leading-relaxed first-letter:text-4xl first-letter:font-bold first-letter:float-left first-letter:mr-2 first-letter:font-serif">
+                        A jornada de trabalho de 40 horas não é um imperativo biológico, nem o ápice da eficiência civilizatória. É uma camada sedimentar de controle social.
+                    </p>
+                    <p class="mb-4 leading-relaxed text-[var(--ink-light)]">
+                        Este mapa interativo é uma operação de "arqueologia do tempo social". Ele escava as camadas de mitos sobre o progresso humano e o trabalho contínuo. Explore os territórios clicando nos pontos do mapa à esquerda.
+                    </p>
+                    <div class="mt-8 p-4 border border-[var(--ink-light)] bg-[var(--paper-bg)] text-sm">
+                        <h4 class="font-bold mb-2 font-serif uppercase tracking-wider text-xs">Legenda do Mapa</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-2"><i data-lucide="tent-tree" class="w-4 h-4"></i> Culturas e saberes ancestrais</li>
+                            <li class="flex items-center gap-2"><i data-lucide="factory" class="w-4 h-4"></i> A extração industrial moderna</li>
+                            <li class="flex items-center gap-2"><div class="w-4 h-1 bg-[var(--fault-red)] transform -rotate-12"></div> Divergências e impasses</li>
+                            <li class="flex items-center gap-2"><div class="w-4 h-0 border-t-2 border-dashed border-[var(--bridge-green)]"></div> Convergências e saídas</li>
+                        </ul>
+                    </div>
+                `
+            },
+            'antropologia': {
+                title: "Território da Antropologia Política",
+                content: `
+                    <h3 class="title-font font-bold text-xl mb-3">A Crítica Indígena e a Plástica Social</h3>
+                    <p class="mb-4 leading-relaxed">
+                        Nas fontes da antropologia política (Graeber e Wengrow), descobrimos que populações antigas alternavam entre regimes de poder e lazer com grande fluidez. O "motor" da desconstrução da jornada exaustiva moderna é a <strong>Crítica Indígena</strong>, articulada pelo filósofo wendat Kondiaronk.
+                    </p>
+                    <div class="pl-4 border-l-2 border-[var(--ink-light)] italic mb-4 text-[var(--ink-light)]">
+                        "A incapacidade europeia de conceber uma liberdade que não seja apenas a ausência de privilégios, mas sim a autonomia positiva de recusar ordens e o movimento livre."
+                    </div>
+                    <p class="mb-4 leading-relaxed">
+                        Neste território, observa-se que o "chefe" wendat detinha eloquência, mas carecia de qualquer direito de obrigar outrem ao labor. A gestão do esforço humano era uma extensão da soberania individual. A liberdade era, primariamente, <strong>não ser escravo do tempo e do acúmulo de outro</strong>.
+                    </p>
+                    <h4 class="font-bold text-sm uppercase tracking-widest mt-6 mb-2">Ondinnonk vs. Sofrimento</h4>
+                    <p class="leading-relaxed text-sm">
+                        Para os Wendat, o <em>Ondinnonk</em> (os desejos secretos da alma) precisava ser realizado, ou o corpo social adoeceria. Em contraste, o neoliberalismo contemporâneo utiliza o trabalho como gestão do sofrimento, exigindo o soterramento do desejo em prol da produtividade.
+                    </p>
+                `
+            },
+            'capitaloceno': {
+                title: "A Fronteira do Capitaloceno",
+                content: `
+                    <h3 class="title-font font-bold text-xl mb-3">A Máquina de Exaustão Biológica</h3>
+                    <p class="mb-4 leading-relaxed">
+                        A organização do tempo transcendeu a macroeconomia para se tornar uma força geofísica. Sob a ótica do <strong>Capitaloceno</strong>, a culpa não é da espécie humana em si, mas da lógica de acumulação ilimitada. A jornada exaustiva é a engrenagem metabólica que violenta a biosfera.
+                    </p>
+                    <ul class="mb-4 space-y-3">
+                        <li class="bg-[#f4f1ea] p-3 rounded border border-[var(--ink-light)]">
+                            <strong class="block mb-1">A Natureza Barata</strong>
+                            Iniciada no século XVI, a modernidade reconfigurou a biosfera como uma cantera de recursos. A jornada extensiva exige essa "natureza barata" para sustentar a rentabilidade.
+                        </li>
+                        <li class="bg-[#f4f1ea] p-3 rounded border border-[var(--ink-light)]">
+                            <strong class="block mb-1">Doomsday Clock</strong>
+                            A entropia desse ritmo levou o Relógio do Juízo Final à marca crítica de 100 segundos para a meia-noite (2020). O tempo de exploração oblitera o tempo de regeneração.
+                        </li>
+                    </ul>
+                    <p class="leading-relaxed text-sm mt-4 text-[var(--ink-light)]">
+                        A indústria contemporânea (ex: frigoríficos operando a 140 aves por minuto) ilustra a aceleração industrial contra o "tempo orgânico", produzindo corpos descartáveis na engrenagem mecânica.
+                    </p>
+                `
+            },
+            'falha': {
+                title: "Falha Geológica: Divergências",
+                content: `
+                    <h3 class="title-font font-bold text-xl mb-3 text-[var(--fault-red)]">Premissas em Colisão</h3>
+                    <p class="mb-4 leading-relaxed">
+                        Por que as reformas do tempo de trabalho enfrentam um bloqueio político e ontológico? Este fosso representa as divergências irredutíveis.
+                    </p>
+                    
+                    <h4 class="font-bold border-b border-[var(--fault-red)] pb-1 mb-2 mt-6">1. Rousseau vs. Kondiaronk</h4>
+                    <p class="mb-4 leading-relaxed text-sm">
+                        Para <strong>Rousseau</strong>, a fadiga e a desigualdade são subprodutos inevitáveis da civilização complexa. Para o wendat <strong>Kondiaronk</strong>, a desigualdade decorre especificamente do sistema europeu de dinheiro e propriedade; a complexidade não exige o sequestro do tempo, a economia o faz deliberadamente.
+                    </p>
+
+                    <h4 class="font-bold border-b border-[var(--fault-red)] pb-1 mb-2 mt-4">2. O Paradoxo de Jevons</h4>
+                    <p class="mb-4 leading-relaxed text-sm">
+                        A crença ecomodernista (a promessa do plástico e da tecnologia nos anos 50 de libertar 40 horas semanais) encontra um muro: o aumento da eficiência sob o capital não reduz o consumo do recurso (inclusive tempo humano), mas <strong>expande a escala de produção</strong>. A tecnologia não devolve tempo, ela o comprime.
+                    </p>
+
+                    <h4 class="font-bold border-b border-[var(--fault-red)] pb-1 mb-2 mt-4">3. Biocentrismo vs. Antropocentrismo</h4>
+                    <p class="leading-relaxed text-sm">
+                        O Realismo Capitalista vê a crise (climática e do trabalho) como um problema de engenharia contornável. O <em>Buen Vivir</em> exige o fim do produtivismo e a descarbonização da própria ontologia social.
+                    </p>
+                `
+            },
+            'ponte': {
+                title: "Ponte da Sazonalidade",
+                content: `
+                    <h3 class="title-font font-bold text-xl mb-3 text-[var(--bridge-green)]">Convergências e Encontros</h3>
+                    <p class="mb-4 leading-relaxed">
+                        Como atravessar o impasse? Existem consensos genuínos entre o Marxismo, a Ecologia Política e a Antropologia que constroem a base para a redução da jornada.
+                    </p>
+
+                    <div class="space-y-4">
+                        <div class="p-4 border-l-4 border-[var(--bridge-green)] bg-[#f9f9f7]">
+                            <h4 class="font-bold mb-1">A Brecha Metabólica</h4>
+                            <p class="text-sm">A jornada atual é biofisicamente incompatível com a regeneração da vida. Reduzir a jornada é a ponte obrigatória para desacelerar o fluxo material do capital e evitar o colapso climático.</p>
+                        </div>
+
+                        <div class="p-4 border-l-4 border-[var(--bridge-green)] bg-[#f9f9f7]">
+                            <h4 class="font-bold mb-1">O Fim do Evolucionismo Linear</h4>
+                            <p class="text-sm">O mito de que sociedades "complexas" exigem hierarquia permanente e labuta diária é refutado. Evidências (Nambikwara, Inuit) provam que a humanidade alternava de forma sazonal: estruturas densas em certa época, bandos igualitários e dispersos em outras.</p>
+                        </div>
+                    </div>
+                    
+                    <p class="mt-6 leading-relaxed italic text-[var(--ink-light)]">
+                        A complexidade demográfica e técnica não obriga à servidão horária linear. A rigidez é uma escolha política de sedentarismo.
+                    </p>
+                `
+            },
+            'dialetica': {
+                title: "O Embate Dialético",
+                content: `
+                    <h3 class="title-font font-bold text-xl mb-3">O Estado Cerealista vs. Tempo de Vida</h3>
+                    <p class="mb-4 leading-relaxed">
+                        A discussão técnica da redução (ex: a PEC do fim da escala 6x1 no Brasil) esbarra na mecânica da produção de excedentes. O embate resume-se a:
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 text-sm">
+                        <div class="p-4 bg-[var(--paper-bg)] border border-[var(--ink-light)] rounded">
+                            <strong class="block text-center mb-2 font-serif text-lg">Perspectiva A<br>(A Ecologia da Vida)</strong>
+                            <p>O trabalho neoliberal gerencia a dor psíquica. Reduzir o tempo prioriza a "criação mútua de seres humanos" e redistribui o trabalho de cuidado, promovendo a desobediência à máquina de exaustão.</p>
+                        </div>
+                        <div class="p-4 bg-white border border-[var(--ink-light)] rounded shadow-sm">
+                            <strong class="block text-center mb-2 font-serif text-lg">Perspectiva B<br>(O Estado Fiscal)</strong>
+                            <p>O Estado necessita de produção "visível e tributável" para se sustentar. A imposição rígida pode empurrar a base à informalidade precarizada e asfixiar pequenas unidades de produção sem automação.</p>
+                        </div>
+                    </div>
+
+                    <p class="leading-relaxed text-sm">
+                        A tensão reside em tentar equilibrar a dignidade existencial em um sistema herdado das antigas lógicas de excedentes (desde as cidades-estado de Uruk) que mede o humano como uma "eficiência sexagesimal".
+                    </p>
+                `
+            },
+            'sintese': {
+                title: "Terra Nova: A Transição",
+                content: `
+                    <h3 class="title-font font-bold text-xl mb-3">A Arquitetura de Governança Sazonal</h3>
+                    <p class="mb-4 leading-relaxed">
+                        A solução exige transcender a jornada linear e adotar uma "Sazonalidade Moderna". Não se trata apenas de reduzir as horas, mas de uma <strong class="text-[var(--bridge-green)]">Transição Justa e do Decrescimento</strong> estrutural.
+                    </p>
+
+                    <ul class="list-disc pl-5 mb-6 space-y-2 text-sm leading-relaxed text-[var(--ink-main)]">
+                        <li><strong>Bancos de Autonomia:</strong> Em vez de semanas inflexíveis, permitir ciclos de alta densidade produtiva contrabalançados por períodos de "libertação total" para o cuidado, estudo ou jogo coletivo (<em>Femina Ludens</em>).</li>
+                        <li><strong>Tecnologia como "Pólvora":</strong> A automação não deve expandir lucros, mas servir à redução do esforço, assim como a pólvora foi originalmente criada para o maravilhamento e o jogo, e não para a guerra industrial.</li>
+                        <li><strong>Desmercantilização do Tempo:</strong> A devolução do tempo aos sujeitos atua como contenção contra o "Plastioceno" e alivia drasticamente a falência fiscal do Estado com o sistema de saúde mental ("gestão do sofrimento").</li>
+                    </ul>
+
+                    <div class="p-4 bg-[#e8e4d9] border-l-4 border-[var(--ink-main)] mt-6">
+                        <p class="font-serif italic text-lg leading-snug">
+                            "A clausura do Capitaloceno e sua jornada de exaustão não é um destino biológico, mas uma possibilidade política reversível. O fim do Capitaloceno começa com a devolução do tempo ao tecido da vida."
+                        </p>
+                    </div>
+                `
+            }
+        };
+
+        // Função para atualizar o Caderno
+        function loadContent(id) {
+            const data = cartographyData[id];
+            if (!data) return;
+
+            // Atualizar classes visuais no mapa
+            document.querySelectorAll('.map-node').forEach(node => {
+                node.classList.remove('ring-4', 'ring-[var(--ink-light)]', 'scale-105');
+                if (node.id === `btn-${id}`) {
+                    node.classList.add('ring-4', 'ring-[var(--ink-light)]', 'scale-105');
+                }
+            });
+
+            // Animação de transição do conteúdo
+            const contentDiv = document.getElementById('journal-content');
+            const titleEl = document.getElementById('journal-title');
+
+            contentDiv.style.opacity = 0;
+            titleEl.style.opacity = 0;
+
+            setTimeout(() => {
+                titleEl.innerText = data.title;
+                contentDiv.innerHTML = data.content;
+
+                contentDiv.style.transition = 'opacity 0.4s ease';
+                titleEl.style.transition = 'opacity 0.4s ease';
+
+                contentDiv.style.opacity = 1;
+                titleEl.style.opacity = 1;
+
+                // Re-inicializar ícones caso tenham sido injetados
+                lucide.createIcons();
+            }, 200);
+        }
+
+        // Carregar introdução ao iniciar
+        window.onload = () => {
+            loadContent('intro');
+        };
+    </script>
+</body>
+
+</html>

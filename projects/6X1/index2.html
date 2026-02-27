@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grafo Conceitual: Capitaloceno e o Fim da Escala 6x1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&family=Inter:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-base: #020617;
+            /* Slate 950 */
+            --bg-panel: #0f172a;
+            /* Slate 900 */
+            --border-tech: #1e293b;
+            /* Slate 800 */
+            --node-base: #1e293b;
+            --text-main: #f8fafc;
+            /* Slate 50 */
+            --text-muted: #94a3b8;
+            /* Slate 400 */
+
+            /* Status Colors */
+            --cyan-glow: #06b6d4;
+            --red-glow: #ef4444;
+            --green-glow: #10b981;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            background-image:
+                linear-gradient(rgba(30, 41, 59, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(30, 41, 59, 0.3) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        .font-mono {
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Scrollbar Tech */
+        .tech-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .tech-scroll::-webkit-scrollbar-track {
+            background: var(--bg-base);
+        }
+
+        .tech-scroll::-webkit-scrollbar-thumb {
+            background-color: var(--border-tech);
+            border-radius: 2px;
+        }
+
+        .tech-scroll::-webkit-scrollbar-thumb:hover {
+            background-color: var(--cyan-glow);
+        }
+
+        /* Node Styling */
+        .concept-node {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: var(--node-base);
+            border: 2px solid var(--border-tech);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .concept-node:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            border-color: var(--cyan-glow);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+            z-index: 30;
+        }
+
+        .concept-node.active {
+            border-color: var(--cyan-glow);
+            background: rgba(6, 182, 212, 0.1);
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.6), inset 0 0 15px rgba(6, 182, 212, 0.3);
+        }
+
+        /* SVG Line Animations */
+        .edge-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 2s linear forwards;
+        }
+
+        .edge-convergent {
+            stroke: var(--cyan-glow);
+            opacity: 0.6;
+            stroke-width: 2;
+        }
+
+        .edge-divergent {
+            stroke: var(--red-glow);
+            opacity: 0.6;
+            stroke-width: 2;
+            stroke-dasharray: 6 6;
+            animation: dash-divergent 20s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes dash-divergent {
+            to {
+                stroke-dashoffset: -1000;
+            }
+        }
+
+        /* Tech Panel Borders */
+        .tech-panel {
+            border: 1px solid var(--border-tech);
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .corner-accent {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 2px solid var(--cyan-glow);
+        }
+
+        .tl {
+            top: 0;
+            left: 0;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .tr {
+            top: 0;
+            right: 0;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .bl {
+            bottom: 0;
+            left: 0;
+            border-right: none;
+            border-top: none;
+        }
+
+        .br {
+            bottom: 0;
+            right: 0;
+            border-left: none;
+            border-top: none;
+        }
+    </style>
+</head>
+
+<body class="h-screen w-screen flex flex-col md:flex-row">
+
+    <!-- Área Esquerda: Grafo de Rede -->
+    <main class="w-full md:w-[55%] lg:w-[60%] relative h-[50%] md:h-full" id="graph-container">
+
+        <!-- UI Overlay -->
+        <div class="absolute top-4 left-4 z-40 pointer-events-none">
+            <h1 class="font-mono text-xs text-[var(--cyan-glow)] uppercase tracking-[0.2em] mb-1">Mapeamento de Sistemas
+            </h1>
+            <p class="text-sm text-[var(--text-muted)]">Topologia do Tempo e do Capitaloceno</p>
+        </div>
+
+        <!-- Legenda -->
+        <div
+            class="absolute bottom-4 left-4 z-40 bg-[var(--bg-panel)] border border-[var(--border-tech)] p-3 rounded-md font-mono text-[10px] text-[var(--text-muted)]">
+            <div class="flex items-center gap-2 mb-2">
+                <div class="w-4 h-0.5 bg-[var(--cyan-glow)]"></div> Convergência Teórica
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-4 h-0.5 border-t border-dashed border-[var(--red-glow)]"></div> Fricção / Divergência
+            </div>
+        </div>
+
+        <!-- Camada SVG para as conexões (Arestas) -->
+        <svg id="edges-layer" class="absolute inset-0 w-full h-full pointer-events-none z-10"></svg>
+
+        <!-- Camada HTML para os Conceitos (Nós) -->
+        <div id="nodes-layer" class="absolute inset-0 w-full h-full z-20">
+            <!-- Nós gerados via JS -->
+        </div>
+    </main>
+
+    <!-- Área Direita: Painel Analítico -->
+    <aside class="w-full md:w-[45%] lg:w-[40%] h-[50%] md:h-full tech-panel flex flex-col relative">
+        <!-- Detalhes de Interface Tech -->
+        <div class="corner-accent tl"></div>
+        <div class="corner-accent tr"></div>
+        <div class="corner-accent bl"></div>
+        <div class="corner-accent br"></div>
+
+        <header
+            class="px-6 py-5 border-b border-[var(--border-tech)] flex justify-between items-center bg-[var(--bg-base)]">
+            <div class="flex items-center gap-3 text-[var(--cyan-glow)]">
+                <i data-lucide="cpu" class="w-5 h-5"></i>
+                <span class="font-mono text-xs uppercase tracking-widest">Terminal de Análise</span>
+            </div>
+            <span id="node-id-display"
+                class="font-mono text-[10px] text-[var(--text-muted)] bg-[var(--border-tech)] px-2 py-1 rounded">SYS.INIT</span>
+        </header>
+
+        <div class="flex-1 overflow-y-auto tech-scroll p-6 md:p-8 relative">
+
+            <!-- Grid Background subtly applied to content area -->
+            <div class="absolute inset-0 opacity-5 pointer-events-none"
+                style="background-image: radial-gradient(var(--cyan-glow) 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+
+            <!-- Content Area -->
+            <div id="panel-content" class="relative z-10">
+                <div
+                    class="animate-pulse flex flex-col items-center justify-center h-full text-[var(--text-muted)] mt-20">
+                    <i data-lucide="network" class="w-12 h-12 mb-4 opacity-50"></i>
+                    <p class="font-mono text-sm text-center">Iniciando topologia da rede.<br>Selecione um nó conceitual
+                        na tela à esquerda para carregar os dados.</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <script>
+        // Inicializar ícones
+        lucide.createIcons();
+
+        // Dados da Rede (Nós)
+        const nodes = [
+            {
+                id: 'ondinnonk',
+                label: 'Ondinnonk',
+                icon: 'flame',
+                x: 20, y: 30, // Porcentagens
+                category: 'Antropologia',
+                title: 'A Crítica Indígena e os Desejos da Alma',
+                content: `
+                    <div class="space-y-4">
+                        <p class="text-sm leading-relaxed text-[var(--text-muted)]">
+                            <strong class="text-white">Ondinnonk</strong> é um conceito wendat que representa os desejos secretos da alma. A saúde do corpo coletivo dependia da realização destes desejos.
+                        </p>
+                        <div class="border-l-2 border-[var(--cyan-glow)] pl-4 py-1">
+                            <h4 class="font-mono text-xs text-[var(--cyan-glow)] uppercase mb-2">Autonomia Positiva</h4>
+                            <p class="text-sm">O filósofo Kondiaronk expôs a falha ontológica europeia: liberdade não é ausência de privilégios de classe, mas a <strong>capacidade material de recusar ordens</strong>. Ser livre é não ter seu tempo sequestrado pelo acúmulo alheio.</p>
+                        </div>
+                        <p class="text-sm leading-relaxed text-[var(--text-muted)] mt-4">
+                            Em contraste, o sistema de trabalho moderno utiliza a jornada como uma ferramenta de gestão do sofrimento, exigindo o soterramento do desejo em prol de uma "eficiência" artificial.
+                        </p>
+                    </div>
+                `
+            },
+            {
+                id: 'movimento',
+                label: 'Plástica Social',
+                icon: 'git-merge',
+                x: 25, y: 70,
+                category: 'Antropologia',
+                title: 'Liberdade de Movimento e Sazonalidade',
+                content: `
+                    <div class="space-y-4">
+                        <p class="text-sm leading-relaxed text-[var(--text-muted)]">
+                            As fontes antropológicas (Graeber e Wengrow) refutam o evolucionismo linear. A complexidade demográfica ou tecnológica não exige comando rígido constante.
+                        </p>
+                        <div class="bg-[var(--bg-base)] border border-[var(--border-tech)] p-4 rounded mt-4">
+                            <h4 class="font-mono text-xs text-white uppercase mb-2 flex items-center gap-2"><i data-lucide="calendar-clock" class="w-4 h-4"></i> O Mito do Trabalho Contínuo</h4>
+                            <p class="text-sm text-[var(--text-muted)]">
+                                Populações antigas (como os forrageadores) operavam com profunda <strong>sazonalidade e plástica social</strong>. Alternavam estruturas hierárquicas densas em certos meses com igualitarismo radical em outros. Trabalhavam, em média, 15 a 20 horas semanais.
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'uruk',
+                label: 'Estado Cerealista',
+                icon: 'landmark',
+                x: 50, y: 50,
+                category: 'História Estrutural',
+                title: 'Tempo Sexagesimal e Extração',
+                content: `
+                    <div class="space-y-4">
+                        <p class="text-sm leading-relaxed text-[var(--text-muted)]">
+                            Nas antigas cidades-estado mesopotâmicas (como Uruk), o tempo passou a ser quantificado não pelos ritmos da vida, mas pela contabilidade de Estado.
+                        </p>
+                        <div class="border-l-2 border-[var(--red-glow)] pl-4 py-1 mt-4">
+                            <h4 class="font-mono text-xs text-[var(--red-glow)] uppercase mb-2">Fricção Teórica: A Queda de Rousseau</h4>
+                            <p class="text-sm">Rousseau defendia que a fadiga diária e a desigualdade eram produtos "inevitáveis" da civilização complexa. A arqueologia prova o contrário: a métrica rigorosa do tempo humano foi uma <strong>decisão política de fixação</strong> para gerar e contabilizar o excedente (tributação de cereais), e não uma fatalidade técnica.</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'jevons',
+                label: 'Paradoxo de Jevons',
+                icon: 'bar-chart-2',
+                x: 75, y: 30,
+                category: 'Economia Política',
+                title: 'O Paradoxo da Eficiência',
+                content: `
+                    <div class="space-y-4">
+                        <p class="text-sm leading-relaxed text-[var(--text-muted)]">
+                            A promessa ecomodernista dos anos 1950 era clara: a automação e a tecnologia trariam uma semana de trabalho de 15 horas. O resultado foi o inverso devido ao <strong>Paradoxo de Jevons</strong>.
+                        </p>
+                        <div class="bg-gradient-to-br from-[var(--bg-base)] to-[var(--bg-panel)] border border-[var(--border-tech)] p-4 rounded mt-4">
+                            <p class="text-sm text-white font-medium mb-2">
+                                "O aumento da eficiência tecnológica sob o capitalismo não reduz o consumo do recurso (neste caso, o tempo humano e os materiais), mas expande agressivamente a escala de produção."
+                            </p>
+                            <p class="text-xs text-[var(--text-muted)]">
+                                A tecnologia atua como acelerador da <em>máquina de exaustão</em> biológica, como visto em linhas de produção de carne que operam em ritmos fisicamente destrutivos.
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 'capitaloceno',
+                label: 'Brecha Metabólica',
+                icon: 'globe',
+                x: 80, y: 70,
+                category: 'Ecologia Política',
+                title: 'O Capitaloceno e a Exaustão',
+                content: `
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-full bg-red-900/30 border border-red-500/50 flex items-center justify-center text-red-500">
+                                <i data-lucide="clock" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-mono text-xs uppercase text-white">Relógio do Juízo Final</h4>
+                                <p class="text-xs text-[var(--text-muted)]">100 segundos para a meia-noite</p>
+                            </div>
+                        </div>
+                        <p class="text-sm leading-relaxed text-[var(--text-muted)]">
+                            O trabalho ininterrupto não apenas exaure o indivíduo, mas o planeta. A <strong>Brecha Metabólica</strong> descreve o descolamento entre os ciclos acelerados de extração do capital e o tempo lento de regeneração da biosfera.
+                        </p>
+                        <p class="text-sm leading-relaxed text-[var(--text-muted)]">
+                            O projeto colonial fundou a "natureza barata" e o "tempo humano barato". O resultado é o esgotamento duplo: colapso climático (Plastioceno) e epidemias de saúde mental (falência fiscal por absenteísmo).
+                        </p>
+                    </div>
+                `
+            },
+            {
+                id: 'transicao',
+                label: 'Transição Justa',
+                icon: 'leaf',
+                x: 50, y: 85,
+                category: 'Síntese Crítica',
+                title: 'Desmercantilização do Tempo',
+                content: `
+                    <div class="space-y-4">
+                        <p class="text-sm leading-relaxed text-[var(--text-muted)]">
+                            O fim da escala 6x1 (PEC 8/25) não é apenas política laboral, mas um imperativo de <strong>sobrevivência biológica e climática</strong>.
+                        </p>
+                        <ul class="space-y-3 mt-4">
+                            <li class="bg-[var(--bg-base)] border border-[var(--cyan-glow)] p-3 rounded text-sm text-[var(--text-muted)] border-opacity-30">
+                                <strong class="text-[var(--cyan-glow)] block mb-1">Decrescimento Tático</strong>
+                                Reduzir as horas trabalhadas é a principal estratégia não-tecnológica de mitigação climática. Produzir menos significa consumir menos insumos fósseis.
+                            </li>
+                            <li class="bg-[var(--bg-base)] border border-[var(--cyan-glow)] p-3 rounded text-sm text-[var(--text-muted)] border-opacity-30">
+                                <strong class="text-[var(--cyan-glow)] block mb-1">A Devolução do Tempo</strong>
+                                Superar a "cosificação" do humano exige tratar o tempo de vida como o recurso mais precioso da Terra, criando <em>bancos de autonomia</em> para o cuidado mútuo e ócio criativo.
+                            </li>
+                        </ul>
+                    </div>
+                `
+            }
+        ];
+
+        // Arestas (Conexões entre os nós)
+        const edges = [
+            { source: 'ondinnonk', target: 'movimento', type: 'convergent', desc: 'A autonomia exige liberdade de ir e vir' },
+            { source: 'movimento', target: 'transicao', type: 'convergent', desc: 'Sazonalidade inspira novos modelos de jornada' },
+            { source: 'capitaloceno', target: 'transicao', type: 'convergent', desc: 'O colapso climático obriga à redução do trabalho' },
+
+            { source: 'ondinnonk', target: 'uruk', type: 'divergent', desc: 'Autonomia indígena X Captura estatal do tempo' },
+            { source: 'uruk', target: 'jevons', type: 'convergent', desc: 'Lógica de acumulação escalada pela máquina' },
+            { source: 'jevons', target: 'capitaloceno', type: 'convergent', desc: 'Eficiência gera exaustão e poluição massiva' },
+            { source: 'jevons', target: 'transicao', type: 'divergent', desc: 'Produtivismo técnico X Decrescimento sustentável' }
+        ];
+
+        // Renderização da Rede
+        const nodesContainer = document.getElementById('nodes-layer');
+        const edgesContainer = document.getElementById('edges-layer');
+        let activeNodeId = null;
+
+        function initGraph() {
+            // Desenhar Nós
+            nodes.forEach(node => {
+                const el = document.createElement('div');
+                el.className = 'concept-node';
+                el.id = `node-${node.id}`;
+                el.style.left = `${node.x}%`;
+                el.style.top = `${node.y}%`;
+
+                el.innerHTML = `
+                    <i data-lucide="${node.icon}" class="w-6 h-6 mb-2 text-[var(--text-muted)] group-hover:text-[var(--cyan-glow)]"></i>
+                    <span class="font-mono text-[9px] font-bold text-white uppercase tracking-wider px-1 leading-tight">${node.label}</span>
+                `;
+
+                el.onclick = () => selectNode(node.id);
+                nodesContainer.appendChild(el);
+            });
+            lucide.createIcons();
+
+            // Desenhar Arestas (necessita debounce no redimensionamento da tela)
+            drawEdges();
+            window.addEventListener('resize', drawEdges);
+        }
+
+        function drawEdges() {
+            edgesContainer.innerHTML = ''; // Limpar svg
+
+            edges.forEach(edge => {
+                const sourceNode = nodes.find(n => n.id === edge.source);
+                const targetNode = nodes.find(n => n.id === edge.target);
+
+                if (sourceNode && targetNode) {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+
+                    // As posições % devem ser mapeadas para o SVG que tem width/height 100%
+                    line.setAttribute('x1', `${sourceNode.x}%`);
+                    line.setAttribute('y1', `${sourceNode.y}%`);
+                    line.setAttribute('x2', `${targetNode.x}%`);
+                    line.setAttribute('y2', `${targetNode.y}%`);
+
+                    line.setAttribute('class', `edge-line ${edge.type === 'convergent' ? 'edge-convergent' : 'edge-divergent'}`);
+                    line.id = `edge-${edge.source}-${edge.target}`;
+
+                    edgesContainer.appendChild(line);
+                }
+            });
+        }
+
+        function selectNode(nodeId) {
+            if (activeNodeId === nodeId) return;
+            activeNodeId = nodeId;
+
+            const data = nodes.find(n => n.id === nodeId);
+
+            // Atualizar UI dos Nós
+            document.querySelectorAll('.concept-node').forEach(el => {
+                el.classList.remove('active');
+                el.style.opacity = '0.4'; // Diminui opacidade dos inativos
+            });
+
+            const activeEl = document.getElementById(`node-${nodeId}`);
+            activeEl.classList.add('active');
+            activeEl.style.opacity = '1';
+
+            // Destacar arestas e nós conectados
+            document.querySelectorAll('.edge-line').forEach(line => {
+                line.style.opacity = '0.1';
+            });
+
+            edges.forEach(edge => {
+                if (edge.source === nodeId || edge.target === nodeId) {
+                    const line = document.getElementById(`edge-${edge.source}-${edge.target}`);
+                    if (line) line.style.opacity = '0.8';
+
+                    // Iluminar nó conectado
+                    const otherNodeId = edge.source === nodeId ? edge.target : edge.source;
+                    const otherNodeEl = document.getElementById(`node-${otherNodeId}`);
+                    if (otherNodeEl) otherNodeEl.style.opacity = '0.9';
+                }
+            });
+
+            // Atualizar Painel Analítico
+            updatePanel(data);
+        }
+
+        function updatePanel(data) {
+            const contentDiv = document.getElementById('panel-content');
+            const idDisplay = document.getElementById('node-id-display');
+
+            // Glitch/Fade effect
+            contentDiv.style.opacity = '0';
+
+            setTimeout(() => {
+                idDisplay.innerText = `NÓ_ID::${data.id.toUpperCase()}`;
+
+                let connectionsHtml = generateConnectionsHtml(data.id);
+
+                contentDiv.innerHTML = `
+                    <div class="mb-6 pb-4 border-b border-[var(--border-tech)]">
+                        <span class="font-mono text-xs text-[var(--cyan-glow)] uppercase tracking-wider block mb-2">${data.category}</span>
+                        <h2 class="text-2xl font-bold text-white leading-tight">${data.title}</h2>
+                    </div>
+                    
+                    <div class="mb-8">
+                        ${data.content}
+                    </div>
+
+                    ${connectionsHtml}
+                `;
+
+                contentDiv.style.opacity = '1';
+                lucide.createIcons();
+            }, 300);
+        }
+
+        function generateConnectionsHtml(nodeId) {
+            const relevantEdges = edges.filter(e => e.source === nodeId || e.target === nodeId);
+            if (relevantEdges.length === 0) return '';
+
+            let html = `
+                <div class="mt-8 pt-6 border-t border-[var(--border-tech)]">
+                    <h3 class="font-mono text-xs text-[var(--text-muted)] uppercase mb-4 flex items-center gap-2">
+                        <i data-lucide="share-2" class="w-4 h-4"></i> Relacionamentos da Rede
+                    </h3>
+                    <div class="space-y-3">
+            `;
+
+            relevantEdges.forEach(edge => {
+                const isSource = edge.source === nodeId;
+                const otherNodeId = isSource ? edge.target : edge.source;
+                const otherNode = nodes.find(n => n.id === otherNodeId);
+                const colorClass = edge.type === 'convergent' ? 'text-[var(--cyan-glow)] border-[var(--cyan-glow)]' : 'text-[var(--red-glow)] border-[var(--red-glow)]';
+                const directionIcon = isSource ? 'arrow-right' : 'arrow-left';
+                const typeLabel = edge.type === 'convergent' ? 'Convergência' : 'Divergência';
+
+                html += `
+                    <div class="flex items-start gap-3 p-3 bg-[var(--bg-base)] border-l-2 ${colorClass} rounded text-sm cursor-pointer hover:bg-[var(--border-tech)] transition-colors" onclick="selectNode('${otherNodeId}')">
+                        <i data-lucide="${directionIcon}" class="w-4 h-4 mt-0.5 shrink-0"></i>
+                        <div>
+                            <span class="font-mono text-[10px] uppercase opacity-80 block mb-0.5">${typeLabel} com ${otherNode.label}</span>
+                            <span class="text-[var(--text-muted)] text-xs">${edge.desc}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div></div>`;
+            return html;
+        }
+
+        // Inicializar aplicação ao carregar
+        window.onload = initGraph;
+
+    </script>
+</body>
+
+</html>

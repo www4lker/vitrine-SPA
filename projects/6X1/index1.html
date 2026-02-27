@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estratigrafia do Tempo: O Capitaloceno e o Fim da Escala 6x1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-panel: #fdfbf7;
+            --text-main: #2b2620;
+            --text-muted: #6b6358;
+            --accent-color: #c25e30;
+            /* Terracotta */
+        }
+
+        body {
+            background-color: #1a1814;
+            color: var(--text-main);
+            font-family: 'Lora', serif;
+            overflow: hidden;
+            /* Prevent body scroll, layout handles it */
+        }
+
+        h1,
+        h2,
+        h3,
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .mono-font {
+            font-family: 'Courier Prime', monospace;
+        }
+
+        /* Scrollbar customizada para os painéis */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        /* --- Texturas Geológicas (Estratigrafia) --- */
+        .stratum {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+        }
+
+        .stratum:hover::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.05);
+            pointer-events: none;
+        }
+
+        .stratum.active {
+            border-left: 8px solid var(--accent-color);
+            filter: brightness(1.1);
+        }
+
+        /* Camada 6: Superfície (Atualidade - PEC) */
+        .layer-surface {
+            background-color: #8c7b65;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23685a48' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            color: #fdfbf7;
+        }
+
+        /* Camada 5: Reforma 2017 (Cascalho/Concreto) */
+        .layer-2017 {
+            background-color: #6a6b6d;
+            background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20zM20 0h20v20H20V0z' fill='%23505153' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+            color: #fdfbf7;
+        }
+
+        /* Camada 4: Industrialização (Carvão/Fuligem) */
+        .layer-industrial {
+            background-color: #3b3a38;
+            background-image: radial-gradient(#242322 15%, transparent 16%), radial-gradient(#242322 15%, transparent 16%);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            color: #e0dcd3;
+        }
+
+        /* Camada 3: Colônia (Argila/Terracota) */
+        .layer-colonial {
+            background-color: #9c5235;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 0, 0, 0.05) 10px, rgba(0, 0, 0, 0.05) 20px);
+            color: #fdfbf7;
+        }
+
+        /* Camada 2: Uruk (Arenito/Calcário) */
+        .layer-uruk {
+            background-color: #c9b48f;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264 1.088-.402l1.768-.661C33.64 15.347 39.647 14 50 14c10.271 0 15.362 1.222 24.629 4.928.955.383 1.869.74 2.75 1.072h6.225c-2.51-.73-5.139-1.691-8.233-2.928C65.888 13.278 60.562 12 50 12c-10.674 0-16.12 1.373-25.569 4.928-1.748.658-3.483 1.282-5.232 1.849h6.225z' fill='%23a89472' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+            color: #3d3121;
+        }
+
+        /* Camada 1: Forrageadores (Rocha Matriz/Granito) */
+        .layer-bedrock {
+            background-color: #44403c;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='8' height='8' fill='%2344403c'%3E%3C/rect%3E%3Cpath d='M0 0L8 8ZM8 0L0 8Z' stroke='%23332f2b' stroke-width='1'%3E%3C/path%3E%3C/svg%3E");
+            color: #d6d3d1;
+        }
+
+        /* Divisor Irregular entre camadas */
+        .ragged-top {
+            clip-path: polygon(0% 5px, 5% 0px, 10% 8px, 15% 2px, 20% 6px, 25% 0px, 30% 7px, 35% 1px, 40% 6px, 45% 0px, 50% 8px, 55% 2px, 60% 7px, 65% 1px, 70% 6px, 75% 0px, 80% 8px, 85% 2px, 90% 6px, 95% 0px, 100% 5px, 100% 100%, 0% 100%);
+            padding-top: 12px;
+            margin-top: -8px;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body class="h-screen w-screen flex flex-col md:flex-row">
+
+    <!-- Lado Esquerdo: Coluna Estratigráfica -->
+    <main
+        class="w-full md:w-1/3 lg:w-2/5 h-2/5 md:h-full bg-[#1a1814] flex flex-col overflow-y-auto custom-scroll border-r border-[#333]">
+
+        <!-- Header da Escavação -->
+        <div
+            class="p-4 bg-[#111] text-[#e8e6e1] sticky top-0 z-50 border-b border-[#333] shadow-md flex justify-between items-center">
+            <div>
+                <h1 class="title-font text-lg md:text-xl font-bold uppercase tracking-widest text-[#d4b98c]">Sonda
+                    Arqueológica</h1>
+                <p class="mono-font text-xs text-gray-400">Eixo Temporal: Formação da Jornada de Trabalho</p>
+            </div>
+            <i data-lucide="pickaxe" class="text-[#d4b98c] w-6 h-6"></i>
+        </div>
+
+        <!-- Estratos (Empilhados do mais recente no topo para o mais antigo na base) -->
+        <div class="flex-1 flex flex-col justify-end">
+
+            <!-- Camada 6: Atualidade -->
+            <div id="stratum-pec" onclick="loadContent('pec')"
+                class="stratum layer-surface flex-1 min-h-[100px] p-4 flex flex-col justify-center ragged-top">
+                <div class="flex justify-between items-center opacity-80 mb-1">
+                    <span class="mono-font text-xs uppercase tracking-wider">Superfície • Presente</span>
+                    <i data-lucide="scale-3d" class="w-4 h-4"></i>
+                </div>
+                <h2 class="title-font text-lg md:text-xl font-bold leading-tight">PEC 8/25 & Transição</h2>
+                <p class="text-xs opacity-90 mt-1">O esgotamento sistêmico e a janela do decrescimento.</p>
+            </div>
+
+            <!-- Camada 5: 2017 -->
+            <div id="stratum-2017" onclick="loadContent('2017')"
+                class="stratum layer-2017 flex-1 min-h-[90px] p-4 flex flex-col justify-center ragged-top">
+                <div class="flex justify-between items-center opacity-70 mb-1">
+                    <span class="mono-font text-[10px] uppercase tracking-wider">Estrato Superior • Séc. XXI</span>
+                    <i data-lucide="file-text" class="w-4 h-4"></i>
+                </div>
+                <h2 class="title-font text-lg font-bold leading-tight">Reforma de 2017</h2>
+                <p class="text-xs opacity-80 mt-1">Flexibilidade precarizante e o "pousio biológico".</p>
+            </div>
+
+            <!-- Camada 4: Industrialização -->
+            <div id="stratum-industrial" onclick="loadContent('industrial')"
+                class="stratum layer-industrial flex-1 min-h-[110px] p-4 flex flex-col justify-center ragged-top">
+                <div class="flex justify-between items-center opacity-60 mb-1">
+                    <span class="mono-font text-[10px] uppercase tracking-wider">Veio Carbonífero • Séc. XIX</span>
+                    <i data-lucide="factory" class="w-4 h-4"></i>
+                </div>
+                <h2 class="title-font text-lg md:text-xl font-bold leading-tight">Aceleração Industrial</h2>
+                <p class="text-xs opacity-70 mt-1">O Paradoxo de Jevons e a Máquina de Exaustão.</p>
+            </div>
+
+            <!-- Camada 3: Colônia -->
+            <div id="stratum-colonial" onclick="loadContent('colonial')"
+                class="stratum layer-colonial flex-1 min-h-[100px] p-4 flex flex-col justify-center ragged-top">
+                <div class="flex justify-between items-center opacity-80 mb-1">
+                    <span class="mono-font text-[10px] uppercase tracking-wider">Sedimento Mercantil • Séc. XVI</span>
+                    <i data-lucide="ship" class="w-4 h-4"></i>
+                </div>
+                <h2 class="title-font text-lg md:text-xl font-bold leading-tight">O Açúcar Colonial</h2>
+                <p class="text-xs opacity-90 mt-1">A "Natureza Barata" e o alvorecer do Capitaloceno.</p>
+            </div>
+
+            <!-- Camada 2: Uruk -->
+            <div id="stratum-uruk" onclick="loadContent('uruk')"
+                class="stratum layer-uruk flex-1 min-h-[90px] p-4 flex flex-col justify-center ragged-top">
+                <div class="flex justify-between items-center opacity-70 mb-1">
+                    <span class="mono-font text-[10px] uppercase tracking-wider">Sítio Arqueológico • 4000 a.C.</span>
+                    <i data-lucide="building-2" class="w-4 h-4"></i>
+                </div>
+                <h2 class="title-font text-lg font-bold leading-tight">Estado Cerealista</h2>
+                <p class="text-xs opacity-80 mt-1">Tempo sexagesimal e a métrica do excedente.</p>
+            </div>
+
+            <!-- Camada 1: Forrageadores -->
+            <div id="stratum-forrageadores" onclick="loadContent('forrageadores')"
+                class="stratum layer-bedrock flex-1 min-h-[120px] p-4 flex flex-col justify-center ragged-top border-b-0">
+                <div class="flex justify-between items-center opacity-60 mb-1">
+                    <span class="mono-font text-[10px] uppercase tracking-wider">Rocha Matriz • Pré-História</span>
+                    <i data-lucide="tent" class="w-4 h-4"></i>
+                </div>
+                <h2 class="title-font text-lg md:text-xl font-bold leading-tight">Plástica Social Ancestral</h2>
+                <p class="text-xs opacity-70 mt-1">A Crítica Indígena e a flexibilidade sazonal.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Lado Direito: Caderno de Escavação (Painel de Leitura) -->
+    <aside
+        class="w-full md:w-2/3 lg:w-3/5 h-3/5 md:h-full bg-[var(--bg-panel)] flex flex-col overflow-hidden relative shadow-[-10px_0_20px_rgba(0,0,0,0.5)]">
+
+        <!-- Fundo sutil de papel -->
+        <div class="absolute inset-0 opacity-20 pointer-events-none"
+            style="background-image: url('data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' viewBox=\'0 0 100 100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.8\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100\' height=\'100\' filter=\'url(%23noise)\'/%3E%3C/svg%3E'); mix-blend-mode: multiply;">
+        </div>
+
+        <header
+            class="px-8 py-6 border-b border-[var(--text-muted)] bg-white/50 backdrop-blur-sm z-10 flex justify-between items-end">
+            <div>
+                <p
+                    class="mono-font text-xs text-[var(--text-muted)] tracking-widest uppercase mb-2 flex items-center gap-2">
+                    <i data-lucide="microscope" class="w-4 h-4"></i> Análise Transversal
+                </p>
+                <h2 id="panel-title"
+                    class="title-font text-3xl md:text-4xl font-black text-[var(--text-main)] leading-tight">Iniciar
+                    Escavação</h2>
+            </div>
+            <div id="panel-depth"
+                class="mono-font text-sm text-[var(--accent-color)] font-bold text-right pb-1 hidden md:block">
+                Profundidade: --
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto custom-scroll p-8 md:p-12 z-10 text-[var(--text-main)] bg-transparent"
+            id="panel-content">
+            <!-- Introdução -->
+            <div class="max-w-2xl mx-auto">
+                <p class="text-xl leading-relaxed mb-6 font-serif">
+                    Bem-vindo à estratigrafia do tempo social.
+                </p>
+                <p class="leading-relaxed mb-6 text-gray-700">
+                    A jornada de trabalho moderna de 40 horas não é o ápice da biologia humana ou da civilização, mas
+                    uma camada geológica de controle. Para entender as recentes discussões sobre a escala 6x1 e o
+                    colapso climático, precisamos realizar uma <strong>arqueologia do tempo</strong>.
+                </p>
+                <div class="p-6 border-l-4 border-[var(--accent-color)] bg-[#f4ece1] rounded-r my-8">
+                    <p class="font-bold uppercase tracking-wider text-xs mb-2 text-[var(--accent-color)]">Instruções de
+                        Campo</p>
+                    <p class="text-sm text-gray-800">
+                        Navegue pelas camadas geológicas na coluna à esquerda. Comece pela "Rocha Matriz" (abaixo) para
+                        entender as origens ou analise a "Superfície" (topo) para debater os embates contemporâneos.
+                        Cada estrato revela uma tradição teórica distinta.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <script>
+        lucide.createIcons();
+
+        // Dados Estratigráficos (Conteúdo do Painel)
+        const strataData = {
+            'forrageadores': {
+                title: "A Plástica Social Ancestral",
+                depth: "Profundidade: 10.000+ a.C.",
+                content: `
+                    <div class="max-w-2xl mx-auto">
+                        <h3 class="title-font font-bold text-2xl mb-4 text-[#44403c]">A Mentira do Evolucionismo Linear</h3>
+                        <p class="mb-5 leading-relaxed text-lg">
+                            Na camada mais profunda da nossa existência social, desmontamos o mito de que o passado era uma luta brutal pela sobrevivência. Evidências antropológicas (fontes como Graeber e Wengrow) revelam que grupos forrageadores e sociedades antigas trabalhavam entre <strong>15 a 20 horas por semana</strong>.
+                        </p>
+                        
+                        <div class="my-8 flex items-start gap-4">
+                            <i data-lucide="leaf" class="w-8 h-8 text-green-700 shrink-0 mt-1"></i>
+                            <div>
+                                <h4 class="font-bold font-serif text-lg mb-1">A Sazonalidade da Vida</h4>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    Essas populações possuíam uma "plástica social": alternavam sazonalmente entre estruturas densas e rígidas e bandos igualitários dispersos. A hierarquia e a labuta não eram destinos, eram representações teatrais temporárias.
+                                </p>
+                            </div>
+                        </div>
+
+                        <hr class="border-t border-gray-300 my-6">
+
+                        <h3 class="title-font font-bold text-xl mb-3">O Motor da Desconstrução: A Crítica Indígena</h3>
+                        <p class="mb-4 leading-relaxed text-gray-800">
+                            Ao encontrar os colonizadores, a verdadeira ruptura foi filosófica. O filósofo wendat <strong>Kondiaronk</strong> apontou a falha ontológica europeia: a incapacidade de conceber liberdade além da simples falta de privilégios. 
+                        </p>
+                        <blockquote class="border-l-4 border-[#44403c] pl-4 py-2 italic bg-gray-100 text-gray-600 mb-6 text-sm">
+                            "A autonomia positiva reside na capacidade de recusar ordens e movimentar-se livremente. Ser livre é, fundamentalmente, não ser escravo do tempo ou do acúmulo de outro."
+                        </blockquote>
+                        <p class="mb-4 leading-relaxed text-gray-800 text-sm">
+                            Para os Wendat, a saúde social dependia da realização do <em>Ondinnonk</em> (os desejos secretos da alma). O trabalho forçado representava o adoecimento do corpo coletivo.
+                        </p>
+                    </div>
+                `
+            },
+            'uruk': {
+                title: "O Estado Cerealista",
+                depth: "Profundidade: 4.000 a.C.",
+                content: `
+                    <div class="max-w-2xl mx-auto">
+                        <h3 class="title-font font-bold text-2xl mb-4 text-[#9c7c4c]">A Captura do Tempo Sexagesimal</h3>
+                        <p class="mb-5 leading-relaxed text-lg">
+                            Subindo a coluna estratigráfica, chegamos às antigas cidades-estado da Mesopotâmia, como Uruk. Aqui, encontramos os primeiros sedimentos da organização rígida do tempo humano.
+                        </p>
+
+                        <div class="bg-[#f9f7f2] border border-[#d2c2a5] p-6 rounded my-6">
+                            <h4 class="font-bold font-serif mb-2 flex items-center gap-2">
+                                <i data-lucide="wheat" class="w-5 h-5 text-[#9c7c4c]"></i> A Métrica do Humano
+                            </h4>
+                            <p class="text-sm leading-relaxed text-gray-700">
+                                A invenção do tempo como unidade contábil (base sexagesimal) não foi um avanço científico desinteressado, mas uma ferramenta estatal para medir a "eficiência" e a extração de excedentes agrícolas (cereais). O humano passa a ser medido e enquadrado.
+                            </p>
+                        </div>
+
+                        <h3 class="title-font font-bold text-xl mb-3 mt-8 text-[#9c7c4c]">A Origem da Divergência: O Paradigma de Rousseau</h3>
+                        <p class="mb-4 leading-relaxed text-gray-800">
+                            É neste estrato que a teoria política moderna falha. Jean-Jacques <strong>Rousseau</strong> cristalizou a ideia de que a fadiga diária e a desigualdade eram "subprodutos inevitáveis" de uma sociedade complexa.
+                        </p>
+                        <p class="mb-4 leading-relaxed text-gray-800">
+                            A arqueologia moderna refuta Rousseau: a sedentarização e a complexidade técnica não exigem invariavelmente o trabalho exaustivo diário. A rigidez produtiva foi uma escolha política para manter hierarquias permanentes e facilitar a tributação visível.
+                        </p>
+                    </div>
+                `
+            },
+            'colonial': {
+                title: "O Açúcar e a Colônia",
+                depth: "Profundidade: Séc. XVI",
+                content: `
+                    <div class="max-w-2xl mx-auto">
+                        <h3 class="title-font font-bold text-2xl mb-4 text-[#9c5235]">O Alvorecer do Capitaloceno</h3>
+                        <p class="mb-5 leading-relaxed text-lg">
+                            Chegamos à camada onde a modernidade se sedimenta sob a lama da exploração colonial. As  plantações de açúcar no século XVI representam um corte epistemológico brutal: a mercantilização absoluta da vida.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                            <div>
+                                <h4 class="font-bold font-serif mb-2 text-[#9c5235]">A Cosificação da Vida</h4>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    Conforme advertem Aimé Césaire e Carolyn Merchant, o projeto colonial operou a separação entre o humano e a Terra. O tempo humano perdeu seu ritmo orgânico e tornou-se um insumo elástico de extração máxima.
+                                </p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold font-serif mb-2 text-[#9c5235]">A Natureza Barata</h4>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    Para o capital nascente se reproduzir infinitamente, ele exigia quatro subsídios inesgotáveis: natureza barata, dinheiro barato, comida barata e <strong>energia/tempo humano baratos</strong>.
+                                </p>
+                            </div>
+                        </div>
+
+                        <p class="leading-relaxed text-gray-800 mt-6 border-t border-gray-200 pt-6">
+                            Neste estrato, a jornada de trabalho deixa de ser uma negociação entre aldeões e a colheita para se tornar uma engrenagem de extração planetária, violentando corpos e ecossistemas simultaneamente.
+                        </p>
+                    </div>
+                `
+            },
+            'industrial': {
+                title: "A Aceleração Industrial",
+                depth: "Profundidade: Séc. XIX e XX",
+                content: `
+                    <div class="max-w-2xl mx-auto">
+                        <h3 class="title-font font-bold text-2xl mb-4 text-[#3b3a38]">A Máquina de Exaustão Biológica</h3>
+                        <p class="mb-5 leading-relaxed text-lg">
+                            Este estrato escuro, tingido pelo carvão, consolida a fixação das horas. A fábrica moderna impõe um ritmo alheio ao corpo, ilustrado perfeitamente pela indústria de carne contemporânea, onde a esteira dita ritmos de até 140 aves desossadas por minuto.
+                        </p>
+
+                        <div class="bg-gray-100 p-6 rounded-lg my-6 shadow-inner">
+                            <h4 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
+                                <i data-lucide="flame" class="w-5 h-5 text-orange-600"></i> O Paradoxo de Jevons
+                            </h4>
+                            <p class="text-sm text-gray-700 leading-relaxed mb-3">
+                                Nos anos 50, prometeu-se que a tecnologia e os eletrodomésticos devolveriam o tempo de vida às pessoas. No entanto, esbarramos no muro ecopolítico do Paradoxo de Jevons:
+                            </p>
+                            <p class="text-sm font-semibold text-gray-800 bg-white p-3 border-l-4 border-gray-400">
+                                "O aumento da eficiência tecnológica sob o capitalismo não reduz o consumo do recurso (incluindo o tempo humano); em vez disso, expande agressivamente a escala de produção."
+                            </p>
+                            <p class="text-sm text-gray-700 leading-relaxed mt-3">
+                                A tecnologia não foi usada para o <em>maravilhamento</em> (como a pólvora em seu uso festivo original chinês), mas submetida ao vetor da guerra e da hiperprodução.
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            '2017': {
+                title: "A Fricção Regulatória de 2017",
+                depth: "Profundidade: História Recente",
+                content: `
+                    <div class="max-w-2xl mx-auto">
+                        <h3 class="title-font font-bold text-2xl mb-4 text-[#6a6b6d]">O "Pousio Biológico"</h3>
+                        <p class="mb-5 leading-relaxed text-lg">
+                            Nesta camada superficial de cascalho jurídico, analisamos a Reforma Trabalhista brasileira de 2017. Ela marca a tensão máxima entre a tentativa de proteger a dignidade do trabalho e as demandas do capital por flexibilidade extrema.
+                        </p>
+
+                        <div class="grid grid-cols-2 gap-4 my-6">
+                            <div class="p-4 border border-gray-300 rounded">
+                                <h4 class="font-bold text-sm text-gray-800 mb-1">O Acordado sobre o Legislado</h4>
+                                <p class="text-xs text-gray-600">A tentativa de flexibilizar sob assimetria de poder, disfarçando precariedade de autonomia.</p>
+                            </div>
+                            <div class="p-4 border border-gray-300 rounded">
+                                <h4 class="font-bold text-sm text-gray-800 mb-1">Estado Fiscal</h4>
+                                <p class="text-xs text-gray-600">O medo institucional de que reduzir a jornada formal asfixie a base de arrecadação do Estado produtivo.</p>
+                            </div>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-gray-800">
+                            Sob essa lógica neoliberal, o trabalho não é mais apenas produção, mas <strong>"gestão do sofrimento e da dor psíquica"</strong>. O pouco tempo de descanso concedido na legislação não serve para a emancipação do sujeito ou para a criação de "bancos de autonomia".
+                        </p>
+                        <p class="font-serif italic text-gray-600 border-l-2 border-[#6a6b6d] pl-4 py-1">
+                            O descanso tornou-se mero "pousio biológico" — o mínimo necessário para que o corpo não colapse antes do próximo turno de exploração.
+                        </p>
+                    </div>
+                `
+            },
+            'pec': {
+                title: "A Transição Superficial",
+                depth: "Profundidade: O Presente Contestado",
+                content: `
+                    <div class="max-w-2xl mx-auto">
+                        <h3 class="title-font font-bold text-2xl mb-4 text-[#8c7b65]">A Crise 6x1 e o Capitaloceno</h3>
+                        <p class="mb-5 leading-relaxed text-lg">
+                            No topo da coluna estratigráfica, a atual PEC 8/25 (Pelo Fim da Escala 6x1) não é uma mera disputa trabalhista, mas o sintoma de um esgotamento planetário. É o embate entre a <strong>Ecologia da Vida</strong> e a persistência do <strong>Capitaloceno</strong>.
+                        </p>
+
+                        <div class="my-6 p-6 bg-[#f4f1e9] rounded border-t-4 border-[#8c7b65]">
+                            <h4 class="font-bold font-serif mb-3 flex items-center gap-2">
+                                <i data-lucide="earth" class="w-5 h-5"></i> O Limite Biofísico
+                            </h4>
+                            <p class="text-sm leading-relaxed text-gray-800 mb-3">
+                                O ritmo de 6 dias de produção por 1 de descanso oblitera não apenas o sistema de saúde mental (levando à falência fiscal por absenteísmo), mas aciona o <em>Relógio do Juízo Final</em>. O tempo de exploração ultrapassou a capacidade de regeneração da biosfera.
+                            </p>
+                            <p class="text-sm leading-relaxed text-gray-800">
+                                Produzir incessantemente significa queimar combustíveis fósseis ininterruptamente e encher oceanos no "Plastioceno".
+                            </p>
+                        </div>
+
+                        <h3 class="title-font font-bold text-xl mb-3 mt-8">A Transição Justa e o Decrescimento</h3>
+                        <ul class="list-disc pl-5 space-y-3 text-sm text-gray-800 mb-6">
+                            <li><strong>Brecha Metabólica:</strong> Reduzir a jornada é a principal estratégia não-tecnológica de mitigação climática. Produzir menos horas significa consumir menos recursos.</li>
+                            <li><strong>Desmercantilização do Tempo:</strong> A devolução do tempo atua como uma vacina contra a precarização neoliberal, priorizando a "criação mútua de seres humanos" e o trabalho de cuidado compartilhado.</li>
+                            <li><strong>Sazonalidade Moderna:</strong> A síntese propõe abandonar a jornada linear em prol de ciclos alternados de alta densidade e de "libertação total" para estudo, ócio criativo e participação comunitária.</li>
+                        </ul>
+
+                        <p class="text-center italic font-serif text-[#8c7b65] font-bold mt-8 border-t border-gray-300 pt-6">
+                            "O fim do Capitaloceno começa, necessariamente, com a devolução do tempo aos seres que compõem o tecido da vida."
+                        </p>
+                    </div>
+                `
+            }
+        };
+
+        function loadContent(layerId) {
+            const data = strataData[layerId];
+            if (!data) return;
+
+            // Remove classe ativa de todos os estratos
+            document.querySelectorAll('.stratum').forEach(el => el.classList.remove('active'));
+            // Adiciona classe ativa ao clicado
+            document.getElementById(`stratum-${layerId}`).classList.add('active');
+
+            // Prepara a animação do conteúdo
+            const contentDiv = document.getElementById('panel-content');
+            const titleEl = document.getElementById('panel-title');
+            const depthEl = document.getElementById('panel-depth');
+
+            contentDiv.style.opacity = 0;
+            titleEl.style.opacity = 0;
+            if (depthEl) depthEl.style.opacity = 0;
+
+            // Troca os dados com um leve delay para fade
+            setTimeout(() => {
+                titleEl.innerHTML = data.title;
+                if (depthEl) depthEl.innerHTML = data.depth;
+                contentDiv.innerHTML = data.content;
+
+                contentDiv.style.transition = 'opacity 0.5s ease-in-out';
+                titleEl.style.transition = 'opacity 0.4s ease-in-out';
+                if (depthEl) depthEl.style.transition = 'opacity 0.4s ease-in-out';
+
+                contentDiv.style.opacity = 1;
+                titleEl.style.opacity = 1;
+                if (depthEl) depthEl.style.opacity = 1;
+
+                lucide.createIcons();
+            }, 250);
+        }
+    </script>
+</body>
+
+</html>

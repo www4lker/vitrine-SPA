@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Três visualizações interativas sobre o fim da escala 6x1 e o Capitaloceno: mapa geoconceitual, estratigrafia histórica do trabalho e grafo conceitual sistêmico. Baseado em Graeber & Wengrow, Serratos e ecologia política crítica.">
+    <title>O Fim da Escala 6x1 e o Capitaloceno — Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0d0f14;
+            --bg-card: #151820;
+            --bg-card-hover: #1c2030;
+            --border: #2a3045;
+            --accent-gold: #c9a84c;
+            --accent-terracotta: #c25e30;
+            --accent-cyan: #06b6d4;
+            --accent-green: #4a7c59;
+            --text-main: #e8e4dc;
+            --text-muted: #8a8fa0;
+            --text-dim: #5a6070;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            /* Prevent zoom from cutting off content */
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* ─── Layout Geral ─── */
+        .app-shell {
+            display: flex;
+            flex-direction: column;
+            /* dvh = dynamic viewport height, accounts for browser chrome on mobile/zoom */
+            height: 100dvh;
+            min-height: 0;
+        }
+
+        /* ─── Cabeçalho ─── */
+        .portal-header {
+            background: linear-gradient(180deg, #0a0c10 0%, var(--bg-dark) 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            flex-shrink: 0;
+            position: relative;
+            /* overflow visible so zoom never clips the header content */
+            overflow: visible;
+            z-index: 100;
+        }
+
+        .portal-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(201, 168, 76, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 168, 76, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 0 0 0;
+            position: relative;
+        }
+
+        .portal-title-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .portal-eyebrow {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 4px;
+        }
+
+        .portal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(18px, 2vw, 24px);
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.2;
+        }
+
+        .portal-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 3px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+
+        /* Botão Fontes */
+        .btn-sources {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            background: rgba(201, 168, 76, 0.08);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+            border-radius: 6px;
+            color: var(--accent-gold);
+            font-size: 12px;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-sources:hover {
+            background: rgba(201, 168, 76, 0.16);
+            border-color: rgba(201, 168, 76, 0.6);
+        }
+
+        .btn-sources svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        /* ─── Abas de Navegação ─── */
+        .tabs-nav {
+            display: flex;
+            gap: 0;
+            margin-top: 14px;
+            border-bottom: none;
+            /* Allow horizontal scroll when zoomed in so tabs never disappear */
+            overflow-x: auto;
+            overflow-y: visible;
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .tabs-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 22px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-bottom: none;
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            color: var(--text-dim);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            position: relative;
+            letter-spacing: 0.02em;
+            /* Don't shrink tabs when there's space pressure */
+            flex-shrink: 0;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--bg-dark);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tab-btn.active {
+            color: var(--text-main);
+            background: var(--bg-card);
+            border-color: var(--border);
+        }
+
+        .tab-btn.active::after {
+            opacity: 1;
+        }
+
+        .tab-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 13px;
+            transition: all 0.25s ease;
+        }
+
+        .tab-btn:nth-child(1) .tab-icon {
+            background: rgba(201, 168, 76, 0.15);
+            color: var(--accent-gold);
+        }
+
+        .tab-btn:nth-child(2) .tab-icon {
+            background: rgba(194, 94, 48, 0.15);
+            color: var(--accent-terracotta);
+        }
+
+        .tab-btn:nth-child(3) .tab-icon {
+            background: rgba(6, 182, 212, 0.15);
+            color: var(--accent-cyan);
+        }
+
+        .tab-btn.active:nth-child(1) .tab-icon {
+            background: rgba(201, 168, 76, 0.25);
+        }
+
+        .tab-btn.active:nth-child(2) .tab-icon {
+            background: rgba(194, 94, 48, 0.25);
+        }
+
+        .tab-btn.active:nth-child(3) .tab-icon {
+            background: rgba(6, 182, 212, 0.25);
+        }
+
+        .tab-label-block {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .tab-name {
+            font-weight: 600;
+            font-size: 13px;
+            line-height: 1.2;
+        }
+
+        .tab-desc {
+            font-size: 11px;
+            color: var(--text-dim);
+            margin-top: 2px;
+            transition: color 0.25s;
+        }
+
+        .tab-btn.active .tab-desc {
+            color: var(--text-muted);
+        }
+
+        /* ─── Área de Conteúdo Principal ─── */
+        .content-area {
+            flex: 1;
+            /* min-height: 0 is critical — without it flex children
+               don't shrink below their content size, causing overflow */
+            min-height: 0;
+            position: relative;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .iframe-panel {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .iframe-panel.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* ─── Overlay de Fontes ─── */
+        .sources-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 7, 12, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .sources-overlay.open {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .sources-modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            max-width: 820px;
+            width: 100%;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+            transform: translateY(20px);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .sources-overlay.open .sources-modal {
+            transform: translateY(0);
+        }
+
+        .sources-header {
+            padding: 20px 24px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .sources-title-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sources-eyebrow {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            letter-spacing: 0.22em;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .sources-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .btn-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            line-height: 1;
+            transition: all 0.2s;
+        }
+
+        .btn-close:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--text-main);
+        }
+
+        .sources-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        /* Cartões de contexto dos documentos */
+        .doc-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .doc-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .doc-card:nth-child(1) {
+            border-top: 2px solid var(--accent-gold);
+        }
+
+        .doc-card:nth-child(2) {
+            border-top: 2px solid var(--accent-terracotta);
+        }
+
+        .doc-card:nth-child(3) {
+            border-top: 2px solid var(--accent-cyan);
+        }
+
+        .doc-card-label {
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 7px;
+        }
+
+        .doc-card-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            color: var(--text-main);
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .doc-card-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        /* Seção de fontes */
+        .sources-section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .bib-entry {
+            display: flex;
+            gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(42, 48, 69, 0.5);
+        }
+
+        .bib-entry:last-child {
+            border-bottom: none;
+        }
+
+        .bib-num {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            color: var(--accent-gold);
+            flex-shrink: 0;
+            width: 22px;
+            padding-top: 3px;
+            text-align: right;
+        }
+
+        .bib-content {
+            flex: 1;
+        }
+
+        .bib-authors {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .bib-title {
+            font-style: italic;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .bib-info {
+            font-size: 12px;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        .bib-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .bib-tag {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+        }
+
+        .bib-tag.gold {
+            background: rgba(201, 168, 76, 0.1);
+            border-color: rgba(201, 168, 76, 0.3);
+            color: var(--accent-gold);
+        }
+
+        .bib-tag.terra {
+            background: rgba(194, 94, 48, 0.1);
+            border-color: rgba(194, 94, 48, 0.3);
+            color: var(--accent-terracotta);
+        }
+
+        .bib-tag.cyan {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.3);
+            color: var(--accent-cyan);
+        }
+
+        /* ─── Tela inicial (splash) ─── */
+        #splash {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            z-index: 5;
+            transition: opacity 0.5s ease;
+            text-align: center;
+            padding: 40px;
+            gap: 24px;
+        }
+
+        #splash.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .splash-intro {
+            max-width: 580px;
+        }
+
+        .splash-eyebrow {
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .splash-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(22px, 3.5vw, 34px);
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 14px;
+        }
+
+        .splash-body {
+            font-family: 'Lora', serif;
+            font-size: 15px;
+            line-height: 1.85;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+
+        .splash-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        @media (max-width: 600px) {
+            .splash-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .splash-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: left;
+        }
+
+        .splash-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-3px);
+        }
+
+        .splash-card:nth-child(1) {
+            border-top: 2px solid var(--accent-gold);
+        }
+
+        .splash-card:nth-child(2) {
+            border-top: 2px solid var(--accent-terracotta);
+        }
+
+        .splash-card:nth-child(3) {
+            border-top: 2px solid var(--accent-cyan);
+        }
+
+        .splash-card-icon {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .splash-card-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 7px;
+            line-height: 1.3;
+        }
+
+        .splash-card-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        .splash-card-action {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 11px;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 6px 14px;
+            border-radius: 4px;
+        }
+
+        .splash-card:nth-child(1) .splash-card-action {
+            color: var(--accent-gold);
+            background: rgba(201, 168, 76, 0.1);
+        }
+
+        .splash-card:nth-child(2) .splash-card-action {
+            color: var(--accent-terracotta);
+            background: rgba(194, 94, 48, 0.1);
+        }
+
+        .splash-card:nth-child(3) .splash-card-action {
+            color: var(--accent-cyan);
+            background: rgba(6, 182, 212, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-shell">
+
+        <!-- ─── CABEÇALHO ─── -->
+        <header class="portal-header">
+            <div class="header-inner">
+                <div class="portal-title-block">
+                    <span class="portal-eyebrow">Arquivo Investigativo · 2025</span>
+                    <h1 class="portal-title">O Fim da Escala 6×1 e o Capitaloceno</h1>
+                    <p class="portal-subtitle">Três abordagens visuais sobre trabalho, tempo e colapso ecológico</p>
+                </div>
+                <button class="btn-sources" onclick="toggleSources()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                    </svg>
+                    Fontes Bibliográficas
+                </button>
+            </div>
+
+            <!-- Abas -->
+            <nav class="tabs-nav">
+                <button class="tab-btn" id="tab-0" onclick="selectTab(0)">
+                    <span class="tab-icon">🗺</span>
+                    <span class="tab-label-block">
+                        <span class="tab-name">Cartografia</span>
+                        <span class="tab-desc">Mapa geoconceitual interativo</span>
+                    </span>
+                </button>
+                <button class="tab-btn" id="tab-1" onclick="selectTab(1)">
+                    <span class="tab-icon">⛏</span>
+                    <span class="tab-label-block">
+                        <span class="tab-name">Estratigrafia</span>
+                        <span class="tab-desc">Camadas históricas do trabalho</span>
+                    </span>
+                </button>
+                <button class="tab-btn" id="tab-2" onclick="selectTab(2)">
+                    <span class="tab-icon">⬡</span>
+                    <span class="tab-label-block">
+                        <span class="tab-name">Grafo Conceitual</span>
+                        <span class="tab-desc">Rede de conexões sistêmicas</span>
+                    </span>
+                </button>
+            </nav>
+        </header>
+
+        <!-- ─── ÁREA DE CONTEÚDO ─── -->
+        <main class="content-area">
+
+            <!-- Splash inicial -->
+            <div id="splash">
+                <div class="splash-intro">
+                    <p class="splash-eyebrow">Escolha uma perspectiva para explorar</p>
+                    <h2 class="splash-heading">Três Leituras sobre o Mesmo Debate</h2>
+                    <p class="splash-body">
+                        A proposta de fim da escala 6x1 e a crise do Capitaloceno são abordadas aqui
+                        através de três interfaces visuais distintas — cartográfica, geológica e topológica.
+                        Cada uma oferece uma entrada diferente para o mesmo conjunto de ideias.
+                    </p>
+                </div>
+                <div class="splash-cards">
+                    <div class="splash-card" onclick="selectTab(0)">
+                        <div class="splash-card-icon">🗺</div>
+                        <div class="splash-card-name">Atlas do Tempo</div>
+                        <div class="splash-card-desc">
+                            Um mapa geoconceitual com territórios, falhas geológicas e pontes entre os polos do debate.
+                            Clique nos nós para explorar cada conceito no caderno ao lado.
+                        </div>
+                        <span class="splash-card-action">Abrir mapa →</span>
+                    </div>
+                    <div class="splash-card" onclick="selectTab(1)">
+                        <div class="splash-card-icon">⛏</div>
+                        <div class="splash-card-name">Estratigrafia do Tempo</div>
+                        <div class="splash-card-desc">
+                            Uma coluna estratigráfica do trabalho humano desde os forrageadores pré-históricos
+                            até a PEC 8/25. Da rocha-matriz ao presente contestado.
+                        </div>
+                        <span class="splash-card-action">Escavar →</span>
+                    </div>
+                    <div class="splash-card" onclick="selectTab(2)">
+                        <div class="splash-card-icon">⬡</div>
+                        <div class="splash-card-name">Grafo Conceitual</div>
+                        <div class="splash-card-desc">
+                            Uma rede de topologia sistêmica mapeando convergências e divergências entre
+                            Ondinnonk, Estado Cerealista, Paradoxo de Jevons e Brecha Metabólica.
+                        </div>
+                        <span class="splash-card-action">Mapear rede →</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- iframes dos documentos -->
+            <iframe id="frame-0" class="iframe-panel" src="cartografia.html"
+                title="Cartografia: Atlas do Tempo"></iframe>
+            <iframe id="frame-1" class="iframe-panel" src="index1.html" title="Estratigrafia do Tempo"></iframe>
+            <iframe id="frame-2" class="iframe-panel" src="index2.html" title="Grafo Conceitual"></iframe>
+        </main>
+
+    </div>
+
+    <!-- ─── MODAL DE FONTES ─── -->
+    <div class="sources-overlay" id="sourcesOverlay" onclick="closeSources(event)">
+        <div class="sources-modal">
+            <div class="sources-header">
+                <div class="sources-title-group">
+                    <span class="sources-eyebrow">Referencial Teórico</span>
+                    <h2 class="sources-title">Fontes Consultadas</h2>
+                </div>
+                <button class="btn-close" onclick="toggleSources()">×</button>
+            </div>
+
+            <div class="sources-body">
+
+                <!-- Nota Metodológica -->
+                <div style="
+                    background: rgba(201,168,76,0.07);
+                    border: 1px solid rgba(201,168,76,0.2);
+                    border-left: 3px solid var(--accent-gold);
+                    border-radius: 6px;
+                    padding: 14px 16px;
+                    margin-bottom: 24px;
+                ">
+                    <p
+                        style="font-size: 11px; font-family: 'Cinzel', serif; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-gold); margin-bottom: 6px;">
+                        Nota Metodológica</p>
+                    <p style="font-size: 13px; color: var(--text-muted); line-height: 1.7;">
+                        Este projeto foi produzido a partir de múltiplas iterações entre as fontes originais
+                        (processadas no <strong style="color: var(--text-main);">NotebookLM</strong>) e prompts
+                        específicos
+                        que geraram relatórios analíticos. O documento-base que originou todas as visualizações
+                        está publicado como
+                        <a href="https://docs.google.com/document/d/e/2PACX-1vQTgpX9LNPYNo5VUYZzwJfHv-qo4_8jFQ3qITf7fTYW2y0dxtigLHjZv6n5ceHgKRkBvWDjXipu0Q69/pub"
+                            target="_blank" rel="noopener"
+                            style="color: var(--accent-gold); font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(201,168,76,0.4);">Relatório
+                            Consultivo (Google Docs) ↗</a>.
+                        Recomenda-se sempre a leitura do texto original.
+                    </p>
+                </div>
+
+                <!-- Onde cada obra aparece -->
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.7;">
+                    Baseado no documento de referência <em>«O Fim da Escala 6×1 e o Capitaloceno»</em>
+                    (arquivo de referências bibliográficas), as três visualizações a seguir utilizam
+                    as obras abaixo como arcabouço teórico.
+                </p>
+
+                <!-- Cartões rápidos dos documentos -->
+                <div class="doc-cards">
+                    <div class="doc-card">
+                        <div class="doc-card-label">🗺 Cartografia</div>
+                        <div class="doc-card-name">Atlas do Tempo</div>
+                        <div class="doc-card-desc">Graeber &amp; Wengrow, Capitaloceno (Serratos), Safatle &amp; Dunker.
+                        </div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-card-label">⛏ Estratigrafia</div>
+                        <div class="doc-card-name">Arqueologia do Tempo</div>
+                        <div class="doc-card-desc">Graeber &amp; Wengrow, Scott, Serratos, Malm, Moore.</div>
+                    </div>
+                    <div class="doc-card">
+                        <div class="doc-card-label">⬡ Grafo</div>
+                        <div class="doc-card-name">Topologia Sistêmica</div>
+                        <div class="doc-card-desc">Graeber &amp; Wengrow, Serratos, PEC 8/25, Jevons.</div>
+                    </div>
+                </div>
+
+                <!-- Lista bibliográfica completa -->
+                <h3 class="sources-section-title">Referências Bibliográficas Completas</h3>
+
+                <div class="bib-entry">
+                    <span class="bib-num">1</span>
+                    <div class="bib-content">
+                        <p class="bib-authors">GRAEBER, David; WENGROW, David.</p>
+                        <p class="bib-title">O Despertar de Tudo: Uma Nova História da Humanidade.</p>
+                        <p class="bib-info">São Paulo: Companhia das Letras, 2021.</p>
+                        <div class="bib-tags">
+                            <span class="bib-tag gold">Antropologia Política</span>
+                            <span class="bib-tag">Crítica Indígena · Kondiaronk</span>
+                            <span class="bib-tag">Plástica Social</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bib-entry">
+                    <span class="bib-num">2</span>
+                    <div class="bib-content">
+                        <p class="bib-authors">SERRATOS, Francisco.</p>
+                        <p class="bib-title">El capitaloceno: Una historia radical del colapso.</p>
+                        <p class="bib-info">Cidade do México: Universidad Nacional Autónoma de México, 2020.</p>
+                        <div class="bib-tags">
+                            <span class="bib-tag terra">Capitaloceno</span>
+                            <span class="bib-tag">Natureza Barata · Jason W. Moore</span>
+                            <span class="bib-tag">Paradoxo de Jevons</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bib-entry">
+                    <span class="bib-num">3</span>
+                    <div class="bib-content">
+                        <p class="bib-authors">SAFATLE, Vladimir; SILVA JUNIOR, Nelson; DUNKER, Christian.</p>
+                        <p class="bib-title">Neoliberalismo como Gestão do Sofrimento Psíquico.</p>
+                        <p class="bib-info">Belo Horizonte: Autêntica, 2021.</p>
+                        <div class="bib-tags">
+                            <span class="bib-tag">Saúde Mental &amp; Trabalho</span>
+                            <span class="bib-tag">Gestão do Sofrimento</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bib-entry">
+                    <span class="bib-num">4</span>
+                    <div class="bib-content">
+                        <p class="bib-authors">SCOTT, James C.</p>
+                        <p class="bib-title">Against the Grain: A Deep History of the Earliest States.</p>
+                        <p class="bib-info">New Haven: Yale University Press, 2017.</p>
+                        <div class="bib-tags">
+                            <span class="bib-tag">Estado Cerealista</span>
+                            <span class="bib-tag">Armadilha dos Cereais</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bib-entry">
+                    <span class="bib-num">5</span>
+                    <div class="bib-content">
+                        <p class="bib-authors">KATZ, Sandor Ellix.</p>
+                        <p class="bib-title">The Art of Fermentation: An In-Depth Exploration of Essential Concepts and
+                            Processes from Around the World.</p>
+                        <p class="bib-info">White River Junction: Chelsea Green Publishing, 2012.</p>
+                        <div class="bib-tags">
+                            <span class="bib-tag cyan">Resistência Cultural</span>
+                            <span class="bib-tag">Contra-Capitaloceno</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bib-entry">
+                    <span class="bib-num">6</span>
+                    <div class="bib-content">
+                        <p class="bib-authors">MALM, Andreas.</p>
+                        <p class="bib-title">Fossil Capital: The Rise of Steam Power and the Roots of Global Warming.
+                        </p>
+                        <p class="bib-info">Londres: Verso Books, 2016.</p>
+                        <div class="bib-tags">
+                            <span class="bib-tag terra">Fossils &amp; Capital</span>
+                            <span class="bib-tag">Motor a Vapor · Disciplina do Trabalho</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bib-entry">
+                    <span class="bib-num">7</span>
+                    <div class="bib-content">
+                        <p class="bib-authors">Brasil. Proposta de Emenda à Constituição n.º 8/2025 (PEC 8/25).</p>
+                        <p class="bib-title">Fim da Escala 6×1: Proposta de redução da jornada de trabalho semanal.</p>
+                        <p class="bib-info">Câmara dos Deputados, 2025.</p>
+                        <div class="bib-tags">
+                            <span class="bib-tag gold">Política Brasileira</span>
+                            <span class="bib-tag">Jornada de Trabalho</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = -1;
+
+        function selectTab(idx) {
+            // Esconder splash
+            const splash = document.getElementById('splash');
+            if (!splash.classList.contains('hidden')) {
+                splash.classList.add('hidden');
+            }
+
+            // Desativar tab anterior
+            if (currentTab >= 0) {
+                document.getElementById(`tab-${currentTab}`).classList.remove('active');
+                document.getElementById(`frame-${currentTab}`).classList.remove('active');
+            }
+
+            // Ativar nova tab
+            currentTab = idx;
+            document.getElementById(`tab-${idx}`).classList.add('active');
+            document.getElementById(`frame-${idx}`).classList.add('active');
+        }
+
+        function toggleSources() {
+            document.getElementById('sourcesOverlay').classList.toggle('open');
+        }
+
+        function closeSources(e) {
+            if (e.target === document.getElementById('sourcesOverlay')) {
+                toggleSources();
+            }
+        }
+
+        // Fechar overlay com Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('sourcesOverlay').classList.remove('open');
+            }
+        });
+    </script>
+</body>
+
+</html>
