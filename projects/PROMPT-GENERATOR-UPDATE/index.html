@@ -1,14 +1,96 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laboratório de Prompts Acadêmicos</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Academic Prompt Lab</title>
+
     <style>
+        :root {
+            --bg: #1a1a2e;
+            --surface: #16213e;
+            --surface2: #1e1e3a;
+            --border: #2a2a4a;
+            --border-hi: #3b2d6b;
+            --text: #e0e0e0;
+            --text-muted: #a0a0b8;
+            --text-dim: #6b6b8a;
+            --text-label: #c8c8d8;
+            --text-card: #d0d0e0;
+            --accent: #7c3aed;
+            --accent-dark: #6d28d9;
+            --accent-deep: #5b21b6;
+            --accent-soft: rgba(124, 58, 237, .15);
+            --accent-glow: rgba(124, 58, 237, .4);
+            --inter: #a78bfa;
+            --inter-bg: #1e1845;
+            --inter-border: #3b2d6b;
+            --inter-active-bg: linear-gradient(135deg, #3b2d6b 0%, #2d1b69 100%);
+            --active-bg: linear-gradient(135deg, #2d1b69 0%, #1e1145 100%);
+            --toggle-on-bg: #2a2415;
+            --toggle-on-border: #f59e0b;
+            --hint-bg: #1a1a35;
+            --hint-border: #3b2d6b;
+            --hint-text: #a78bfa;
+            --hint-title: #c4b5fd;
+            --output-bg: #121228;
+            --char-bg: #1e1e3a;
+            --warning: #f87171;
+            --success: #059669;
+            --shadow1: 0 1px 3px rgba(0, 0, 0, .4), 0 2px 6px 1px rgba(0, 0, 0, .25);
+            --shadow2: 0 2px 6px rgba(0, 0, 0, .4), 0 6px 16px 4px rgba(124, 58, 237, .1);
+            --lang-bg: #1e1e3a;
+            --lang-border: #2a2a4a;
+            --lang-text: #c8c8d8;
+            --lang-active-bg: #2d1b69;
+            --lang-active-border: #7c3aed;
+            --lang-active-text: #c4b5fd;
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f4f4f8;
+                --surface: #ffffff;
+                --surface2: #f0f0f6;
+                --border: #d4d4e8;
+                --border-hi: #c4b5fd;
+                --text: #1a1a2e;
+                --text-muted: #5a5a7a;
+                --text-dim: #9090b0;
+                --text-label: #3a3a5a;
+                --text-card: #2a2a4a;
+                --accent: #7c3aed;
+                --accent-dark: #6d28d9;
+                --accent-deep: #5b21b6;
+                --accent-soft: rgba(124, 58, 237, .1);
+                --accent-glow: rgba(124, 58, 237, .35);
+                --inter: #6d28d9;
+                --inter-bg: #f3f0ff;
+                --inter-border: #c4b5fd;
+                --inter-active-bg: linear-gradient(135deg, #ddd6fe 0%, #ede9fe 100%);
+                --active-bg: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+                --toggle-on-bg: #fffbeb;
+                --toggle-on-border: #f59e0b;
+                --hint-bg: #f5f3ff;
+                --hint-border: #c4b5fd;
+                --hint-text: #6d28d9;
+                --hint-title: #5b21b6;
+                --output-bg: #f8f8fc;
+                --char-bg: #f0f0f8;
+                --warning: #dc2626;
+                --success: #059669;
+                --shadow1: 0 1px 3px rgba(0, 0, 0, .08), 0 2px 6px 1px rgba(0, 0, 0, .05);
+                --shadow2: 0 2px 6px rgba(0, 0, 0, .08), 0 6px 16px 4px rgba(124, 58, 237, .08);
+                --lang-bg: #f0f0f8;
+                --lang-border: #d4d4e8;
+                --lang-text: #3a3a5a;
+                --lang-active-bg: #ede9fe;
+                --lang-active-border: #7c3aed;
+                --lang-active-text: #5b21b6;
+            }
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -16,11 +98,12 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #1a1a2e;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg);
             min-height: 100vh;
-            color: #e0e0e0;
+            color: var(--text);
             padding: 2rem 1rem;
+            transition: background .2s, color .2s;
         }
 
         .container {
@@ -36,42 +119,64 @@
         .header h1 {
             font-size: 2rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #f0f0f0;
-            letter-spacing: -0.5px;
+            margin-bottom: .5rem;
+            color: var(--text);
+            letter-spacing: -.5px;
         }
 
         .header p {
-            font-size: 0.95rem;
-            color: #a0a0b8;
+            font-size: .95rem;
+            color: var(--text-muted);
         }
 
-        .version-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-            color: #fff;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 0.2rem 0.55rem;
-            border-radius: 6px;
-            margin-left: 0.5rem;
-            vertical-align: middle;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+        .lang-switcher {
+            display: inline-flex;
+            gap: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--lang-border);
+            margin-bottom: 1rem;
+        }
+
+        .lang-btn {
+            background: var(--lang-bg);
+            border: none;
+            padding: .45rem 1rem;
+            font-size: .82rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--lang-text);
+            font-family: inherit;
+            transition: all .18s;
+            letter-spacing: .3px;
+        }
+
+        .lang-btn:first-child {
+            border-right: 1px solid var(--lang-border);
+        }
+
+        .lang-btn.active {
+            background: var(--lang-active-bg);
+            color: var(--lang-active-text);
+            border-color: var(--lang-active-border);
+        }
+
+        .lang-btn:hover:not(.active) {
+            filter: brightness(1.08);
         }
 
         .card {
-            background: #16213e;
+            background: var(--surface);
             border-radius: 12px;
             padding: 2rem;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 2px 6px 1px rgba(0, 0, 0, 0.25);
+            box-shadow: var(--shadow1);
             margin-bottom: 1.5rem;
-            transition: box-shadow 0.2s ease;
-            border: 1px solid #2a2a4a;
+            transition: box-shadow .2s;
+            border: 1px solid var(--border);
         }
 
         .card:hover {
-            box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.4), 0 6px 16px 4px rgba(124, 58, 237, 0.1);
+            box-shadow: var(--shadow2);
         }
 
         .input-section {
@@ -80,114 +185,114 @@
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: .5rem;
             font-weight: 500;
-            color: #c8c8d8;
-            font-size: 0.9rem;
+            color: var(--text-label);
+            font-size: .9rem;
         }
 
         input,
         textarea {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #2a2a4a;
+            padding: .75rem;
+            border: 1px solid var(--border);
             border-radius: 8px;
-            font-size: 0.95rem;
+            font-size: .95rem;
             font-family: inherit;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            background: #1e1e3a;
-            color: #e0e0e0;
+            transition: border-color .2s, box-shadow .2s;
+            background: var(--surface2);
+            color: var(--text);
         }
 
         input:focus,
         textarea:focus {
             outline: none;
-            border-color: #7c3aed;
-            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-soft);
         }
 
         input::placeholder,
         textarea::placeholder {
-            color: #6b6b8a;
+            color: var(--text-dim);
         }
 
         .section-label {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: .75rem;
             font-weight: 600;
-            color: #c8c8d8;
-            font-size: 0.85rem;
+            color: var(--text-label);
+            font-size: .85rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.85rem;
-            margin-top: 0.25rem;
+            letter-spacing: .5px;
+            margin-bottom: .85rem;
+            margin-top: .25rem;
         }
 
         .section-label::after {
             content: '';
             flex: 1;
             height: 1px;
-            background: #2a2a4a;
+            background: var(--border);
         }
 
         .section-label.interdisciplinar {
-            color: #a78bfa;
+            color: var(--inter);
         }
 
         .section-label.interdisciplinar::after {
-            background: #3b2d6b;
+            background: var(--inter-border);
         }
 
         .templates {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-            gap: 0.65rem;
-            margin-bottom: 0.5rem;
+            gap: .65rem;
+            margin-bottom: .5rem;
         }
 
         .template-btn {
-            background: #1e1e3a;
-            border: 1px solid #2a2a4a;
-            padding: 0.85rem 1rem;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            padding: .85rem 1rem;
             border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all .2s;
             text-align: left;
-            font-size: 0.875rem;
-            color: #d0d0e0;
+            font-size: .875rem;
+            color: var(--text-card);
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: .5rem;
+            font-family: inherit;
         }
 
         .template-btn:hover {
-            background: #252548;
-            border-color: #7c3aed;
+            background: var(--surface);
+            border-color: var(--accent);
             transform: translateY(-1px);
         }
 
         .template-btn.active {
-            background: linear-gradient(135deg, #2d1b69 0%, #1e1145 100%);
-            border-color: #7c3aed;
-            color: #c4b5fd;
+            background: var(--active-bg);
+            border-color: var(--accent);
+            color: var(--inter);
         }
 
         .template-btn.inter {
-            border-color: #3b2d6b;
-            background: #1e1845;
+            border-color: var(--inter-border);
+            background: var(--inter-bg);
         }
 
         .template-btn.inter:hover {
-            border-color: #a78bfa;
-            background: #2a2060;
+            border-color: var(--inter);
         }
 
         .template-btn.inter.active {
-            background: linear-gradient(135deg, #3b2d6b 0%, #2d1b69 100%);
-            border-color: #a78bfa;
-            color: #ddd6fe;
+            background: var(--inter-active-bg);
+            border-color: var(--inter);
+            color: var(--inter);
         }
 
         .template-btn span {
@@ -196,50 +301,50 @@
         }
 
         .generate-btn {
-            background: #7c3aed;
-            color: white;
+            background: var(--accent);
+            color: #fff;
             border: none;
-            padding: 0.875rem 2rem;
+            padding: .875rem 2rem;
             border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all .2s;
             width: 100%;
-            box-shadow: 0 2px 8px 0 rgba(124, 58, 237, 0.3);
+            box-shadow: 0 2px 8px 0 rgba(124, 58, 237, .3);
+            font-family: inherit;
         }
 
         .generate-btn:hover {
-            background: #6d28d9;
-            box-shadow: 0 4px 16px 0 rgba(124, 58, 237, 0.4);
+            background: var(--accent-dark);
+            box-shadow: 0 4px 16px 0 var(--accent-glow);
         }
 
         .generate-btn:active {
-            background: #5b21b6;
+            background: var(--accent-deep);
         }
 
         .toggle-row {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.9rem 1rem;
-            border: 1px solid #2a2a4a;
+            gap: .75rem;
+            padding: .9rem 1rem;
+            border: 1px solid var(--border);
             border-radius: 8px;
-            background: #1e1e3a;
+            background: var(--surface2);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all .2s;
             margin-bottom: 1.25rem;
             user-select: none;
         }
 
         .toggle-row:hover {
-            border-color: #7c3aed;
-            background: #252548;
+            border-color: var(--accent);
         }
 
         .toggle-row.on {
-            border-color: #f59e0b;
-            background: #2a2415;
+            border-color: var(--toggle-on-border);
+            background: var(--toggle-on-bg);
         }
 
         .toggle-switch {
@@ -249,7 +354,7 @@
             background: #ccc;
             position: relative;
             flex-shrink: 0;
-            transition: background 0.2s;
+            transition: background .2s;
         }
 
         .toggle-switch.on {
@@ -263,9 +368,9 @@
             width: 14px;
             height: 14px;
             border-radius: 50%;
-            background: white;
-            transition: left 0.2s;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            background: #fff;
+            transition: left .2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
         }
 
         .toggle-switch.on .toggle-knob {
@@ -273,14 +378,14 @@
         }
 
         .toggle-label {
-            font-size: 0.875rem;
+            font-size: .875rem;
             font-weight: 500;
-            color: #d0d0e0;
+            color: var(--text-card);
         }
 
         .toggle-desc {
-            font-size: 0.8rem;
-            color: #8888a8;
+            font-size: .8rem;
+            color: var(--text-dim);
             margin-left: auto;
         }
 
@@ -294,70 +399,89 @@
         .output-header h3 {
             font-size: 1.1rem;
             font-weight: 500;
-            color: #e0e0e0;
+            color: var(--text);
         }
 
         .output-box {
-            background: #121228;
-            border: 1px solid #2a2a4a;
+            background: var(--output-bg);
+            border: 1px solid var(--border);
             border-radius: 8px;
             padding: 1.25rem;
             font-family: 'Roboto Mono', 'Consolas', 'Monaco', monospace;
-            font-size: 0.82rem;
+            font-size: .82rem;
             line-height: 1.65;
             white-space: pre-wrap;
             max-height: 520px;
             overflow-y: auto;
-            color: #d0d0e0;
+            color: var(--text-card);
         }
 
         .copy-btn {
-            background: #7c3aed;
-            color: white;
+            background: var(--accent);
+            color: #fff;
             border: none;
-            padding: 0.625rem 1.25rem;
+            padding: .625rem 1.25rem;
             border-radius: 6px;
-            font-size: 0.9rem;
+            font-size: .9rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all .2s;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: .5rem;
+            font-family: inherit;
         }
 
         .copy-btn:hover {
-            background: #6d28d9;
+            background: var(--accent-dark);
         }
 
         .copy-btn.copied {
-            background: #059669;
+            background: var(--success);
         }
 
         .char-count {
-            font-size: 0.8rem;
-            color: #8888a8;
-            margin-top: 0.75rem;
-            padding: 0.5rem 0.75rem;
-            background: #1e1e3a;
+            font-size: .8rem;
+            color: var(--text-dim);
+            margin-top: .75rem;
+            padding: .5rem .75rem;
+            background: var(--char-bg);
             border-radius: 6px;
             display: inline-block;
         }
 
         .warning {
-            color: #f87171;
+            color: var(--warning);
             font-weight: 500;
         }
 
         .focus-recommended {
-            border-color: #7c3aed !important;
-            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 3px var(--accent-soft);
         }
 
         .recommended-badge {
-            color: #a78bfa;
+            color: var(--inter);
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: .85rem;
+        }
+
+        #focusHintBox {
+            display: none;
+            margin-top: .6rem;
+            padding: .75rem 1rem;
+            background: var(--hint-bg);
+            border: 1px solid var(--hint-border);
+            border-radius: 8px;
+            font-size: .82rem;
+            color: var(--hint-text);
+            line-height: 1.6;
+        }
+
+        #focusHintTitle {
+            font-weight: 600;
+            margin-bottom: .35rem;
+            color: var(--hint-title);
         }
 
         @media(max-width:768px) {
@@ -375,80 +499,64 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔬 Laboratório de Prompts Acadêmicos <span class="version-badge">v2.0</span></h1>
-            <p>Toolkit avançado para análise profunda, síntese interdisciplinar e guardrails epistêmicos</p>
+            <div><button class="lang-btn active" id="btnEN" onclick="setLang('en')">EN</button><button class="lang-btn"
+                    id="btnPT" onclick="setLang('pt')" style="border-left:none;" class="lang-btn">PT</button></div>
+            <h1 id="h-title">🔬 Academic Prompt Lab</h1>
+            <p id="h-sub">Advanced toolkit for deep analysis, interdisciplinary synthesis and epistemic guardrails</p>
         </div>
 
         <div class="card">
             <div class="input-section">
-                <label for="reportType">Tipo de Relatório Desejado:</label>
-                <input type="text" id="reportType" placeholder="Descreva o tipo de análise que você precisa...">
+                <label id="lbl-type" for="reportType">Desired Report Type:</label>
+                <input type="text" id="reportType" placeholder="Describe the type of analysis you need...">
             </div>
 
             <div class="input-section">
-                <div class="section-label">Análise de Fonte(s)</div>
-                <div class="templates" id="tpl-base">
-                    <div class="template-btn" onclick="sel('arquivo',event)"><span>📋</span> Arquivo de Referência</div>
-                    <div class="template-btn" onclick="sel('projeto',event)"><span>🎯</span> Síntese para Projeto</div>
-                    <div class="template-btn" onclick="sel('ensaio',event)"><span>✍️</span> Questões Ensaísticas</div>
-                    <div class="template-btn" onclick="sel('macrotemas',event)"><span>🗺️</span> Mapeador de Temas</div>
-                    <div class="template-btn" onclick="sel('lacunas',event)"><span>🔍</span> Análise de Lacunas</div>
-                    <div class="template-btn" onclick="sel('codificacao',event)"><span>🧬</span> Codificação Temática
-                    </div>
-                    <div class="template-btn" onclick="sel('arqueologia',event)"><span>🔬</span> Arqueologia Conceitual
-                    </div>
-                    <div class="template-btn" onclick="sel('podcast',event)"><span>🎙️</span> Roteiro Podcast</div>
-                    <div class="template-btn" onclick="sel('dialetica',event)"><span>⚖️</span> Lente Dialética</div>
-                    <div class="template-btn" onclick="sel('desilusao',event)"><span>🔓</span> Filtro Desilusão</div>
-                    <div class="template-btn" onclick="sel('antitese',event)"><span>🔄</span> Método Antítese</div>
-                    <div class="template-btn" onclick="sel('feynman',event)"><span>💡</span> Técnica Feynman</div>
-                    <div class="template-btn" onclick="sel('mapalit',event)"><span>🌐</span> Mapa Literatura</div>
-                    <div class="template-btn" onclick="sel('definidor',event)"><span>📖</span> Definidor Contextual
-                    </div>
-                    <div class="template-btn" onclick="sel('pressupostos',event)"><span>🔬</span> Arqueologia de
-                        Pressupostos</div>
-                    <div class="template-btn" onclick="sel('timeline',event)"><span>📅</span> Linha do Tempo</div>
-                </div>
+                <div class="section-label" id="sec-source">Source Analysis</div>
+                <div class="templates" id="tpl-base"></div>
 
-                <div class="section-label interdisciplinar" style="margin-top:1.25rem;">Síntese Multi-fonte
-                    Interdisciplinar</div>
-                <div class="templates" id="tpl-inter">
-                    <div class="template-btn inter" onclick="sel('cartografia',event)"><span>🗂️</span> Cartografia
-                        Disciplinar</div>
-                    <div class="template-btn inter" onclick="sel('convergencias',event)"><span>↔️</span> Convergências &
-                        Divergências</div>
-                    <div class="template-btn inter" onclick="sel('pontes',event)"><span>🌉</span> Pontes Conceituais
-                    </div>
-                    <div class="template-btn inter" onclick="sel('sintese_critica',event)"><span>🔀</span> Caminhos de
-                        Síntese</div>
-                    <div class="template-btn inter" onclick="sel('tensionamento',event)"><span>⚡</span> Tensionamento
-                        Produtivo</div>
-                </div>
+                <div class="section-label interdisciplinar" id="sec-inter" style="margin-top:1.25rem;">Interdisciplinary
+                    Multi-source Synthesis</div>
+                <div class="templates" id="tpl-inter"></div>
             </div>
 
             <div class="input-section">
-                <label for="customFocus">Foco Específico <span id="recommendedLabel" class="recommended-badge"
-                        style="display:none;">(recomendado)</span>:</label>
+                <label for="customFocus" id="lbl-focus">Specific Focus <span id="recommendedLabel"
+                        class="recommended-badge" style="display:none;">(recommended)</span>:</label>
                 <textarea id="customFocus" rows="3"
-                    placeholder="Descreva aspectos específicos que devem ser priorizados na análise..."></textarea>
+                    placeholder="Describe specific aspects to prioritize in the analysis..."></textarea>
+                <div id="focusHintBox">
+                    <div id="focusHintTitle">💡 For best results, include:</div>
+                    <div id="focusHintText"></div>
+                </div>
             </div>
 
             <div class="toggle-row" id="guardrailToggle" onclick="toggleGuardrail()">
                 <div class="toggle-switch" id="toggleSwitch">
                     <div class="toggle-knob"></div>
                 </div>
-                <span class="toggle-label">🛡️ Modo Rigoroso (Guardrail)</span>
-                <span class="toggle-desc" id="toggleDesc">Injeta diretrizes anti-alucinação no prompt</span>
+                <span class="toggle-label" id="lbl-guardrail">🛡️ Rigorous Mode (Guardrail)</span>
+                <span class="toggle-desc" id="desc-guardrail">Adds author/work references and reference list at the
+                    end</span>
             </div>
 
-            <button class="generate-btn" onclick="generatePrompt()">🚀 Gerar Prompt</button>
+            <div class="toggle-row" id="podcastToggle" onclick="togglePodcast()">
+                <div class="toggle-switch" id="podcastSwitch">
+                    <div class="toggle-knob"></div>
+                </div>
+                <span class="toggle-label" id="lbl-podcast">🎙️ Podcast Mode</span>
+                <span class="toggle-desc" id="desc-podcast">Scope control and anti-hallucination for Audio
+                    Overview</span>
+            </div>
+
+            <button class="generate-btn" onclick="generatePrompt()" id="btn-generate">🚀 Generate Prompt</button>
         </div>
 
         <div class="card" id="outputSection" style="display:none;">
             <div class="output-header">
-                <h3>Prompt Gerado</h3>
+                <h3 id="lbl-output">Generated Prompt</h3>
                 <button class="copy-btn" onclick="copyToClipboard()">
-                    <span id="copyIcon">📋</span><span id="copyText">Copiar</span>
+                    <span id="copyIcon">📋</span><span id="copyText">Copy</span>
                 </button>
             </div>
             <div class="output-box" id="promptOutput"></div>
@@ -457,462 +565,383 @@
     </div>
 
     <script>
+        let lang = 'en';
         let activeTemplate = null;
         let guardrailOn = false;
+        let podcastOn = false;
 
-        const templates = {
-            arquivo: 'arquivo de referência consultivo com citações ABNT e mapeamento epistemológico',
-            projeto: 'síntese temática para desenvolvimento de pesquisa original',
-            ensaio: 'extração de questões ensaísticas complexas e problematizações críticas',
-            macrotemas: 'mapeamento de macrotemas com questões fundamentais para discussão aprofundada',
-            lacunas: 'análise sistemática de lacunas metodológicas, teóricas e empíricas com questões de pesquisa derivadas',
-            codificacao: 'análise temática com codificação rigorosa, identificação de padrões e triangulação de achados',
-            arqueologia: 'arqueologia conceitual revelando pressupostos ocultos e mapeando interpretações alternativas plausíveis',
-            podcast: 'roteiro modular para podcast com arquitetura narrativa e scripts implementáveis no NotebookLM',
-            dialetica: 'debate acadêmico estruturado entre perspectivas opostas fundamentadas nas fontes',
-            desilusao: 'análise crítica sob perspectiva de quem abandonou determinada crença ou interpretação',
-            antitese: 'identificação de teses centrais e desenvolvimento sistemático de contraposições',
-            feynman: 'análise pedagógica com clarificação conceitual, identificação de lacunas e construção de modelos mentais',
-            mapalit: 'mapeamento sistemático de literatura com análise de citações, debates e frameworks teóricos',
-            definidor: 'glossário contextual com definições precisas de termos-chave extraídos das fontes',
-            pressupostos: 'arqueologia sistemática de pressupostos ocultos com desenvolvimento de interpretações alternativas fundamentadas',
-            timeline: 'linha do tempo cronológica detalhada com eventos ordenados e elenco de personagens principais',
-            cartografia: 'cartografia disciplinar mapeando como cada tradição intelectual habita o mesmo problema',
-            convergencias: 'mapeamento sistemático de convergências genuínas, divergências irredutíveis e zonas de tensão produtiva entre fontes heterogêneas',
-            pontes: 'identificação de pontes conceituais e falsos cognatos entre tradições disciplinares distintas',
-            sintese_critica: 'mapeamento de caminhos de síntese possíveis com explicitação dos custos e sacrifícios de cada rota',
-            tensionamento: 'tensionamento produtivo entre fontes de tradições distintas para gerar fricção epistêmica iluminadora'
+        // ── i18n strings ──────────────────────────────────────────────────────────────
+        const i18n = {
+            en: {
+                title: '🔬 Academic Prompt Lab',
+                sub: 'Advanced toolkit for deep analysis, interdisciplinary synthesis and epistemic guardrails',
+                lblType: 'Desired Report Type:',
+                typePlaceholder: 'Describe the type of analysis you need...',
+                secSource: 'Source Analysis',
+                secInter: 'Interdisciplinary Multi-source Synthesis',
+                lblFocus: 'Specific Focus',
+                focusPlaceholder: 'Describe specific aspects to prioritize in the analysis...',
+                recommended: '(recommended)',
+                hintTitle: '💡 For best results, include:',
+                lblGuardrail: '🛡️ Rigorous Mode (Guardrail)',
+                descGuardrail: 'Adds author/work references and reference list at the end',
+                descGuardrailOn: 'Active — author/work references and reference list included',
+                lblPodcast: '🎙️ Podcast Mode',
+                descPodcast: 'Scope control and anti-hallucination for Audio Overview',
+                descPodcastOn: 'Active — scope control and anti-hallucination included',
+                btnGenerate: '🚀 Generate Prompt',
+                lblOutput: 'Generated Prompt',
+                copy: 'Copy', copied: 'Copied!',
+                charLimit: (n) => `${n} characters (NotebookLM limit: 5000)`,
+                charWarn: (n) => `⚠️ ${n} characters — exceeds NotebookLM limit (5000). Consider disabling Rigorous Mode or reducing Specific Focus.`,
+                alertType: 'Please specify the desired report type.',
+                templates: [
+                    { id: 'reference', icon: '📋', label: 'Reference File' },
+                    { id: 'project', icon: '🎯', label: 'Project Synthesis' },
+                    { id: 'essay', icon: '✍️', label: 'Essay Questions' },
+                    { id: 'themes', icon: '🗺️', label: 'Theme Mapper' },
+                    { id: 'gaps', icon: '🔍', label: 'Gap Analysis' },
+                    { id: 'coding', icon: '🧬', label: 'Thematic Coding' },
+                    { id: 'assumptions', icon: '🔎', label: 'Assumption Map' },
+                    { id: 'podcast', icon: '🎙️', label: 'Podcast Script' },
+                    { id: 'dialectic', icon: '⚖️', label: 'Dialectical Lens' },
+                    { id: 'disillusion', icon: '🔓', label: 'Disillusion Filter' },
+                    { id: 'antithesis', icon: '🔄', label: 'Antithesis Method' },
+                    { id: 'feynman', icon: '💡', label: 'Feynman Technique' },
+                    { id: 'litmap', icon: '🌐', label: 'Literature Map' },
+                    { id: 'glossary', icon: '📖', label: 'Contextual Glossary' },
+                    { id: 'timeline', icon: '📅', label: 'Timeline' },
+                ],
+                interTemplates: [
+                    { id: 'cartography', icon: '🗂️', label: 'Disciplinary Cartography' },
+                    { id: 'convergences', icon: '↔️', label: 'Convergences & Divergences' },
+                    { id: 'bridges', icon: '🌉', label: 'Conceptual Bridges' },
+                    { id: 'synthesis', icon: '🔀', label: 'Synthesis Pathways' },
+                    { id: 'tension', icon: '⚡', label: 'Productive Tensioning' },
+                ],
+                typeValues: {
+                    reference: 'consultative reference file with citations and epistemological mapping',
+                    project: 'thematic synthesis for original research development',
+                    essay: 'extraction of complex essay questions and critical problematisations',
+                    themes: 'macro-theme mapping with fundamental questions for in-depth discussion',
+                    gaps: 'systematic analysis of methodological, theoretical and empirical gaps with derived research questions',
+                    coding: 'thematic analysis with rigorous coding, pattern identification and triangulation of findings',
+                    assumptions: 'mapping of hidden assumptions with development of grounded alternative interpretations',
+                    podcast: 'modular podcast script with narrative architecture and implementable scripts for NotebookLM',
+                    dialectic: 'structured academic debate between opposing perspectives grounded in the sources',
+                    disillusion: 'critical analysis from the perspective of someone who examined and identified limitations of a given theory',
+                    antithesis: 'identification of central theses and systematic development of counterpositions',
+                    feynman: 'pedagogical analysis with conceptual clarification, gap identification and mental model construction',
+                    litmap: 'systematic literature mapping with analysis of debates, traditions and theoretical frameworks',
+                    glossary: 'contextual glossary with precise definitions of key terms extracted from the sources',
+                    timeline: 'detailed chronological timeline with ordered events and main cast of characters',
+                    cartography: 'disciplinary cartography mapping how each intellectual tradition inhabits the same problem',
+                    convergences: 'systematic mapping of genuine convergences, irreducible divergences and zones of productive tension between heterogeneous sources',
+                    bridges: 'identification of conceptual bridges and false cognates between distinct disciplinary traditions',
+                    synthesis: 'mapping of possible synthesis pathways with explicit costs and trade-offs of each route',
+                    tension: 'productive tensioning between sources from distinct traditions to generate illuminating epistemic friction',
+                },
+                focusPlaceholders: {
+                    assumptions: 'E.g.: the belief, theory or interpretation to be examined; the field where it operates; an initial suspicion about a hidden assumption…',
+                    project: 'E.g.: how the central concept connects to your project; relevant geographic or institutional context; what type of transfer you need: conceptual, methodological, or empirical?',
+                    dialectic: 'E.g.: the two competing perspectives; the specific point of divergence; whether the perspectives appear in the sources or should be inferred…',
+                    disillusion: 'E.g.: the theory or belief to be critically examined; what initially made it persuasive; what kind of evidence or argument generated the disillusionment…',
+                    antithesis: 'E.g.: which central thesis should have its antithesis developed; whether the focus is on ontological, methodological, or normative contradictions…',
+                    podcast: 'E.g.: target audience (specialist or lay?); approximate desired duration; tone: conversational, formal, provocative? Is there a specific concept for the central "hook"?',
+                    cartography: 'E.g.: list the disciplinary traditions present (e.g. technical, sociological, philosophical); the central problem they all address; which tradition carries the most weight in the notebook.',
+                    convergences: 'E.g.: pair of traditions to compare; a point where you suspect apparent convergence; a point where you suspect irreducible divergence.',
+                    bridges: 'E.g.: a term that appears in distinct traditions with possibly different meanings; the disciplinary traditions involved.',
+                    synthesis: 'E.g.: which central tension you want to resolve (or keep productive); what constraints your synthesis must not violate.',
+                    tension: 'E.g.: the two sources or traditions to confront directly; which aspect of the problem you want to illuminate through friction.',
+                },
+                focusHints: {
+                    assumptions: '• The belief, theory or interpretation to be examined<br>• The field or context where it operates<br>• An initial suspicion about which assumption may be hidden',
+                    project: '• How the central concept connects to your project<br>• Relevant geographic or institutional context<br>• What type of transfer you need: conceptual, methodological, or empirical?',
+                    dialectic: '• The two competing perspectives (e.g. "Perspective A × Perspective B")<br>• The specific point of divergence<br>• Whether the perspectives are in the sources or should be inferred from them',
+                    disillusion: '• The theory or belief to be critically examined<br>• What initially made it persuasive<br>• What kind of evidence or argument generated the disillusionment',
+                    antithesis: '• Which central thesis should have its antithesis developed<br>• Whether the focus is on ontological, methodological, or normative contradictions',
+                    podcast: '• Target audience (specialist or lay?)<br>• Approximate desired duration<br>• Tone: conversational, formal, provocative?<br>• Is there a specific concept for the central "hook"?',
+                    cartography: '• List the disciplinary traditions present (e.g. technical, sociological, philosophical)<br>• The central problem they all try to answer<br>• Which tradition has the most weight in the notebook',
+                    convergences: '• Pair of traditions to compare (e.g. technical vs philosophical)<br>• A point where you suspect apparent convergence<br>• A point where you suspect irreducible divergence',
+                    bridges: '• A term that appears in distinct traditions with possibly different meanings<br>• The disciplinary traditions involved',
+                    synthesis: '• Which central tension you want to resolve (or keep productive)<br>• What constraints your synthesis must not violate (e.g. must be applicable to the Brazilian context)',
+                    tension: '• The two sources or traditions to confront directly<br>• Which aspect of the problem you want to illuminate through friction',
+                },
+                guardrail: `\n\n**EPISTEMIC GUARDRAILS (ACTIVE)**:\n• When introducing relevant claims, mention the author and source work (e.g. "According to [Author] in [Work], ..."). Short paraphrases are preferable to extensive direct quotes.\n• Divergences between sources: expose without artificially harmonising. If they diverge, they diverge.\n• Gaps: explicitly state what is not in the sources. "The material does not cover this point" is a valid and necessary answer.\n• Multi-source synthesis: present what each source says separately before any synthesis. Mark syntheses as the analyst's interpretation, not as direct claims from the sources.\n• Inferences: identify as interpretation ("I would infer X by combining sources [A] and [B], but neither states X directly").\n• At the end of the report, include a bibliography in APA format for all works actually cited.`,
+                podcastMode: `\n\n**PODCAST MODE — ACTIVE GUIDELINES**:\n• STRICT SCOPE: Base the discussion exclusively on the notebook's documents. Inserting external data, statistics absent from the material, or theoretical references not present in the sources is prohibited. If the document is silent on a point, declare the omission instead of filling it in.\n• NO PREAMBLES: Start content directly. Do not use introductions such as "Welcome to the podcast" or introductory disclaimers about what will be covered.\n• NO DISCLAIMERS: Do not insert caveats about the limitations of the material or the analysis.\n• DOCUMENTARY ANCHORING: Every claim must be traceable to a passage from the source material. When there is no documentary basis, flag explicitly: "the documents do not cover this point."\n• AUDIO FORMAT: Use only direct scripts ("Say exactly: [text]", "Explain that [concept]"). Do not instruct intonation, pauses, music or vocal elements — these parameters are not processed by NotebookLM.`,
+                basePrompt: `Analyse the provided sources and produce a customised report of the type: **{TYPE}**\n\n**ANALYTICAL STRUCTURE**: Organise the report into functional sections suited to the specified objective, prioritising elements most relevant to the requested analysis type.\n\n**INVESTIGATIVE COMPONENTS**: For each section, implement appropriate analytical strategies:\n- Conceptual extraction with terminological preservation where necessary\n- Argumentative mapping identifying logical and evidential structure\n- Identification of epistemological and methodological affiliations\n- Systematisation of disciplinary intersections and theoretical dialogues\n- Problematisation of internal tensions and methodological blind spots\n\n**OUTPUT MODALITIES**: Calibrate format according to intended function:\n- For reference: emphasis on synthesis, located citations and cross-referencing\n- For project: focus on applicability, conceptual transferability and investigative agenda\n- For essay: priority on problematisations and conceptual experiments\n- For study: exhaustive mapping and argumentative development\n\n**METHODOLOGICAL RIGOUR**: Maintain factual precision, textual economy and adequacy for postgraduate level. Preserve necessary conceptual complexity.\n\n**GUIDING QUESTIONS**: Formulate analytical questions that: require articulation of multiple aspects; demand theoretically grounded positioning; stimulate critical analysis of assumptions; preclude synthetic or binary answers.\n\n**ACADEMIC CONNECTIVITY**: Identify articulations with other fields, related theoretical traditions and contemporary research agendas.`,
+                specificInstructions: {
+                    gaps: `\n\n**SPECIFIC GUIDELINES FOR GAP ANALYSIS**:\nSystematically identify three categories:\n(a) **Methodological**: absences in approaches, techniques or instruments\n(b) **Theoretical**: conceptual gaps, unapplied frameworks, absent dialogues\n(c) **Empirical/Contextual**: unstudied populations, unexplored contexts\n\nFor each gap: brief description (one sentence) + evidencing source + derived research question.`,
+                    coding: `\n\n**SPECIFIC GUIDELINES FOR THEMATIC CODING**:\nThree-step process:\n1. **Initial Coding**: meaningful patterns, key phrases, preserved emic terminology.\n2. **Theme Development**: grouping into themes, hierarchies, frequency and distribution.\n3. **Triangulation**: coherence, alternative interpretations, tensions and deviant cases.\nPresent in auditable format.`,
+                    assumptions: `\n\n**SPECIFIC GUIDELINES FOR ASSUMPTION MAP**:\n\nThe goal is not to describe what the sources say about a concept — it is to expose what they *assume without stating*, and show how analysis would change if those foundations were different.\n\n**1. CONTEXTUALISATION**\nDescribe the theory, interpretation or practice to be examined. Why does it seem natural or obvious in the field? What problem does it propose to solve?\n\n**2. EXCAVATING FOUNDATIONS**\nIdentify underlying assumptions — from most visible to most opaque. For each assumption:\n- How does it manifest in the text (citation or paraphrase)?\n- Why doesn't it appear explicitly?\n- What intellectual tradition sustains it?\n- What questions does it make impossible to formulate?\n- How would conclusions change if this assumption were abandoned?\n\nProgress in order: from most evident to most structural.\n\n**3. ALTERNATIVE INTERPRETATIONS**\nFor each plausible alternative:\n- How does it reconceptualise the same phenomenon?\n- What assumptions does it adopt as replacements?\n- What evidence from the material does it privilege (that the original interpretation minimises)?\n- What unique insight does it offer?\n\n**4. REFLEXIVE SYNTHESIS**\nWhat does the multiplicity of interpretations reveal about the phenomenon that no single interpretation can see? What questions remain genuinely open?`,
+                    podcast: `\n\n**SPECIFIC GUIDELINES FOR PODCAST SCRIPT**:\n\n**FUNDAMENTAL INSTRUCTIONS**:\n- Focus ONLY on content extracted directly from the sources\n- Use DIRECT SCRIPTS: "Say exactly: [text]" or "Begin by explaining that [concept]"\n- DO NOT mention: tone of voice, music, pauses, intonations (does not work in NotebookLM)\n\n**SEGMENT 1 — OPENING**: Opening script + essential context + narrative hook + roadmap of points.\n\n**SEGMENT 2 — DEVELOPMENT**: 3 conceptual points from the sources, each with implementable script and connections between them.\n\n**SEGMENT 3 — SYNTHESIS**: Recap + interdisciplinary connections + open question to the listener.\n\n**SEGMENT 4 (optional) — CLOSING**: Main takeaway + closing + reflection hook.\n\n✓ Works: "Say that...", scripts in quotes, rhetorical questions.\n✗ Does not work: "Use an enthusiastic tone", "Make a dramatic pause", vocal instructions.`,
+                    dialectic: `\n\n**SPECIFIC GUIDELINES FOR DIALECTICAL LENS**:\n\n**1. CENTRAL THESES** — 2-3 theses with specific citation and relevance in overall context.\n\n**2. OPPOSING PERSPECTIVES** — For each thesis, develop PERSPECTIVE A and PERSPECTIVE B: positioning, arguments, evidence, implications, epistemological tradition. Both grounded in the sources.\n\n**3. DIALECTICAL DIALOGUE** — Specific frictions, counter-arguments, privileged evidence, questions each perspective answers better, limitations.\n\n**4. CRITICAL SYNTHESIS** — Unique insights, what each interpretation reveals/obscures, possible third ways, explicit trade-offs.`,
+                    disillusion: `\n\n**SPECIFIC GUIDELINES FOR DISILLUSION FILTER**:\n\n**1. RECONSTRUCTION** — Theory's promises, its internal logic, why it is initially persuasive.\n**2. GENEALOGY OF DISILLUSIONMENT** — Unfulfilled promises, questionable assumptions, hidden costs.\n**3. CRITICAL RE-READING** — Internal tensions, resistant evidence, alternatives suggested but not developed.\n**4. ALTERNATIVE FRAMEWORK** — Reinterpretation of the same phenomena; what explains better.\n**5. META-CRITICAL SYNTHESIS** — What the disillusionment reveals, what insights it preserves, what epistemic vigilance it suggests.`,
+                    antithesis: `\n\n**SPECIFIC GUIDELINES FOR ANTITHESIS METHOD**:\n\n**1. THESES** — 3-5 theses: precise formulation, citation, assumptions, type (ontological, methodological, normative...).\n**2. ANTITHESES** — For each thesis: counterposition statement, grounding in sources, intellectual tradition, comparative analysis (what each privileges and answers better).\n**3. TENSION MAPPING** — Logical contradiction? Dialectical tension? Complementarity? Resolvable ambiguity?\n**4. SYNTHESIS STRATEGIES** — Dialectical synthesis / methodological pluralism / dissolution / incommensurability.\n**5. DERIVED QUESTIONS** — Empirical, thought experiments, limit cases, conditions of applicability.`,
+                    feynman: `\n\n**SPECIFIC GUIDELINES FOR FEYNMAN TECHNIQUE**:\n\n**1. CONCEPTUAL CLARIFICATION** — Reformulate without jargon, everyday analogies, decomposition into basic elements. Test: "How would you explain it to someone outside the field?"\n**2. GAPS** — Understanding (what sources assume), Justification (undemonstrated premises), Application (absent practical examples).\n**3. MENTAL MODELS** — Irreducible core, 2-3 analogies with their limits, concrete examples including limit cases.\n**4. QUESTIONS** — Testing deep understanding, practical application and interdisciplinary connections.`,
+                    litmap: `\n\n**SPECIFIC GUIDELINES FOR LITERATURE MAP**:\n\n**1. THEMATIC CLUSTERS** — 4-6 groups: sources, rationale, overlaps, isolated sources.\n**2. THEORETICAL FRAMEWORKS** — Traditions, key concepts, assumptions, dialogues vs. tensions.\n**3. METHODOLOGICAL APPROACHES** — Classification, innovations, strengths and limitations.\n**4. CENTRAL DEBATES** — 3-5 controversies: sources on each side, points of disagreement, current status.\n**5. GAPS** — Thematic, methodological, theoretical.\n**6. CITATION STRUCTURE** — Hubs, bridges between traditions, top 5-10 papers.\n**7. SYNTHESIS** — State of the art, consensuses, uncertainties, future agenda.`,
+                    glossary: `\n\n**SPECIFIC GUIDELINES FOR CONTEXTUAL GLOSSARY**:\n\nExtract 10-20 key terms. For each:\n\n**CONTEXTUAL DEFINITION** (2-4 sentences) — How used specifically in the sources; distinguish from generic usage.\n\n**ANALYTICAL EXPLANATION** (1-2 paragraphs) — Nuances, implications, connections with other concepts in the glossary.\n\nUse: Contrastive Comparison, Exemplification with passages, Historical tracing of the term, Cross-entry connections.\n\nOrganise alphabetically or by conceptual importance (state the criterion).`,
+                    timeline: `\n\n**SPECIFIC GUIDELINES FOR TIMELINE**:\n\n**PART 1 — EVENTS**: Date | Event | Summary (2-3 sentences) | Source | Status (CONFIRMED/INFERRED/UNCERTAIN). Strict chronological order. NEVER invent dates. For inferred ones, explain the basis.\n\n**PART 2 — CAST**: Full name | Role | Biography (3-4 sentences) | Timeline appearances | Sources.\n\n**CROSS-DOCUMENT SYNTHESIS**: Sequences only visible by combining sources; dating contradictions; significant temporal gaps. Cite specific source for each event.`,
+                    cartography: `\n\n**SPECIFIC GUIDELINES FOR DISCIPLINARY CARTOGRAPHY**:\n\nThis notebook contains sources from distinct intellectual traditions (e.g. technical, social, philosophical). The goal is to map how EACH tradition inhabits the same problem — not to produce premature synthesis.\n\n**1. IDENTIFYING TRADITIONS**\nList the traditions/disciplines present in the sources. For each:\n- Sources belonging to that tradition\n- Characteristic technical vocabulary\n- Questions that tradition can formulate\n- Questions that tradition CANNOT formulate (structural blind spots)\n- Core ontological and epistemological assumptions\n\n**2. PROBLEM MAP**\nSelect 3-5 central problems or questions from the notebook's theme. For each problem, show in table:\n\n| Problem | Tradition A | Tradition B | Tradition C |\n|---------|------------|------------|------------|\n| How does it frame it? | ... | ... | ... |\n| What evidence does it mobilise? | ... | ... | ... |\n| What solution does it propose? | ... | ... | ... |\n| What central assumption? | ... | ... | ... |\n\n**3. COMPARATIVE VOCABULARY**\nIdentify terms EACH tradition uses for similar phenomena. Organise in table:\n\n| Phenomenon | Term (Tradition A) | Term (Tradition B) | Genuine cognates? |\n|-----------|-------------------|-------------------|-----------------|\n\n**4. STRUCTURAL ASYMMETRIES**\n- Which tradition has more sources/weight in the notebook? What bias does this introduce?\n- Which perspective is under-represented?\n- Which aspects of the problem can ONLY ONE tradition articulate?\n\n**5. RESULTING MAP**\nProduce textual description of the notebook's "disciplinary landscape": who speaks with whom, who ignores whom, where there are disciplinary walls and where there are contact zones.`,
+                    convergences: `\n\n**SPECIFIC GUIDELINES FOR CONVERGENCES & DIVERGENCES**:\n\n**CRITICAL ATTENTION**: Carefully distinguish between:\n- **Genuine convergence**: sources from distinct traditions reach the same conclusion by independent paths\n- **Apparent convergence**: they use the same word but mean different things\n- **Irreducible divergence**: disagreement of premises, not data — has no "solution"\n- **Resolvable divergence**: empirical or terminological disagreement that can be mediated\n\n**1. CONVERGENCE MAPPING**\nFor each convergence identified:\n- Which sources converge (cite specifically)\n- In what exactly they agree (precise formulation)\n- Classification: genuine or apparent?\n- If genuine: what epistemic strength does this confer on the position?\n- If apparent: where exactly does superficial similarity hide real difference?\n\n**2. DIVERGENCE MAPPING**\nFor each divergence:\n- Which sources diverge and on what specific point\n- Type: different premises? Different methods? Different data? Different values?\n- Irreducible or resolvable?\n- If irreducible: what is the core of the disagreement (do not attempt to harmonise)?\n- If resolvable: what additional information or conceptual clarification would mediate?\n\n**3. ZONES OF PRODUCTIVE TENSION**\nIdentify divergences that, though unresolved, ILLUMINATE something important about the problem. What does each perspective reveal that the other cannot see?\n\n**4. SUMMARY TABLE**\n\n| Aspect | Agreeing sources | Disagreeing sources | Type | Resolvable? |\n|--------|----------------|-------------------|------|------------|\n\n**5. IMPLICATIONS**\n- What questions in the field only become visible when you see convergences/divergences together?\n- Which consensuses are most solid? Which are merely apparent?\n- Which divergences indicate the field is genuinely split on premises?`,
+                    bridges: `\n\n**SPECIFIC GUIDELINES FOR CONCEPTUAL BRIDGES**:\n\nSources from distinct traditions often use similar concepts with different meanings, or use different words for the same phenomenon. This template maps both.\n\n**1. GENUINE COGNATES** (same phenomenon, different vocabulary)\nFor each pair/group identified:\n- Term in Tradition A + usage citation\n- Corresponding term in Tradition B + usage citation\n- Why they are the same phenomenon (explicit argument)\n- What each tradition SEES that the other doesn't about that phenomenon\n- Which terminology better captures which aspect?\n\n**2. FALSE COGNATES** (same word, different phenomena)\nFor each false cognate identified:\n- Shared word\n- Definition/usage in Tradition A + citation\n- Definition/usage in Tradition B + citation\n- Where exactly the meaning diverges\n- What confusions this homonymy may cause in an interdisciplinary reader\n- Disambiguation proposal (if possible)\n\n**3. ORPHAN CONCEPTS**\n- Which concepts from one tradition have no equivalent in the others?\n- What does this absence reveal about what each tradition can think?\n\n**4. BRIDGE MAP**\nProduce general table:\n\n| Concept/Phenomenon | Tradition A | Tradition B | Tradition C | Relation type |\n|-------------------|------------|------------|------------|---------------|\n\n**5. IMPLICATIONS FOR DIALOGUE**\n- What typical interdisciplinary misunderstandings do these sources reveal?\n- Where would a researcher trained in one tradition need a "translator" to read the others?\n- What conceptual bridges would most facilitate dialogue between these traditions?`,
+                    synthesis: `\n\n**SPECIFIC GUIDELINES FOR SYNTHESIS PATHWAYS**:\n\n**METHODOLOGICAL PREMISE**: Any synthesis of heterogeneous sources is a CHOICE — it resolves some tensions while sacrificing others. This template maps available routes and their costs, without pretending a neutral synthesis exists.\n\n**STEP 0: TENSION INVENTORY**\nBefore proposing syntheses, list the irreducible tensions identified in the sources:\n- Ontological tensions (what exists?)\n- Epistemological tensions (how do we know?)\n- Methodological tensions (how do we investigate?)\n- Normative tensions (what matters?)\n\n**STEP 1: IDENTIFYING ROUTES**\nIdentify 2-4 plausible synthesis pathways. For each route:\n\n**Route Name**: [e.g. "Instrumentalist Synthesis", "Methodological Pluralism", "Disciplinary Hierarchy"]\n\n**Logic**: How does this route propose to integrate the sources?\n\n**What it preserves**: Which insights from each tradition does it maintain?\n\n**What it sacrifices**: Which tensions does it "resolve" by discarding one side? Which perspective becomes subordinate?\n\n**Necessary assumptions**: What must you accept for this synthesis to work?\n\n**Evidence in sources**: Does any source suggest (even implicitly) this direction?\n\n**Who gains, who loses**: Which intellectual tradition would be strengthened by this synthesis?\n\n**STEP 2: SYNTHESIS OF SYNTHESES**\n- Which route is most faithful to the sources as they are?\n- Which requires the most creative reinterpretation?\n- Is there a route no source suggests but that would be intellectually coherent?\n- Is there a tension NO route resolves — that needs to be maintained as productive tension?\n\n**STEP 3: GROUNDED RECOMMENDATION**\nBased on the analysis, which synthesis route(s) make most sense for the user's objectives — and why? Explicitly state that this recommendation is INTERPRETATION, not a direct reading of the sources.`,
+                    tension: `\n\n**SPECIFIC GUIDELINES FOR PRODUCTIVE TENSIONING**:\n\nThe goal is not to resolve the conflict between sources from distinct traditions — it is to use the conflict to reveal what each tradition leaves invisible.\n\n**1. SELECTING PRODUCTIVE PAIRS**\nIdentify 2-3 pairs of sources from different traditions that, in direct confrontation, would generate maximum epistemic friction. For each selected pair, justify: why is THIS pair especially productive?\n\n**2. CONFRONTATION PROTOCOL**\nFor each pair of sources (Source A × Source B):\n\n**What A would say about B**:\n- What central assumption of B would be unacceptable to A?\n- What question would A ask that B cannot answer with its own tools?\n- What evidence would A present that B would have difficulty absorbing?\n\n**What B would say about A**:\n- What aspect of the problem is A structurally blind to seeing?\n- What would B explain that A dismisses as irrelevant or non-scientific?\n- What limitation of A would B reveal?\n\n**What the confrontation illuminates**:\n- What aspect of the central problem only becomes VISIBLE because of the confrontation?\n- What question can neither source ask alone, but the confrontation between them makes formulable?\n\n**3. HIGH-YIELD FRICTIONS**\nIdentify the most productive conflict points — where divergence is not error, but reveals deep structure of the problem. What does each friction teach about the limits of each tradition?\n\n**4. EMERGENT QUESTIONS**\nList 5-8 questions that ONLY emerge from the tensioning — that no individual source would formulate. These are the questions a genuinely interdisciplinary project would need to address.\n\n**5. METHODOLOGICAL REFLECTION**\nWhat does this tensioning exercise suggest about how to conduct research using these sources? What epistemic stance would the researcher need to adopt?`,
+                },
+            },
+            pt: {
+                title: '🔬 Laboratório de Prompts Acadêmicos',
+                sub: 'Toolkit avançado para análise profunda, síntese interdisciplinar e guardrails epistêmicos',
+                lblType: 'Tipo de Relatório Desejado:',
+                typePlaceholder: 'Descreva o tipo de análise que você precisa...',
+                secSource: 'Análise de Fonte(s)',
+                secInter: 'Síntese Multi-fonte Interdisciplinar',
+                lblFocus: 'Foco Específico',
+                focusPlaceholder: 'Descreva aspectos específicos que devem ser priorizados na análise...',
+                recommended: '(recomendado)',
+                hintTitle: '💡 Para melhores resultados, inclua:',
+                lblGuardrail: '🛡️ Modo Rigoroso (Guardrail)',
+                descGuardrail: 'Adiciona referências autor/obra e lista ABNT ao final',
+                descGuardrailOn: 'Ativo — referências autor/obra e lista ABNT ao final',
+                lblPodcast: '🎙️ Modo Podcast',
+                descPodcast: 'Controle de escopo e anti-alucinação para Audio Overview',
+                descPodcastOn: 'Ativo — controle de escopo e anti-alucinação incluídos',
+                btnGenerate: '🚀 Gerar Prompt',
+                lblOutput: 'Prompt Gerado',
+                copy: 'Copiar', copied: 'Copiado!',
+                charLimit: (n) => `${n} caracteres (limite NotebookLM: 5000)`,
+                charWarn: (n) => `⚠️ ${n} caracteres — excede limite NotebookLM (5000). Considere desativar o Modo Rigoroso ou reduzir o Foco Específico.`,
+                alertType: 'Por favor, especifique o tipo de relatório desejado.',
+                templates: [
+                    { id: 'reference', icon: '📋', label: 'Arquivo de Referência' },
+                    { id: 'project', icon: '🎯', label: 'Síntese para Projeto' },
+                    { id: 'essay', icon: '✍️', label: 'Questões Ensaísticas' },
+                    { id: 'themes', icon: '🗺️', label: 'Mapeador de Temas' },
+                    { id: 'gaps', icon: '🔍', label: 'Análise de Lacunas' },
+                    { id: 'coding', icon: '🧬', label: 'Codificação Temática' },
+                    { id: 'assumptions', icon: '🔎', label: 'Mapa de Pressupostos' },
+                    { id: 'podcast', icon: '🎙️', label: 'Roteiro Podcast' },
+                    { id: 'dialectic', icon: '⚖️', label: 'Lente Dialética' },
+                    { id: 'disillusion', icon: '🔓', label: 'Filtro Desilusão' },
+                    { id: 'antithesis', icon: '🔄', label: 'Método Antítese' },
+                    { id: 'feynman', icon: '💡', label: 'Técnica Feynman' },
+                    { id: 'litmap', icon: '🌐', label: 'Mapa Literatura' },
+                    { id: 'glossary', icon: '📖', label: 'Definidor Contextual' },
+                    { id: 'timeline', icon: '📅', label: 'Linha do Tempo' },
+                ],
+                interTemplates: [
+                    { id: 'cartography', icon: '🗂️', label: 'Cartografia Disciplinar' },
+                    { id: 'convergences', icon: '↔️', label: 'Convergências & Divergências' },
+                    { id: 'bridges', icon: '🌉', label: 'Pontes Conceituais' },
+                    { id: 'synthesis', icon: '🔀', label: 'Caminhos de Síntese' },
+                    { id: 'tension', icon: '⚡', label: 'Tensionamento Produtivo' },
+                ],
+                typeValues: {
+                    reference: 'arquivo de referência consultivo com citações e mapeamento epistemológico',
+                    project: 'síntese temática para desenvolvimento de pesquisa original',
+                    essay: 'extração de questões ensaísticas complexas e problematizações críticas',
+                    themes: 'mapeamento de macrotemas com questões fundamentais para discussão aprofundada',
+                    gaps: 'análise sistemática de lacunas metodológicas, teóricas e empíricas com questões de pesquisa derivadas',
+                    coding: 'análise temática com codificação rigorosa, identificação de padrões e triangulação de achados',
+                    assumptions: 'mapeamento de pressupostos ocultos com desenvolvimento de interpretações alternativas fundamentadas',
+                    podcast: 'roteiro modular para podcast com arquitetura narrativa e scripts implementáveis no NotebookLM',
+                    dialectic: 'debate acadêmico estruturado entre perspectivas opostas fundamentadas nas fontes',
+                    disillusion: 'análise crítica sob perspectiva de quem examinou e identificou limitações de determinada teoria',
+                    antithesis: 'identificação de teses centrais e desenvolvimento sistemático de contraposições',
+                    feynman: 'análise pedagógica com clarificação conceitual, identificação de lacunas e construção de modelos mentais',
+                    litmap: 'mapeamento sistemático de literatura com análise de debates, tradições e frameworks teóricos',
+                    glossary: 'glossário contextual com definições precisas de termos-chave extraídos das fontes',
+                    timeline: 'linha do tempo cronológica detalhada com eventos ordenados e elenco de personagens principais',
+                    cartography: 'cartografia disciplinar mapeando como cada tradição intelectual habita o mesmo problema',
+                    convergences: 'mapeamento sistemático de convergências genuínas, divergências irredutíveis e zonas de tensão produtiva entre fontes heterogêneas',
+                    bridges: 'identificação de pontes conceituais e falsos cognatos entre tradições disciplinares distintas',
+                    synthesis: 'mapeamento de caminhos de síntese possíveis com explicitação dos custos e sacrifícios de cada rota',
+                    tension: 'tensionamento produtivo entre fontes de tradições distintas para gerar fricção epistêmica iluminadora',
+                },
+                focusPlaceholders: {
+                    assumptions: 'Ex: a crença, teoria ou interpretação que será examinada; o campo onde opera; uma suspeita inicial sobre um pressuposto oculto…',
+                    project: 'Ex: como o conceito central se conecta ao seu projeto; contexto geográfico ou institucional relevante; que tipo de transferência você precisa: conceitual, metodológica ou empírica?',
+                    dialectic: 'Ex: as duas perspectivas em disputa (ex: "perspectiva A × perspectiva B"); o ponto específico de divergência; se as perspectivas estão nas fontes ou devem ser inferidas delas…',
+                    disillusion: 'Ex: a teoria ou crença que será examinada criticamente; o que inicialmente a tornava persuasiva; que tipo de evidência ou argumento gerou a desilusão…',
+                    antithesis: 'Ex: qual tese central deve ter sua antítese desenvolvida; se o foco é em contradições ontológicas, metodológicas ou normativas…',
+                    podcast: 'Ex: audiência-alvo (especializada ou leiga?); duração aproximada desejada; tom: conversacional, formal, provocativo? Há um conceito específico para ser o "gancho" central?',
+                    cartography: 'Ex: liste as tradições disciplinares presentes (ex: técnica, sociológica, filosófica); o problema central que todas tentam responder; qual tradição tem mais peso no notebook.',
+                    convergences: 'Ex: par de tradições a comparar (ex: técnica vs filosófica); um ponto onde você suspeita de convergência aparente; um ponto onde você suspeita de divergência irredutível.',
+                    bridges: 'Ex: um termo que aparece em tradições distintas com possíveis significados diferentes; as tradições disciplinares envolvidas.',
+                    synthesis: 'Ex: qual tensão central você quer resolver (ou manter produtiva); que restrições sua síntese não pode violar (ex: precisa ser aplicável ao contexto brasileiro).',
+                    tension: 'Ex: as duas fontes ou tradições a confrontar diretamente; que aspecto do problema você quer iluminar com a fricção.',
+                },
+                focusHints: {
+                    assumptions: '• A crença, teoria ou interpretação que será examinada<br>• O campo ou contexto onde ela opera<br>• Uma suspeita inicial sobre que pressuposto pode estar oculto',
+                    project: '• Como o conceito central se conecta ao seu projeto<br>• Contexto geográfico ou institucional relevante (ex: Brasil, UFMT)<br>• Que tipo de transferência você precisa: conceitual, metodológica ou empírica?',
+                    dialectic: '• As duas perspectivas em disputa (ex: "perspectiva A × perspectiva B")<br>• O ponto específico de divergência<br>• Se as perspectivas estão nas fontes ou devem ser inferidas delas',
+                    disillusion: '• A teoria ou crença que será examinada criticamente<br>• O que inicialmente a tornava persuasiva<br>• Que tipo de evidência ou argumento gerou a desilusão',
+                    antithesis: '• Qual tese central deve ter sua antítese desenvolvida<br>• Se o foco é em contradições ontológicas, metodológicas ou normativas',
+                    podcast: '• Audiência-alvo (especializada ou leiga?)<br>• Duração aproximada desejada<br>• Tom: conversacional, formal, provocativo?<br>• Há um conceito específico para ser o "gancho" central?',
+                    cartography: '• Liste as tradições disciplinares presentes (ex: técnica, sociológica, filosófica)<br>• O problema central que todas tentam responder<br>• Qual tradição tem mais peso no notebook',
+                    convergences: '• Par de tradições a comparar (ex: técnica vs filosófica)<br>• Um ponto onde você suspeita de convergência aparente<br>• Um ponto onde você suspeita de divergência irredutível',
+                    bridges: '• Um termo que aparece em tradições distintas com possíveis significados diferentes<br>• As tradições disciplinares envolvidas',
+                    synthesis: '• Qual tensão central você quer resolver (ou manter produtiva)<br>• Que restrições sua síntese não pode violar (ex: precisa ser aplicável ao contexto brasileiro)',
+                    tension: '• As duas fontes ou tradições a confrontar diretamente<br>• Que aspecto do problema você quer iluminar com a fricção',
+                },
+                guardrail: `\n\n**GUARDRAILS EPISTÊMICOS (ATIVOS)**:\n• Ao introduzir afirmações relevantes, mencione o autor e a obra de origem (ex: "Segundo [Autor] em [Obra], ..."). Paráfrases curtas são preferíveis a citações diretas extensas.\n• Divergências entre fontes: exponha sem harmonizar artificialmente. Se divergem, divergem.\n• Lacunas: declare explicitamente o que não está nas fontes. "O material não cobre este ponto" é resposta válida e necessária.\n• Síntese multi-fonte: apresente o que cada fonte diz separadamente antes de qualquer síntese. Marque sínteses como interpretação do analista, não como afirmação direta das fontes.\n• Inferências: identifique como interpretação ("inferiria X combinando as fontes [A] e [B], mas nenhuma afirma X diretamente").\n• Ao final do relatório, inclua lista de referências no formato ABNT para todas as obras efetivamente citadas.`,
+                podcastMode: `\n\n**MODO PODCAST — DIRETRIZES ATIVAS**:\n• ESCOPO ESTRITO: Baseie a discussão exclusivamente nos documentos do notebook. É proibido inserir dados externos, estatísticas ausentes no material ou referenciais teóricos não presentes nas fontes. Se o documento for omisso sobre algum ponto, declare a omissão em vez de preenchê-la.\n• SEM PREÂMBULOS: Inicie o conteúdo diretamente. Não use apresentações do tipo "Bem-vindos ao podcast" nem disclaimers introdutórios sobre o que será abordado.\n• SEM DISCLAIMERS: Não insira ressalvas sobre limitações do material ou da análise.\n• ÂNCORAGEM DOCUMENTAL: Toda afirmação deve ser rastreável a um trecho do material de origem. Quando não houver base documental, sinalize explicitamente: "os documentos não cobrem este ponto."\n• FORMATO DE ÁUDIO: Use apenas scripts diretos ("Diga exatamente: [texto]", "Explique que [conceito]"). Não instrua entonação, pausas, música ou elementos vocais — esses parâmetros não são processados pelo NotebookLM.`,
+                basePrompt: `Analise as fontes fornecidas e produza um relatório customizado do tipo: **{TYPE}**\n\n**ESTRUTURA ANALÍTICA**: Organize o relatório em seções funcionais adequadas ao objetivo especificado, priorizando elementos com maior relevância para o tipo de análise solicitada.\n\n**COMPONENTES INVESTIGATIVOS**: Para cada seção, implemente estratégias analíticas apropriadas:\n- Extração conceitual com preservação terminológica quando necessário\n- Mapeamento argumentativo identificando estrutura lógica e evidencial\n- Identificação de filiações epistemológicas e metodológicas\n- Sistematização de intersecções disciplinares e diálogos teóricos\n- Problematização de tensões internas e pontos cegos metodológicos\n\n**MODALIDADES DE SAÍDA**: Calibre o formato conforme função pretendida:\n- Para consulta: ênfase em síntese, citações localizadas e referenciamento\n- Para projeto: foco em aplicabilidade, transferibilidade conceitual e agenda investigativa\n- Para ensaio: prioridade a problematizações e experimentos conceituais\n- Para estudo: mapeamento exaustivo e desenvolvimento argumentativo\n\n**RIGOR METODOLÓGICO**: Mantenha precisão factual, economia textual e adequação ao nível de pós-graduação. Preserve complexidade conceitual necessária.\n\n**QUESTÕES ORIENTADORAS**: Formule questões analíticas que: exijam articulação de múltiplos aspectos; demandem posicionamento teórico fundamentado; estimulem análise crítica de pressupostos; impossibilitem resposta sintética ou binária.\n\n**CONECTIVIDADE ACADÊMICA**: Identifique articulações com outros campos, tradições teóricas correlatas e agenda de pesquisa contemporânea.`,
+                specificInstructions: {
+                    gaps: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA ANÁLISE DE LACUNAS**:\nIdentifique sistematicamente três categorias:\n(a) **Metodológicas**: ausências em abordagens, técnicas ou instrumentos\n(b) **Teóricas**: gaps conceituais, frameworks não aplicados, diálogos ausentes\n(c) **Empíricas/Contextuais**: populações não estudadas, contextos inexplorados\n\nPara cada lacuna: descrição sintética (uma frase) + fonte que a evidencia + questão de pesquisa derivada.`,
+                    coding: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA CODIFICAÇÃO TEMÁTICA**:\nProcesso em três etapas:\n1. **Codificação Inicial**: padrões significativos, frases-chave, terminologia êmica preservada.\n2. **Desenvolvimento Temático**: agrupamento em temas, hierarquias, frequência e distribuição.\n3. **Triangulação**: coerência, interpretações alternativas, tensões e casos desviantes.\nApresente em formato auditável.`,
+                    assumptions: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA MAPA DE PRESSUPOSTOS**:\n\nO objetivo não é descrever o que as fontes dizem sobre um conceito — é expor o que elas *assumem sem dizer*, e mostrar como a análise mudaria se esses fundamentos fossem outros.\n\n**1. CONTEXTUALIZAÇÃO**\nDescreva a teoria, interpretação ou prática que será examinada. Por que ela parece natural ou óbvia no campo? Que problema ela se propõe a resolver?\n\n**2. ESCAVAÇÃO DE FUNDAMENTOS**\nIdentifique os pressupostos subjacentes — do mais visível ao mais opaco. Para cada pressuposto identificado:\n- Como ele se manifesta no texto (citação ou paráfrase)?\n- Por que não aparece explicitamente?\n- Que tradição intelectual o sustenta?\n- Que perguntas ele torna impossíveis de formular?\n- Como as conclusões mudariam se esse pressuposto fosse abandonado?\n\nProgrida em ordem: do pressuposto mais evidente ao mais estrutural.\n\n**3. INTERPRETAÇÕES ALTERNATIVAS**\nPara cada alternativa plausível:\n- Como ela reconceptualiza o mesmo fenômeno?\n- Que pressupostos adota em substituição?\n- Que evidências do material ela privilegia (que a interpretação original minimiza)?\n- Que insight único ela oferece?\n\n**4. SÍNTESE REFLEXIVA**\nO que a multiplicidade de interpretações revela sobre o fenômeno que nenhuma interpretação isolada consegue ver? Que questões permanecem genuinamente abertas?`,
+                    podcast: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA ROTEIRO DE PODCAST**:\n\n**INSTRUÇÕES FUNDAMENTAIS**:\n- Foque APENAS em conteúdo extraído diretamente das fontes\n- Use SCRIPTS DIRETOS: "Diga exatamente: [texto]" ou "Comece explicando que [conceito]"\n- NÃO mencione: tom de voz, música, pausas, entonações (não funciona no NotebookLM)\n\n**SEGMENTO 1 — ABERTURA**: Script de abertura + contexto essencial + gancho narrativo + roadmap dos pontos.\n\n**SEGMENTO 2 — DESENVOLVIMENTO**: 3 pontos conceituais das fontes, cada um com script implementável e conexões entre si.\n\n**SEGMENTO 3 — SÍNTESE**: Recapitulação + conexões interdisciplinares + questão aberta ao ouvinte.\n\n**SEGMENTO 4 (opcional) — ENCERRAMENTO**: Takeaway principal + fechamento + gancho para reflexão.\n\n✓ Funciona: "Diga que...", scripts entre aspas, perguntas retóricas.\n✗ Não funciona: "Use tom entusiasmado", "Faça pausa dramática", instruções vocais.`,
+                    dialectic: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA LENTE DIALÉTICA**:\n\n**1. TESES CENTRAIS** — 2-3 teses com citação específica e relevância no contexto geral.\n\n**2. PERSPECTIVAS OPOSTAS** — Para cada tese, desenvolva PERSPECTIVA A e PERSPECTIVA B: posicionamento, argumentos, evidências, implicações, tradição epistemológica. Ambas fundamentadas nas fontes.\n\n**3. DIÁLOGO DIALÉTICO** — Fricções específicas, contra-argumentos, evidências privilegiadas, questões que cada perspectiva responde melhor, limitações.\n\n**4. SÍNTESE CRÍTICA** — Insights únicos, o que cada interpretação revela/obscurece, possíveis terceiras vias, trade-offs explícitos.`,
+                    disillusion: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA FILTRO DESILUSÃO**:\n\n**1. RECONSTRUÇÃO** — Promessas da teoria, sua lógica interna, por que é inicialmente persuasiva.\n**2. GENEALOGIA DA DESILUSÃO** — Promessas não cumpridas, pressupostos questionáveis, custos ocultos.\n**3. RELEITURA CRÍTICA** — Tensões internas, evidências resistentes, alternativas sugeridas mas não desenvolvidas.\n**4. FRAMEWORK ALTERNATIVO** — Reinterpretação dos mesmos fenômenos; o que explica melhor.\n**5. SÍNTESE META-CRÍTICA** — O que a desilusão revela, que insights preserva, que vigilância epistemológica sugere.`,
+                    antithesis: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA MÉTODO ANTÍTESE**:\n\n**1. TESES** — 3-5 teses: formulação precisa, citação, pressupostos, tipo (ontológica, metodológica, normativa...).\n**2. ANTÍTESES** — Para cada tese: enunciado da contraposição, fundamentação nas fontes, tradição intelectual, análise comparativa (o que cada uma privilegia e responde melhor).\n**3. MAPEAMENTO DE TENSÕES** — Contradição lógica? Tensão dialética? Complementaridade? Ambiguidade resolvível?\n**4. ESTRATÉGIAS DE SÍNTESE** — Síntese dialética / pluralismo metodológico / dissolução / incomensurabilidade.\n**5. QUESTÕES DERIVADAS** — Empíricas, experimentos conceituais, casos-limite, condições de aplicabilidade.`,
+                    feynman: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA TÉCNICA FEYNMAN**:\n\n**1. CLARIFICAÇÃO CONCEITUAL** — Reformule sem jargão, analogias do cotidiano, decomposição em elementos básicos. Teste: "Como explicaria a alguém fora da área?"\n**2. LACUNAS** — Compreensão (o que as fontes assumem), Justificação (premissas não demonstradas), Aplicação (exemplos práticos ausentes).\n**3. MODELOS MENTAIS** — Núcleo irredutível, 2-3 analogias com seus limites, exemplos concretos incluindo casos-limite.\n**4. QUESTÕES** — Que testem compreensão profunda, aplicação prática e conexões interdisciplinares.`,
+                    litmap: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA MAPA DE LITERATURA**:\n\n**1. CLUSTERS TEMÁTICOS** — 4-6 grupos: fontes, justificativa, sobreposições, fontes isoladas.\n**2. FRAMEWORKS TEÓRICOS** — Tradições, conceitos-chave, pressupostos, diálogos vs. tensões.\n**3. ABORDAGENS METODOLÓGICAS** — Classificação, inovações, pontos fortes e limitações.\n**4. DEBATES CENTRAIS** — 3-5 controvérsias: fontes em cada lado, pontos de discordância, estado atual.\n**5. LACUNAS** — Temáticas, metodológicas, teóricas.\n**6. ESTRUTURA CITACIONAL** — Hubs, pontes entre tradições, top 5-10 papers.\n**7. SÍNTESE** — Estado da arte, consensos, incertezas, agenda futura.`,
+                    glossary: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA GLOSSÁRIO CONTEXTUAL**:\n\nExtraia 10-20 termos-chave. Para cada um:\n\n**DEFINIÇÃO CONTEXTUAL** (2-4 frases) — Como usado especificamente nas fontes; distinga do uso genérico.\n\n**EXPLICAÇÃO ANALÍTICA** (1-2 parágrafos) — Nuances, implicações, conexões com outros conceitos do glossário.\n\nUse: Comparação Contrastiva, Exemplificação com passagens, Rastreamento histórico do termo, Conexões entre verbetes.\n\nOrganize alfabeticamente ou por importância conceitual (explicite o critério).`,
+                    timeline: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA LINHA DO TEMPO**:\n\n**PARTE 1 — EVENTOS**: Data | Evento | Resumo (2-3 frases) | Fonte | Status (CONFIRMADO/INFERIDO/INCERTO). Ordem cronológica estrita. NUNCA invente datas. Para inferidas, explicite a base.\n\n**PARTE 2 — ELENCO**: Nome completo | Papel | Biografia (3-4 frases) | Aparições na timeline | Fontes.\n\n**SÍNTESE CROSS-DOCUMENT**: Sequências só visíveis combinando fontes; contradições de datação; gaps temporais significativos. Cite fonte específica para cada evento.`,
+                    cartography: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA CARTOGRAFIA DISCIPLINAR**:\n\nEste notebook contém fontes de tradições intelectuais distintas (ex: técnica, social, filosófica). O objetivo é mapear como CADA tradição habita o mesmo problema — não produzir síntese prematura.\n\n**1. IDENTIFICAÇÃO DE TRADIÇÕES**\nListe as tradições/disciplinas presentes nas fontes. Para cada uma:\n- Fontes pertencentes a essa tradição\n- Vocabulário técnico característico\n- Perguntas que essa tradição consegue formular\n- Perguntas que essa tradição NÃO consegue formular (pontos cegos estruturais)\n- Pressupostos ontológicos e epistemológicos de base\n\n**2. MAPA POR PROBLEMA**\nSelecione 3-5 problemas ou questões centrais do tema do notebook. Para cada problema, mostre em tabela:\n\n| Problema | Tradição A | Tradição B | Tradição C |\n|----------|-----------|-----------|----------|\n| Como enquadra? | ... | ... | ... |\n| Que evidências mobiliza? | ... | ... | ... |\n| Que solução propõe? | ... | ... | ... |\n| Que pressuposto central? | ... | ... | ... |\n\n**3. VOCABULÁRIO COMPARADO**\nIdentifique termos que CADA tradição usa para fenômenos similares. Organize em tabela:\n\n| Fenômeno | Termo (Tradição A) | Termo (Tradição B) | Cognatos genuínos? |\n|---------|------------------|------------------|-------------------|\n\n**4. ASSIMETRIAS ESTRUTURAIS**\n- Que tradição tem mais fontes/peso no notebook? Que viés isso introduz?\n- Que perspectiva está sub-representada?\n- Que aspectos do problema só UMA tradição consegue articular?\n\n**5. MAPA RESULTANTE**\nProduza descrição textual da "paisagem disciplinar" do notebook: quem fala com quem, quem ignora quem, onde há muros disciplinares e onde há zonas de contato.`,
+                    convergences: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA CONVERGÊNCIAS & DIVERGÊNCIAS**:\n\n**ATENÇÃO CRÍTICA**: Distingua cuidadosamente entre:\n- **Convergência genuína**: fontes de tradições distintas chegam à mesma conclusão por caminhos independentes\n- **Convergência aparente**: usam a mesma palavra mas significam coisas diferentes\n- **Divergência irredutível**: desacordo de premissas, não de dados — não tem "solução"\n- **Divergência resolúvel**: desacordo empírico ou terminológico que pode ser mediado\n\n**1. MAPEAMENTO DE CONVERGÊNCIAS**\nPara cada convergência identificada:\n- Que fontes convergem (cite especificamente)\n- Em que exatamente concordam (formulação precisa)\n- Classificação: genuína ou aparente?\n- Se genuína: que fortaleza epistêmica isso confere à posição?\n- Se aparente: onde exatamente a semelhança superficial esconde diferença real?\n\n**2. MAPEAMENTO DE DIVERGÊNCIAS**\nPara cada divergência:\n- Que fontes divergem e em que ponto específico\n- Tipo: premissas diferentes? Métodos diferentes? Dados diferentes? Valores diferentes?\n- Irredutível ou resolúvel?\n- Se irredutível: qual é o núcleo do desacordo (não tente harmonizar)?\n- Se resolúvel: que informação adicional ou clarificação conceitual mediaria?\n\n**3. ZONAS DE TENSÃO PRODUTIVA**\nIdentifique divergências que, embora irresolvidas, ILUMINAM algo importante sobre o problema. Que cada perspectiva revela que a outra não vê?\n\n**4. TABELA SÍNTESE**\n\n| Aspecto | Fontes que concordam | Fontes que discordam | Tipo | Resolúvel? |\n|---------|---------------------|---------------------|------|----------|\n\n**5. IMPLICAÇÕES**\n- Que questões do campo só ficam visíveis quando você vê as convergências/divergências juntas?\n- Que consensos são mais sólidos? Quais são apenas aparentes?\n- Que divergências indicam que o campo está genuinamente partido em premissas?`,
+                    bridges: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA PONTES CONCEITUAIS**:\n\nFontes de tradições distintas frequentemente usam conceitos similares com significados diferentes, ou usam palavras diferentes para o mesmo fenômeno. Este template mapeia ambos.\n\n**1. COGNATOS GENUÍNOS** (mesmo fenômeno, vocabulário diferente)\nPara cada par/grupo identificado:\n- Termo em Tradição A + citação de uso\n- Termo correspondente em Tradição B + citação de uso\n- Por que são o mesmo fenômeno (argumento explícito)\n- O que cada tradição VÊ que a outra não vê sobre esse fenômeno\n- Qual terminologia captura melhor qual aspecto?\n\n**2. FALSOS COGNATOS** (mesma palavra, fenômenos diferentes)\nPara cada falso cognato identificado:\n- Palavra compartilhada\n- Definição/uso em Tradição A + citação\n- Definição/uso em Tradição B + citação\n- Em que exatamente o significado diverge\n- Que confusões essa homonímia pode gerar num leitor interdisciplinar\n- Proposta de desambiguação (se possível)\n\n**3. CONCEITOS ÓRFÃOS**\n- Que conceitos de uma tradição não têm equivalente nas outras?\n- O que essa ausência revela sobre o que cada tradição consegue pensar?\n\n**4. MAPA DE PONTES**\nProduza tabela geral:\n\n| Conceito/Fenômeno | Tradição A | Tradição B | Tradição C | Tipo de relação |\n|------------------|-----------|-----------|-----------|----------------|\n\n**5. IMPLICAÇÕES PARA DIÁLOGO**\n- Que mal-entendidos interdisciplinares típicos essas fontes revelam?\n- Onde um pesquisador formado numa tradição precisaria de "tradutor" para ler as outras?\n- Que pontes conceituais facilitariam mais o diálogo entre essas tradições?`,
+                    synthesis: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA CAMINHOS DE SÍNTESE**:\n\n**PREMISSA METODOLÓGICA**: Toda síntese de fontes heterogêneas é uma ESCOLHA — ela resolve algumas tensões sacrificando outras. Este template mapeia as rotas disponíveis e seus custos, sem fingir que existe síntese neutra.\n\n**PASSO 0: INVENTÁRIO DE TENSÕES**\nAntes de propor sínteses, liste as tensões irredutíveis identificadas nas fontes:\n- Tensões ontológicas (o que existe?)\n- Tensões epistemológicas (como conhecemos?)\n- Tensões metodológicas (como investigamos?)\n- Tensões normativas (o que importa?)\n\n**PASSO 1: IDENTIFICAÇÃO DE ROTAS**\nIdentifique 2-4 caminhos de síntese plausíveis. Para cada rota:\n\n**Nome da Rota**: [ex: "Síntese Instrumentalista", "Pluralismo Metodológico", "Hierarquia Disciplinar"]\n\n**Lógica**: Como essa rota propõe integrar as fontes?\n\n**O que preserva**: Que insights de cada tradição mantém?\n\n**O que sacrifica**: Que tensões "resolve" descartando um dos lados? Que perspectiva fica subalterna?\n\n**Pressupostos necessários**: Que você precisa aceitar para essa síntese funcionar?\n\n**Evidências nas fontes**: Alguma fonte sugere (mesmo implicitamente) essa direção?\n\n**Quem ganha, quem perde**: Que tradição intelectual sairia fortalecida por essa síntese?\n\n**PASSO 2: SÍNTESE DAS SÍNTESES**\n- Qual rota é mais fiel às fontes como estão?\n- Qual requer mais reinterpretação criativa?\n- Existe rota que nenhuma fonte sugere mas que seria intelectualmente coerente?\n- Existe tensão que NENHUMA rota resolve — que precisa ser mantida como tensão produtiva?\n\n**PASSO 3: RECOMENDAÇÃO FUNDAMENTADA**\nCom base na análise, que rota(s) de síntese fazem mais sentido para os objetivos do usuário — e por quê? Explicite que essa recomendação é INTERPRETAÇÃO, não leitura direta das fontes.`,
+                    tension: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA TENSIONAMENTO PRODUTIVO**:\n\nO objetivo não é resolver o conflito entre fontes de tradições distintas — é usar o conflito para revelar o que cada tradição deixa invisível.\n\n**1. SELEÇÃO DE PARES PRODUTIVOS**\nIdentifique 2-3 pares de fontes de tradições diferentes que, em confronto direto, gerariam máxima fricção epistêmica. Para cada par selecionado, justifique: por que ESSE par é especialmente produtivo?\n\n**2. PROTOCOLO DE CONFRONTO**\nPara cada par de fontes (Fonte A × Fonte B):\n\n**O que A diria sobre B**:\n- Que pressuposto central de B seria inaceitável para A?\n- Que pergunta A faria que B não consegue responder com suas próprias ferramentas?\n- Que evidência A apresentaria que B teria dificuldade de absorver?\n\n**O que B diria sobre A**:\n- Que aspecto do problema A está estruturalmente cego para ver?\n- Que B explicaria que A descarta como irrelevante ou não-científico?\n- Que limitação de A B revelaria?\n\n**O que o confronto ilumina**:\n- Que aspecto do problema central só fica VISÍVEL por causa do confronto?\n- Que questão nenhuma das duas fontes consegue fazer sozinha, mas o confronto entre elas torna formulável?\n\n**3. FRICÇÕES DE ALTO RENDIMENTO**\nIdentifique os pontos de conflito mais produtivos — onde a divergência não é erro, mas revela estrutura profunda do problema. Que cada fricção ensina sobre os limites de cada tradição?\n\n**4. QUESTÕES EMERGENTES**\nListe 5-8 questões que SÓ emergem do tensionamento — que nenhuma fonte individual formularia. Essas são as questões que um projeto genuinamente interdisciplinar precisaria endereçar.\n\n**5. REFLEXÃO METODOLÓGICA**\nO que esse exercício de tensionamento sugere sobre como conduzir pesquisa que usa essas fontes? Que postura epistêmica o pesquisador precisaria adotar?`,
+                },
+            },
         };
 
-        const placeholders = {
-            arquivo: 'Ex: priorizar citações para fundamentação de argumento X, mapear tradições teóricas sobre Y...',
-            projeto: 'Ex: aplicabilidade ao projeto sobre Z, transferibilidade conceitual para contexto brasileiro...',
-            ensaio: 'Ex: problematizações sobre relação teoria/prática, tensões epistemológicas em campo X...',
-            macrotemas: 'Ex: priorizar temas relacionados a políticas públicas, focar intersecções disciplinares...',
-            lacunas: 'Ex: priorizar lacunas metodológicas, foco em estudos no contexto brasileiro...',
-            codificacao: 'Ex: usar framework de análise temática reflexiva, priorizar códigos êmicos...',
-            arqueologia: 'Ex: investigar pressuposto de neutralidade científica, examinar crença na meritocracia...',
-            podcast: 'Ex: audiência não-especializada, tom conversacional mas rigoroso, duração 30-40min...',
-            dialetica: 'Ex: debate entre perspectiva marxista vs liberal, tensão qualitativo vs quantitativo...',
-            desilusao: 'Ex: examinar criticamente teoria da escolha racional, desilusão com positivismo lógico...',
-            antitese: 'Ex: focar antíteses metodológicas, priorizar contradições ontológicas...',
-            feynman: 'Ex: simplificar conceito de habitus, explicar teoria dos sistemas complexos para leigos...',
-            mapalit: 'Ex: priorizar literatura empírica dos últimos 10 anos, focar tradição europeia...',
-            definidor: 'Ex: definir termos técnicos de teoria crítica, glossário de conceitos foucaultianos...',
-            pressupostos: 'Ex: investigar pressuposto de objetividade na pesquisa qualitativa...',
-            timeline: 'Ex: priorizar eventos políticos sobre culturais, focar desenvolvimento institucional...',
-            cartografia: 'Ex: notebook sobre ML com textos técnicos (Papers/docs), sociais (STS, sociologia) e filosóficos (filosofia da mente, ética). Quero ver como cada tradição enquadra o problema de agência em sistemas autônomos.',
-            convergencias: 'Ex: quero saber onde textos técnicos e filosóficos REALMENTE concordam sobre limites do aprendizado supervisionado vs onde parecem concordar mas usam palavras diferentes para coisas distintas.',
-            pontes: 'Ex: o conceito de "modelo" em machine learning vs "modelo" em filosofia da ciência — mesmo nome, premissas radicalmente diferentes. Quero mapear esse tipo de falso cognato e também os cognatos genuínos.',
-            sintese_critica: 'Ex: dado que os textos técnicos assumem X e os filosóficos rejeitam X, que sínteses são possíveis? Quero ver as 2-3 rotas mais plausíveis com o que cada uma sacrifica.',
-            tensionamento: 'Ex: colocar um paper de deep learning em confronto direto com um texto de filosofia da percepção — o que cada um revelaria de cego no outro?'
-        };
-
-        const highlyBenefited = ['podcast', 'projeto', 'dialetica', 'desilusao', 'antitese', 'arqueologia', 'pressupostos', 'cartografia', 'convergencias', 'pontes', 'sintese_critica', 'tensionamento'];
-
-        function sel(type, e) {
-            document.querySelectorAll('.template-btn').forEach(b => b.classList.remove('active'));
-            e.target.closest('.template-btn').classList.add('active');
-            document.getElementById('reportType').value = templates[type];
-            activeTemplate = type;
-            const cf = document.getElementById('customFocus');
-            cf.placeholder = placeholders[type] || 'Descreva aspectos específicos que devem ser priorizados...';
-            const rl = document.getElementById('recommendedLabel');
-            if (highlyBenefited.includes(type)) { cf.classList.add('focus-recommended'); rl.style.display = 'inline'; }
-            else { cf.classList.remove('focus-recommended'); rl.style.display = 'none'; }
+        // ── Render templates ──────────────────────────────────────────────────────────
+        function renderTemplates() {
+            const t = i18n[lang];
+            const base = document.getElementById('tpl-base');
+            const inter = document.getElementById('tpl-inter');
+            base.innerHTML = t.templates.map(tp =>
+                `<div class="template-btn${activeTemplate === tp.id ? ' active' : ''}" onclick="sel('${tp.id}',event)"><span>${tp.icon}</span> ${tp.label}</div>`
+            ).join('');
+            inter.innerHTML = t.interTemplates.map(tp =>
+                `<div class="template-btn inter${activeTemplate === tp.id ? ' active' : ''}" onclick="sel('${tp.id}',event)"><span>${tp.icon}</span> ${tp.label}</div>`
+            ).join('');
         }
 
+        // ── Apply UI strings ──────────────────────────────────────────────────────────
+        function applyStrings() {
+            const t = i18n[lang];
+            document.getElementById('h-title').textContent = t.title;
+            document.getElementById('h-sub').textContent = t.sub;
+            document.getElementById('lbl-type').textContent = t.lblType;
+            document.getElementById('reportType').placeholder = t.typePlaceholder;
+            document.getElementById('sec-source').childNodes[0].textContent = t.secSource;
+            document.getElementById('sec-inter').childNodes[0].textContent = t.secInter;
+            document.getElementById('lbl-focus').childNodes[0].textContent = t.lblFocus + ' ';
+            document.getElementById('recommendedLabel').textContent = t.recommended;
+            document.getElementById('focusHintTitle').textContent = t.hintTitle;
+            document.getElementById('customFocus').placeholder = t.focusPlaceholder;
+            document.getElementById('lbl-guardrail').textContent = t.lblGuardrail;
+            document.getElementById('desc-guardrail').textContent = guardrailOn ? t.descGuardrailOn : t.descGuardrail;
+            document.getElementById('lbl-podcast').textContent = t.lblPodcast;
+            document.getElementById('desc-podcast').textContent = podcastOn ? t.descPodcastOn : t.descPodcast;
+            document.getElementById('btn-generate').textContent = t.btnGenerate;
+            document.getElementById('lbl-output').textContent = t.lblOutput;
+            document.getElementById('copyText').textContent = t.copy;
+            renderTemplates();
+            // Re-apply typeValue for active template
+            if (activeTemplate) {
+                const tv = t.typeValues[activeTemplate];
+                if (tv) document.getElementById('reportType').value = tv;
+                // Re-apply focus hint
+                const hint = t.focusHints[activeTemplate];
+                const hintBox = document.getElementById('focusHintBox');
+                const hintText = document.getElementById('focusHintText');
+                if (hint) { hintText.innerHTML = hint; hintBox.style.display = 'block'; document.getElementById('recommendedLabel').style.display = 'inline'; }
+                else { hintBox.style.display = 'none'; document.getElementById('recommendedLabel').style.display = 'none'; }
+            }
+        }
+
+        function setLang(l) {
+            lang = l;
+            document.getElementById('btnEN').classList.toggle('active', l === 'en');
+            document.getElementById('btnPT').classList.toggle('active', l === 'pt');
+            document.documentElement.lang = l === 'pt' ? 'pt-BR' : 'en';
+            applyStrings();
+        }
+
+        // ── Template select ───────────────────────────────────────────────────────────
+        function sel(id, e) {
+            activeTemplate = id;
+            const t = i18n[lang];
+            document.getElementById('reportType').value = t.typeValues[id] || '';
+            const cf = document.getElementById('customFocus');
+            cf.placeholder = t.focusPlaceholders[id] || t.focusPlaceholder;
+            const rl = document.getElementById('recommendedLabel');
+            const hintBox = document.getElementById('focusHintBox');
+            const hintText = document.getElementById('focusHintText');
+            if (t.focusHints[id]) {
+                cf.classList.add('focus-recommended');
+                rl.style.display = 'inline';
+                hintText.innerHTML = t.focusHints[id];
+                hintBox.style.display = 'block';
+            } else {
+                cf.classList.remove('focus-recommended');
+                rl.style.display = 'none';
+                hintBox.style.display = 'none';
+            }
+            renderTemplates();
+        }
+
+        // ── Toggles ───────────────────────────────────────────────────────────────────
         function toggleGuardrail() {
             guardrailOn = !guardrailOn;
-            const sw = document.getElementById('toggleSwitch');
-            const row = document.getElementById('guardrailToggle');
-            const desc = document.getElementById('toggleDesc');
-            sw.classList.toggle('on', guardrailOn);
-            row.classList.toggle('on', guardrailOn);
-            desc.textContent = guardrailOn
-                ? 'Ativo — guardrails epistêmicos serão incluídos no prompt'
-                : 'Injeta diretrizes anti-alucinação no prompt';
+            document.getElementById('toggleSwitch').classList.toggle('on', guardrailOn);
+            document.getElementById('guardrailToggle').classList.toggle('on', guardrailOn);
+            const t = i18n[lang];
+            document.getElementById('desc-guardrail').textContent = guardrailOn ? t.descGuardrailOn : t.descGuardrail;
+        }
+        function togglePodcast() {
+            podcastOn = !podcastOn;
+            document.getElementById('podcastSwitch').classList.toggle('on', podcastOn);
+            document.getElementById('podcastToggle').classList.toggle('on', podcastOn);
+            const t = i18n[lang];
+            document.getElementById('desc-podcast').textContent = podcastOn ? t.descPodcastOn : t.descPodcast;
         }
 
-        const GUARDRAIL = `
-**GUARDRAILS EPISTÊMICOS (ATIVOS)**:
-Siga rigorosamente ao responder:
-• Cada afirmação = citação inline na mesma frase [n]. Nunca separe claim de citação.
-• Divergências entre fontes: exponha sem harmonizar artificialmente. Se divergem, divergem.
-• Lacunas: declare explicitamente o que não está nas fontes. "Não está lá" é uma resposta válida e necessária.
-• Síntese multi-fonte: mostre o que CADA fonte diz separadamente ANTES de qualquer síntese. Marque a síntese como interpretação sua, não como o que as fontes afirmam.
-• Inferências: identifique como interpretação ("eu inferiria X combinando [2] e [5], mas nenhuma fonte diz X diretamente").
-• Incerteza fraca: quantifique ("confiança baixa ~30%") em vez de suavizar ("provavelmente", "sugere").
-• Imagens em PDFs, outros notebooks, versões atualizadas: sinalize a limitação explicitamente.
-• Lembre o usuário de verificar citações clicando nos [números], especialmente em transcrições de áudio/vídeo.`;
-
-        const specificInstructions = {
-            lacunas: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA ANÁLISE DE LACUNAS**:
-Identifique sistematicamente três categorias:
-(a) **Metodológicas**: ausências em abordagens, técnicas ou instrumentos
-(b) **Teóricas**: gaps conceituais, frameworks não aplicados, diálogos ausentes
-(c) **Empíricas/Contextuais**: populações não estudadas, contextos inexplorados
-
-Para cada lacuna: descrição sintética (uma frase) + fonte que a evidencia + questão de pesquisa derivada.`,
-
-            codificacao: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA CODIFICAÇÃO TEMÁTICA**:
-Processo em três etapas:
-1. **Codificação Inicial**: padrões significativos, frases-chave, terminologia êmica preservada.
-2. **Desenvolvimento Temático**: agrupamento em temas, hierarquias, frequência e distribuição.
-3. **Triangulação**: coerência, interpretações alternativas, tensões e casos desviantes.
-Apresente em formato auditável.`,
-
-            arqueologia: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA ARQUEOLOGIA CONCEITUAL**:
-
-**1. CONTEXTUALIZAÇÃO** — Panorama da crença/interpretação, por que investigar seus pressupostos.
-
-**2. ARQUEOLOGIA** — Para cada pressuposto: como se manifesta, por que não é aparente, que tradições o sustentam, que questões evita, como pressupostos alternativos mudariam as conclusões. Progrida do evidente ao sutil.
-
-**3. INTERPRETAÇÕES ALTERNATIVAS** — Para cada alternativa: como reconceptualiza o fenômeno, que pressupostos adota, que evidências privilegia, que insights únicos gera.
-
-**4. SÍNTESE REFLEXIVA** — Como a multiplicidade enriquece a compreensão. Questões que permanecem abertas.
-
-**DIRETRIZES**: Neutralidade analítica, imaginação disciplinada, pedagogia progressiva.`,
-
-            podcast: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA ROTEIRO DE PODCAST**:
-
-**INSTRUÇÕES FUNDAMENTAIS**:
-- Foque APENAS em conteúdo extraído diretamente das fontes
-- Use SCRIPTS DIRETOS: "Diga exatamente: [texto]" ou "Comece explicando que [conceito]"
-- NÃO mencione: tom de voz, música, pausas, entonações (não funciona no NotebookLM)
-
-**SEGMENTO 1 — ABERTURA**: Script de abertura + contexto essencial + gancho narrativo + roadmap dos pontos.
-
-**SEGMENTO 2 — DESENVOLVIMENTO**: 3 pontos conceituais das fontes, cada um com script implementável e conexões entre si.
-
-**SEGMENTO 3 — SÍNTESE**: Recapitulação + conexões interdisciplinares + questão aberta ao ouvinte.
-
-**SEGMENTO 4 (opcional) — ENCERRAMENTO**: Takeaway principal + fechamento + gancho para reflexão.
-
-✓ Funciona: "Diga que...", scripts entre aspas, perguntas retóricas.
-✗ Não funciona: "Use tom entusiasmado", "Faça pausa dramática", instruções vocais.`,
-
-            dialetica: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA LENTE DIALÉTICA**:
-
-**1. TESES CENTRAIS** — 2-3 teses com citação específica e relevância no contexto geral.
-
-**2. PERSPECTIVAS OPOSTAS** — Para cada tese, desenvolva PERSPECTIVA A e PERSPECTIVA B: posicionamento, argumentos, evidências, implicações, tradição epistemológica. Ambas fundamentadas nas fontes.
-
-**3. DIÁLOGO DIALÉTICO** — Fricções específicas, contra-argumentos, evidências privilegiadas, questões que cada perspectiva responde melhor, limitações.
-
-**4. SÍNTESE CRÍTICA** — Insights únicos, o que cada interpretação revela/obscurece, possíveis terceiras vias, trade-offs explícitos.
-
-**DIRETRIZES**: Fidelidade às fontes, rigor argumentativo, equilíbrio epistêmico — não harmonize artificialmente.`,
-
-            desilusao: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA FILTRO DESILUSÃO**:
-
-**1. RECONSTRUÇÃO** — Promessas da teoria, sua lógica interna, por que é inicialmente persuasiva.
-**2. GENEALOGIA DA DESILUSÃO** — Promessas não cumpridas, pressupostos questionáveis, custos ocultos.
-**3. RELEITURA CRÍTICA** — Tensões internas, evidências resistentes, alternativas sugeridas mas não desenvolvidas.
-**4. FRAMEWORK ALTERNATIVO** — Reinterpretação dos mesmos fenômenos; o que explica melhor.
-**5. SÍNTESE META-CRÍTICA** — O que a desilusão revela, que insights preserva, que vigilância epistemológica sugere.
-
-**TOM**: Quem examinou seriamente e identificou limitações — não quem ridiculariza superficialmente.`,
-
-            antitese: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA MÉTODO ANTÍTESE**:
-
-**1. TESES** — 3-5 teses: formulação precisa, citação, pressupostos, tipo (ontológica, metodológica, normativa...).
-**2. ANTÍTESES** — Para cada tese: enunciado da contraposição, fundamentação nas fontes, tradição intelectual, análise comparativa (o que cada uma privilegia e responde melhor).
-**3. MAPEAMENTO DE TENSÕES** — Contradição lógica? Tensão dialética? Complementaridade? Ambiguidade resolvível?
-**4. ESTRATÉGIAS DE SÍNTESE** — Síntese dialética / pluralismo metodológico / dissolução / incomensurabilidade.
-**5. QUESTÕES DERIVADAS** — Empíricas, experimentos conceituais, casos-limite, condições de aplicabilidade.`,
-
-            feynman: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA TÉCNICA FEYNMAN**:
-
-**1. CLARIFICAÇÃO CONCEITUAL** — Reformule sem jargão, analogias do cotidiano, decomposição em elementos básicos. Teste: "Como explicaria a alguém fora da área?"
-**2. LACUNAS** — Compreensão (o que as fontes assumem), Justificação (premissas não demonstradas), Aplicação (exemplos práticos ausentes).
-**3. MODELOS MENTAIS** — Núcleo irredutível, 2-3 analogias com seus limites, exemplos concretos incluindo casos-limite.
-**4. QUESTÕES** — Que testem compreensão profunda, aplicação prática e conexões interdisciplinares.`,
-
-            mapalit: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA MAPA DE LITERATURA**:
-
-**1. CLUSTERS TEMÁTICOS** — 4-6 grupos: fontes, justificativa, sobreposições, fontes isoladas.
-**2. FRAMEWORKS TEÓRICOS** — Tradições, conceitos-chave, pressupostos, diálogos vs. tensões.
-**3. ABORDAGENS METODOLÓGICAS** — Classificação, inovações, pontos fortes e limitações.
-**4. DEBATES CENTRAIS** — 3-5 controvérsias: fontes em cada lado, pontos de discordância, estado atual.
-**5. LACUNAS** — Temáticas, metodológicas, teóricas.
-**6. ESTRUTURA CITACIONAL** — Hubs, pontes entre tradições, top 5-10 papers.
-**7. SÍNTESE** — Estado da arte, consensos, incertezas, agenda futura.`,
-
-            definidor: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA GLOSSÁRIO CONTEXTUAL**:
-
-Extraia 10-20 termos-chave. Para cada um:
-
-**DEFINIÇÃO CONTEXTUAL** (2-4 frases) — Como usado especificamente nas fontes; distinga do uso genérico.
-
-**EXPLICAÇÃO ANALÍTICA** (1-2 parágrafos) — Nuances, implicações, conexões com outros conceitos do glossário.
-
-Use: Comparação Contrastiva, Exemplificação com passagens, Rastreamento histórico do termo, Conexões entre verbetes.
-
-Organize alfabeticamente ou por importância conceitual (explicite o critério).`,
-
-            pressupostos: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA ARQUEOLOGIA DE PRESSUPOSTOS**:
-
-**1. CONTEXTUALIZAÇÃO** — Qual crença/interpretação, por que investigar, que insights podem emergir.
-**2. ARQUEOLOGIA** — Para cada pressuposto: manifestação, opacidade, tradições que o sustentam, questões que evita, como alternativas mudariam as conclusões. Progrida do evidente ao sutil.
-**3. ALTERNATIVAS** — Para cada interpretação alternativa: reconceptualização, pressupostos adotados, evidências privilegiadas, insights únicos, pontos cegos.
-**4. SÍNTESE REFLEXIVA** — Enriquecimento pela multiplicidade; questões abertas.
-
-**TÉCNICAS**: Desconstrução gentil, Rotação de lentes, Questionamento socrático, Exemplificação.`,
-
-            timeline: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA LINHA DO TEMPO**:
-
-**PARTE 1 — EVENTOS**: Data | Evento | Resumo (2-3 frases) | Fonte | Status (CONFIRMADO/INFERIDO/INCERTO). Ordem cronológica estrita. NUNCA invente datas. Para inferidas, explicite a base.
-
-**PARTE 2 — ELENCO**: Nome completo | Papel | Biografia (3-4 frases) | Aparições na timeline | Fontes.
-
-**SÍNTESE CROSS-DOCUMENT**: Sequências só visíveis combinando fontes; contradições de datação; gaps temporais significativos. Cite fonte específica para cada evento.`,
-
-            // ── INTERDISCIPLINAR ─────────────────────────────────────────────────────────
-
-            cartografia: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA CARTOGRAFIA DISCIPLINAR**:
-
-Este notebook contém fontes de tradições intelectuais distintas (ex: técnica, social, filosófica). O objetivo é mapear como CADA tradição habita o mesmo problema — não produzir síntese prematura.
-
-**1. IDENTIFICAÇÃO DE TRADIÇÕES**
-Liste as tradições/disciplinas presentes nas fontes. Para cada uma:
-- Fontes pertencentes a essa tradição
-- Vocabulário técnico característico
-- Perguntas que essa tradição consegue formular
-- Perguntas que essa tradição NÃO consegue formular (pontos cegos estruturais)
-- Pressupostos ontológicos e epistemológicos de base
-
-**2. MAPA POR PROBLEMA**
-Selecione 3-5 problemas ou questões centrais do tema do notebook. Para cada problema, mostre em tabela:
-
-| Problema | Tradição A | Tradição B | Tradição C |
-|----------|-----------|-----------|-----------|
-| Como enquadra? | ... | ... | ... |
-| Que evidências mobiliza? | ... | ... | ... |
-| Que solução propõe? | ... | ... | ... |
-| Que pressuposto central? | ... | ... | ... |
-
-**3. VOCABULÁRIO COMPARADO**
-Identifique termos que CADA tradição usa para fenômenos similares. Organize em tabela:
-
-| Fenômeno | Termo (Tradição A) | Termo (Tradição B) | Cognatos genuínos? |
-|---------|------------------|------------------|-------------------|
-
-**4. ASSIMETRIAS ESTRUTURAIS**
-- Que tradição tem mais fontes/peso no notebook? Que viés isso introduz?
-- Que perspectiva está sub-representada?
-- Que aspectos do problema só UMA tradição consegue articular?
-
-**5. MAPA RESULTANTE**
-Produza descrição textual da "paisagem disciplinar" do notebook: quem fala com quem, quem ignora quem, onde há muros disciplinares e onde há zonas de contato.`,
-
-            convergencias: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA CONVERGÊNCIAS & DIVERGÊNCIAS**:
-
-**ATENÇÃO CRÍTICA**: Distingua cuidadosamente entre:
-- **Convergência genuína**: fontes de tradições distintas chegam à mesma conclusão por caminhos independentes
-- **Convergência aparente**: usam a mesma palavra mas significam coisas diferentes
-- **Divergência irredutível**: desacordo de premissas, não de dados — não tem "solução"
-- **Divergência resolúvel**: desacordo empírico ou terminológico que pode ser mediado
-
-**1. MAPEAMENTO DE CONVERGÊNCIAS**
-Para cada convergência identificada:
-- Que fontes convergem (cite especificamente)
-- Em que exatamente concordam (formulação precisa)
-- Classificação: genuína ou aparente?
-- Se genuína: que fortaleza epistêmica isso confere à posição?
-- Se aparente: onde exatamente a semelhança superficial esconde diferença real?
-
-**2. MAPEAMENTO DE DIVERGÊNCIAS**
-Para cada divergência:
-- Que fontes divergem e em que ponto específico
-- Tipo: premissas diferentes? Métodos diferentes? Dados diferentes? Valores diferentes?
-- Irredutível ou resolúvel?
-- Se irredutível: qual é o núcleo do desacordo (não tente harmonizar)?
-- Se resolúvel: que informação adicional ou clarificação conceitual mediaria?
-
-**3. ZONAS DE TENSÃO PRODUTIVA**
-Identifique divergências que, embora irresolvidas, ILUMINAM algo importante sobre o problema. Que cada perspectiva revela que a outra não vê?
-
-**4. TABELA SÍNTESE**
-
-| Aspecto | Fontes que concordam | Fontes que discordam | Tipo | Resolúvel? |
-|---------|---------------------|---------------------|------|-----------|
-
-**5. IMPLICAÇÕES**
-- Que questões do campo só ficam visíveis quando você vê as convergências/divergências juntas?
-- Que consensos são mais sólidos? Quais são apenas aparentes?
-- Que divergências indicam que o campo está genuinamente partido em premissas?`,
-
-            pontes: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA PONTES CONCEITUAIS**:
-
-Fontes de tradições distintas frequentemente usam conceitos similares com significados diferentes, ou usam palavras diferentes para o mesmo fenômeno. Este template mapeia ambos.
-
-**1. COGNATOS GENUÍNOS** (mesmo fenômeno, vocabulário diferente)
-Para cada par/grupo identificado:
-- Termo em Tradição A + citação de uso
-- Termo correspondente em Tradição B + citação de uso
-- Por que são o mesmo fenômeno (argumento explícito)
-- O que cada tradição VÊ que a outra não vê sobre esse fenômeno
-- Qual terminologia captura melhor qual aspecto?
-
-**2. FALSOS COGNATOS** (mesma palavra, fenômenos diferentes)
-Para cada falso cognato identificado:
-- Palavra compartilhada
-- Definição/uso em Tradição A + citação
-- Definição/uso em Tradição B + citação
-- Em que exatamente o significado diverge
-- Que confusões essa homonímia pode gerar num leitor interdisciplinar
-- Proposta de desambiguação (se possível)
-
-**3. CONCEITOS ÓRFÃOS**
-- Que conceitos de uma tradição não têm equivalente nas outras?
-- O que essa ausência revela sobre o que cada tradição consegue pensar?
-
-**4. MAPA DE PONTES**
-Produza tabela geral:
-
-| Conceito/Fenômeno | Tradição A | Tradição B | Tradição C | Tipo de relação |
-|------------------|-----------|-----------|-----------|----------------|
-
-**5. IMPLICAÇÕES PARA DIÁLOGO**
-- Que mal-entendidos interdisciplinares típicos essas fontes revelam?
-- Onde um pesquisador formado numa tradição precisaria de "tradutor" para ler as outras?
-- Que pontes conceituais facilitariam mais o diálogo entre essas tradições?`,
-
-            sintese_critica: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA CAMINHOS DE SÍNTESE**:
-
-**PREMISSA METODOLÓGICA**: Toda síntese de fontes heterogêneas é uma ESCOLHA — ela resolve algumas tensões sacrificando outras. Este template mapeia as rotas disponíveis e seus custos, sem fingir que existe síntese neutra.
-
-**PASSO 0: INVENTÁRIO DE TENSÕES**
-Antes de propor sínteses, liste as tensões irredutíveis identificadas nas fontes:
-- Tensões ontológicas (o que existe?)
-- Tensões epistemológicas (como conhecemos?)
-- Tensões metodológicas (como investigamos?)
-- Tensões normativas (o que importa?)
-
-**PASSO 1: IDENTIFICAÇÃO DE ROTAS**
-Identifique 2-4 caminhos de síntese plausíveis. Para cada rota:
-
-**Nome da Rota**: [ex: "Síntese Instrumentalista", "Pluralismo Metodológico", "Hierarquia Disciplinar"]
-
-**Lógica**: Como essa rota propõe integrar as fontes?
-
-**O que preserva**: Que insights de cada tradição mantém?
-
-**O que sacrifica**: Que tensões "resolve" descartando um dos lados? Que perspectiva fica subalterna?
-
-**Pressupostos necessários**: Que você precisa aceitar para essa síntese funcionar?
-
-**Evidências nas fontes**: Alguma fonte sugere (mesmo implicitamente) essa direção?
-
-**Quem ganha, quem perde**: Que tradição intelectual sairia fortalecida por essa síntese?
-
-**PASSO 2: SÍNTESE DAS SÍNTESES**
-- Qual rota é mais fiel às fontes como estão?
-- Qual requer mais reinterpretação criativa?
-- Existe rota que nenhuma fonte sugere mas que seria intelectualmente coerente?
-- Existe tensão que NENHUMA rota resolve — que precisa ser mantida como tensão produtiva?
-
-**PASSO 3: RECOMENDAÇÃO FUNDAMENTADA**
-Com base na análise, que rota(s) de síntese fazem mais sentido para os objetivos do usuário — e por quê? Explicite que essa recomendação é INTERPRETAÇÃO, não leitura direta das fontes.`,
-
-            tensionamento: `\n\n**ORIENTAÇÕES ESPECÍFICAS PARA TENSIONAMENTO PRODUTIVO**:
-
-O objetivo não é resolver o conflito entre fontes de tradições distintas — é usar o conflito para revelar o que cada tradição deixa invisível.
-
-**1. SELEÇÃO DE PARES PRODUTIVOS**
-Identifique 2-3 pares de fontes de tradições diferentes que, em confronto direto, gerariam máxima fricção epistêmica. Para cada par selecionado, justifique: por que ESSE par é especialmente produtivo?
-
-**2. PROTOCOLO DE CONFRONTO**
-Para cada par de fontes (Fonte A × Fonte B):
-
-**O que A diria sobre B**:
-- Que pressuposto central de B seria inaceitável para A?
-- Que pergunta A faria que B não consegue responder com suas próprias ferramentas?
-- Que evidência A apresentaria que B teria dificuldade de absorver?
-
-**O que B diria sobre A**:
-- Que aspecto do problema A está estruturalmente cego para ver?
-- Que B explicaria que A descarta como irrelevante ou não-científico?
-- Que limitação de A B revelaria?
-
-**O que o confronto ilumina**:
-- Que aspecto do problema central só fica VISÍVEL por causa do confronto?
-- Que questão nenhuma das duas fontes consegue fazer sozinha, mas o confronto entre elas torna formulável?
-
-**3. FRICÇÕES DE ALTO RENDIMENTO**
-Identifique os pontos de conflito mais produtivos — onde a divergência não é erro, mas revela estrutura profunda do problema. Que cada fricção ensina sobre os limites de cada tradição?
-
-**4. QUESTÕES EMERGENTES**
-Liste 5-8 questões que SÓ emergem do tensionamento — que nenhuma fonte individual formularia. Essas são as questões que um projeto genuinamente interdisciplinar precisaria endereçar.
-
-**5. REFLEXÃO METODOLÓGICA**
-O que esse exercício de tensionamento sugere sobre como conduzir pesquisa que usa essas fontes? Que postura epistêmica o pesquisador precisaria adotar?`
-        };
-
-        const BASE_PROMPT = `Analise as fontes fornecidas e produza um relatório customizado do tipo: **{TIPO}**
-
-**ESTRUTURA ANALÍTICA**: Organize o relatório em seções funcionais adequadas ao objetivo especificado, priorizando elementos com maior relevância para o tipo de análise solicitada.
-
-**COMPONENTES INVESTIGATIVOS**: Para cada seção, implemente estratégias analíticas apropriadas:
-- Extração conceitual com preservação terminológica quando necessário
-- Mapeamento argumentativo identificando estrutura lógica e evidencial
-- Identificação de filiações epistemológicas e metodológicas
-- Sistematização de intersecções disciplinares e diálogos teóricos
-- Problematização de tensões internas e pontos cegos metodológicos
-
-**MODALIDADES DE SAÍDA**: Calibre o formato conforme função pretendida:
-- Para consulta: ênfase em síntese, citações localizadas e referenciamento
-- Para projeto: foco em aplicabilidade, transferibilidade conceitual e agenda investigativa
-- Para ensaio: prioridade a problematizações e experimentos conceituais
-- Para estudo: mapeamento exaustivo e desenvolvimento argumentativo
-
-**RIGOR METODOLÓGICO**: Mantenha precisão factual, economia textual e adequação ao nível de pós-graduação. Preserve complexidade conceitual necessária.
-
-**QUESTÕES ORIENTADORAS**: Formule questões analíticas que: exijam articulação de múltiplos aspectos; demandem posicionamento teórico fundamentado; estimulem análise crítica de pressupostos; impossibilitem resposta sintética ou binária.
-
-**CONECTIVIDADE ACADÊMICA**: Identifique articulações com outros campos, tradições teóricas correlatas e agenda de pesquisa contemporânea.`;
-
+        // ── Generate ──────────────────────────────────────────────────────────────────
         function generatePrompt() {
+            const t = i18n[lang];
             const reportType = document.getElementById('reportType').value.trim();
             const customFocus = document.getElementById('customFocus').value.trim();
-            if (!reportType) { alert('Por favor, especifique o tipo de relatório desejado.'); return; }
-
-            let prompt = BASE_PROMPT.replace('{TIPO}', reportType);
-
-            if (activeTemplate && specificInstructions[activeTemplate]) {
-                prompt += specificInstructions[activeTemplate];
-            }
-
-            if (customFocus) prompt += `\n\n**FOCO ESPECÍFICO**: ${customFocus}`;
-
-            if (guardrailOn) prompt += GUARDRAIL;
-
-            prompt += `\n\nAdapte automaticamente profundidade analítica, ênfases conceituais e modalidade de apresentação conforme especificações do relatório solicitado.`;
-
+            if (!reportType) { alert(t.alertType); return; }
+            let prompt = t.basePrompt.replace('{TYPE}', reportType);
+            if (activeTemplate && t.specificInstructions[activeTemplate]) prompt += t.specificInstructions[activeTemplate];
+            if (customFocus) prompt += `\n\n**${lang === 'pt' ? 'FOCO ESPECÍFICO' : 'SPECIFIC FOCUS'}**: ${customFocus}`;
+            if (guardrailOn) prompt += t.guardrail;
+            if (podcastOn) prompt += t.podcastMode;
+            prompt += `\n\n${lang === 'pt' ? 'Adapte automaticamente profundidade analítica, ênfases conceituais e modalidade de apresentação conforme especificações do relatório solicitado.' : 'Automatically adapt analytical depth, conceptual emphases and presentation modality according to the specifications of the requested report.'}`;
             document.getElementById('promptOutput').textContent = prompt;
             const len = prompt.length;
             const cc = document.getElementById('charCount');
             cc.innerHTML = len > 5000
-                ? `<span class="warning">⚠️ ${len} caracteres — excede limite NotebookLM (5000). Considere desativar o Modo Rigoroso ou usar foco específico menor.</span>`
-                : `${len} caracteres (limite NotebookLM: 5000)`;
+                ? `<span class="warning">${t.charWarn(len)}</span>`
+                : t.charLimit(len);
             document.getElementById('outputSection').style.display = 'block';
             document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
+        // ── Copy ──────────────────────────────────────────────────────────────────────
         function copyToClipboard() {
+            const t = i18n[lang];
             navigator.clipboard.writeText(document.getElementById('promptOutput').textContent).then(() => {
                 const btn = document.querySelector('.copy-btn');
                 btn.classList.add('copied');
                 document.getElementById('copyIcon').textContent = '✓';
-                document.getElementById('copyText').textContent = 'Copiado!';
+                document.getElementById('copyText').textContent = t.copied;
                 setTimeout(() => {
                     btn.classList.remove('copied');
                     document.getElementById('copyIcon').textContent = '📋';
-                    document.getElementById('copyText').textContent = 'Copiar';
+                    document.getElementById('copyText').textContent = t.copy;
                 }, 2000);
-            }).catch(() => alert('Erro ao copiar. Selecione e copie manualmente.'));
+            }).catch(() => alert('Copy failed — please select and copy manually.'));
         }
+
+        // ── Init ──────────────────────────────────────────────────────────────────────
+        applyStrings();
     </script>
 </body>
 

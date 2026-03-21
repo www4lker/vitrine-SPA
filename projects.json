@@ -1,20 +1,5 @@
 [
   {
-    "id": "6X1",
-    "title": "O Fim da Escala 6x1 e o Capitaloceno — Portal",
-    "description": "Experimento: O Fim da Escala 6x1 e o Capitaloceno — Portal",
-    "folderName": "6X1",
-    "entryFile": "index.html",
-    "tags": [
-      "Outros Experimentos"
-    ],
-    "emoji": "🔬",
-    "concepts": [
-      "Outros Experimentos"
-    ],
-    "date": "2026-02-27"
-  },
-  {
     "id": "7-protocolos",
     "title": "Manual de Engenharia da Respiração",
     "description": "Experimento: Manual de Engenharia da Respiração",
@@ -27,120 +12,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
-  },
-  {
-    "id": "AI-ECCO",
-    "title": "Infográfico: IA, Ética e Autenticidade Acadêmica",
-    "description": "Experimento: Infográfico: IA, Ética e Autenticidade Acadêmica",
-    "folderName": "AI-ECCO",
-    "entryFile": "index.html",
-    "tags": [
-      "Inteligência Artificial",
-      "Sociedade & Futuro"
-    ],
-    "emoji": "🤖",
-    "concepts": [
-      "Inteligência Artificial",
-      "Sociedade & Futuro"
-    ],
-    "date": "2026-02-27"
-  },
-  {
-    "id": "ANEXADO-PROMPT2",
-    "title": "Analisador de Livros Densos — NotebookLM RAG-Aware",
-    "description": "Experimento: Analisador de Livros Densos — NotebookLM RAG-Aware",
-    "folderName": "ANEXADO-PROMPT2",
-    "entryFile": "analisador-livros-densos.html",
-    "tags": [
-      "NotebookLM & Prompts",
-      "Humanidades Digitais"
-    ],
-    "emoji": "📚",
-    "concepts": [
-      "NotebookLM & Prompts",
-      "Humanidades Digitais"
-    ],
-    "date": "2026-02-27"
-  },
-  {
-    "id": "BREATHWORK-W",
-    "title": "Análise Sistêmica: Prática de Breathwork",
-    "description": "Experimento: Análise Sistêmica: Prática de Breathwork",
-    "folderName": "BREATHWORK-W",
-    "entryFile": "index.html",
-    "tags": [
-      "Metodologia & Ferramentas"
-    ],
-    "emoji": "🤖",
-    "concepts": [
-      "Metodologia & Ferramentas"
-    ],
-    "date": "2026-02-27"
-  },
-  {
-    "id": "DETECTOR-DE-PADROES",
-    "title": "Detector de Padrões em Corpus",
-    "description": "Ferramenta para detectar padrões recorrentes em corpus de textos, otimizada para uso com NotebookLM e prompts de análise qualitativa.",
-    "folderName": "DETECTOR-DE-PADROES",
-    "entryFile": "index.html",
-    "tags": [
-      "NotebookLM & Prompts",
-      "Humanidades Digitais",
-      "Metodologia & Ferramentas"
-    ],
-    "emoji": "📚",
-    "concepts": [
-      "NotebookLM & Prompts",
-      "Humanidades Digitais",
-      "Metodologia & Ferramentas"
-    ],
-    "date": "2026-02-27"
-  },
-  {
-    "id": "INFOGRAFICOS",
-    "title": "Framework de Infográficos - NotebookLM",
-    "description": "Experimento: Framework de Infográficos - NotebookLM",
-    "folderName": "INFOGRAFICOS",
-    "entryFile": "index.html",
-    "tags": [
-      "NotebookLM & Prompts"
-    ],
-    "emoji": "📚",
-    "concepts": [
-      "NotebookLM & Prompts"
-    ],
-    "date": "2026-02-27"
-  },
-  {
-    "id": "ONE-TAB-ANALYSIS",
-    "title": "Sítio Bibliográfico — Pesquisa PPGECCO",
-    "description": "Experimento: Sítio Bibliográfico — Pesquisa PPGECCO",
-    "folderName": "ONE-TAB-ANALYSIS",
-    "entryFile": "index.html",
-    "tags": [
-      "Outros Experimentos"
-    ],
-    "emoji": "🔬",
-    "concepts": [
-      "Outros Experimentos"
-    ],
-    "date": "2026-02-27"
-  },
-  {
-    "id": "PROMPT-GENERATOR-UPDATE",
-    "title": "Laboratório de Prompts Acadêmicos",
-    "description": "Experimento: Laboratório de Prompts Acadêmicos",
-    "folderName": "PROMPT-GENERATOR-UPDATE",
-    "entryFile": "index.html",
-    "tags": [
-      "NotebookLM & Prompts"
-    ],
-    "emoji": "📚",
-    "concepts": [
-      "NotebookLM & Prompts"
-    ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "abolition-work",
@@ -157,7 +29,7 @@
       "Metodologia & Ferramentas",
       "Sociedade & Futuro"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "ai-2027",
@@ -172,7 +44,41 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
+  },
+  {
+    "id": "AI-ECCO",
+    "title": "Infográfico: IA, Ética e Autenticidade Acadêmica",
+    "description": "Experimento: Infográfico: IA, Ética e Autenticidade Acadêmica",
+    "folderName": "AI-ECCO",
+    "entryFile": "index.html",
+    "tags": [
+      "Inteligência Artificial",
+      "Sociedade & Futuro"
+    ],
+    "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial",
+      "Sociedade & Futuro"
+    ],
+    "date": "2026-03-21"
+  },
+  {
+    "id": "ANEXADO-PROMPT2",
+    "title": "Analisador de Livros Densos — NotebookLM RAG-Aware",
+    "description": "Experimento: Analisador de Livros Densos — NotebookLM RAG-Aware",
+    "folderName": "ANEXADO-PROMPT2",
+    "entryFile": "analisador-livros-densos.html",
+    "tags": [
+      "NotebookLM & Prompts",
+      "Humanidades Digitais"
+    ],
+    "emoji": "📚",
+    "concepts": [
+      "NotebookLM & Prompts",
+      "Humanidades Digitais"
+    ],
+    "date": "2026-03-21"
   },
   {
     "id": "auditoria-git",
@@ -189,7 +95,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "autocompaixao",
@@ -204,7 +110,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "best-books-2025",
@@ -219,7 +125,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "bike-cba",
@@ -234,7 +140,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "bohm-krishnamurti",
@@ -249,7 +155,22 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
+  },
+  {
+    "id": "BREATHWORK-W",
+    "title": "Análise Sistêmica: Prática de Breathwork",
+    "description": "Experimento: Análise Sistêmica: Prática de Breathwork",
+    "folderName": "BREATHWORK-W",
+    "entryFile": "index.html",
+    "tags": [
+      "Metodologia & Ferramentas"
+    ],
+    "emoji": "🤖",
+    "concepts": [
+      "Metodologia & Ferramentas"
+    ],
+    "date": "2026-03-21"
   },
   {
     "id": "cannabis-cold-turkey",
@@ -264,7 +185,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "cannabis-et-motivacao",
@@ -279,7 +200,7 @@
     "concepts": [
       "Neurociência & Psicologia"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "chants-of-seenar",
@@ -294,7 +215,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "chequelista-nootropicos",
@@ -309,7 +230,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "cognitive-freedom-and-ia",
@@ -324,7 +245,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "curadoria-livros",
@@ -339,7 +260,37 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
+  },
+  {
+    "id": "cvv",
+    "title": "Sentinelas da Empatia - Prevenção ao Suicídio",
+    "description": "Experimento: Sentinelas da Empatia - Prevenção ao Suicídio",
+    "folderName": "cvv",
+    "entryFile": "index.html",
+    "tags": [
+      "Inteligência Artificial"
+    ],
+    "emoji": "🤖",
+    "concepts": [
+      "Inteligência Artificial"
+    ],
+    "date": "2026-03-21"
+  },
+  {
+    "id": "DETECTOR-DE-PADROES",
+    "title": "Detector de Padrões em Corpus",
+    "description": "Experimento: Detector de Padrões em Corpus",
+    "folderName": "DETECTOR-DE-PADROES",
+    "entryFile": "index.html",
+    "tags": [
+      "Outros Experimentos"
+    ],
+    "emoji": "🔬",
+    "concepts": [
+      "Outros Experimentos"
+    ],
+    "date": "2026-03-21"
   },
   {
     "id": "escrever-com-ia-pesquisa",
@@ -356,7 +307,7 @@
       "Neurociência & Psicologia",
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "flashcards-notebooklm",
@@ -375,7 +326,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "geertz-ia",
@@ -392,7 +343,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "historiagit",
@@ -407,7 +358,7 @@
     "concepts": [
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "humanidades-digitais",
@@ -422,7 +373,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "ia-e-neurodivergencia",
@@ -441,7 +392,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "ia-e-vc",
@@ -458,7 +409,22 @@
       "Inteligência Artificial",
       "Sociedade & Futuro"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
+  },
+  {
+    "id": "INFOGRAFICOS",
+    "title": "Framework de Infográficos - NotebookLM",
+    "description": "Experimento: Framework de Infográficos - NotebookLM",
+    "folderName": "INFOGRAFICOS",
+    "entryFile": "index.html",
+    "tags": [
+      "NotebookLM & Prompts"
+    ],
+    "emoji": "📚",
+    "concepts": [
+      "NotebookLM & Prompts"
+    ],
+    "date": "2026-03-21"
   },
   {
     "id": "l-tirosina",
@@ -473,7 +439,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "left-hand-git",
@@ -490,7 +456,7 @@
       "Inteligência Artificial",
       "Humanidades Digitais"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "manual-integrado-tecnicas-regulacao-emocional",
@@ -505,7 +471,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "microficcao",
@@ -520,7 +486,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "moutainhead-analise",
@@ -537,7 +503,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "notebooklm-academico",
@@ -554,7 +520,7 @@
       "NotebookLM & Prompts",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "notebooklm-can-quote",
@@ -573,7 +539,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "obsidian-mcp",
@@ -590,7 +556,22 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
+  },
+  {
+    "id": "ONE-TAB-ANALYSIS",
+    "title": "Sítio Bibliográfico — Pesquisa PPGECCO",
+    "description": "Experimento: Sítio Bibliográfico — Pesquisa PPGECCO",
+    "folderName": "ONE-TAB-ANALYSIS",
+    "entryFile": "index.html",
+    "tags": [
+      "Outros Experimentos"
+    ],
+    "emoji": "🔬",
+    "concepts": [
+      "Outros Experimentos"
+    ],
+    "date": "2026-03-21"
   },
   {
     "id": "padroes-respiratorios",
@@ -605,7 +586,22 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
+  },
+  {
+    "id": "portugues-guia",
+    "title": "Erros de Português da Atualidade segundo Sacconi",
+    "description": "Experimento: Erros de Português da Atualidade segundo Sacconi",
+    "folderName": "portugues-guia",
+    "entryFile": "index.html",
+    "tags": [
+      "Outros Experimentos"
+    ],
+    "emoji": "🔬",
+    "concepts": [
+      "Outros Experimentos"
+    ],
+    "date": "2026-03-21"
   },
   {
     "id": "procrastinacao-academica",
@@ -620,7 +616,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "progresso-pesquisa",
@@ -635,7 +631,22 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
+  },
+  {
+    "id": "PROMPT-GENERATOR-UPDATE",
+    "title": "Academic Prompt Lab",
+    "description": "Experimento: Academic Prompt Lab",
+    "folderName": "PROMPT-GENERATOR-UPDATE",
+    "entryFile": "index.html",
+    "tags": [
+      "NotebookLM & Prompts"
+    ],
+    "emoji": "📚",
+    "concepts": [
+      "NotebookLM & Prompts"
+    ],
+    "date": "2026-03-21"
   },
   {
     "id": "prompt-relatorios",
@@ -650,7 +661,7 @@
     "concepts": [
       "NotebookLM & Prompts"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "rock-en-argentina-deep-research",
@@ -665,7 +676,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "roda-emocoes",
@@ -680,7 +691,7 @@
     "concepts": [
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "supercolonias",
@@ -695,7 +706,7 @@
     "concepts": [
       "Sociedade & Futuro"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   },
   {
     "id": "work-life-balance",
@@ -710,6 +721,6 @@
     "concepts": [
       "Sociedade & Futuro"
     ],
-    "date": "2026-02-27"
+    "date": "2026-03-21"
   }
 ]
