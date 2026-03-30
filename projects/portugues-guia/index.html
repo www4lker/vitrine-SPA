@@ -888,6 +888,34 @@
             font-family: 'DM Mono', monospace;
         }
 
+        /* ── HAMBURGER / MOBILE HEADER ───────────────────────────────────────────────── */
+        .mobile-topbar {
+            display: none;
+        }
+
+        .hamburger-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            cursor: pointer;
+            padding: 0.35rem 0.55rem;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+
+        .hamburger-btn:hover {
+            border-color: var(--ink-dim);
+            color: var(--text);
+        }
+
+        .header-collapsible {
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+        }
+
         /* ── RESPONSIVE ─────────────────────────────────────────────────────────────── */
         @media (max-width: 700px) {
             .footer-inner {
@@ -897,7 +925,60 @@
 
         @media (max-width: 600px) {
             header {
-                padding: 1.2rem 1rem 0;
+                padding: 0;
+            }
+
+            /* Slim top bar always visible */
+            .mobile-topbar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.65rem 1rem;
+                border-bottom: 1px solid var(--border-faint);
+            }
+
+            .mobile-topbar-title {
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--text);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .mobile-topbar-title span {
+                color: var(--ink);
+            }
+
+            /* Collapsible panel — collapsed by default */
+            .header-collapsible {
+                max-height: 0;
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            /* When expanded via JS */
+            .header-collapsible.expanded {
+                max-height: 600px;
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            /* Original header-row hidden on mobile (shown inside collapsible) */
+            .header-row {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem 1rem 0.75rem;
+                border-bottom: none;
+            }
+
+            .controls {
+                padding: 0.5rem 1rem;
+            }
+
+            .cat-filters {
+                padding: 0 1rem 0.65rem;
             }
 
             main {
@@ -906,11 +987,6 @@
 
             .card-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .header-row {
-                flex-direction: column;
-                align-items: flex-start;
             }
         }
 
@@ -932,44 +1008,55 @@
 <body>
 
     <header>
-        <div class="header-row">
-            <div>
-                <div class="header-title">Erros de Português da <span>Atualidade</span><br>segundo Sacconi</div>
-                <div class="header-sub">Baseado em Luiz Antonio Sacconi · Norma culta · Acadêmico · Ficção · 400
-                    entradas</div>
-            </div>
-            <div class="header-right">
-                <div class="stats-bar">
-                    <div class="stat">
-                        <div class="stat-number" id="shown-count">200</div>
-                        <div class="stat-label">Exibindo</div>
+        <!-- ── Barra slim sempre visível em mobile ── -->
+        <div class="mobile-topbar">
+            <div class="mobile-topbar-title">Erros de Português da <span>Atualidade</span></div>
+            <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menu" aria-expanded="false" onclick="toggleMobileHeader()">
+                ☰
+            </button>
+        </div>
+
+        <!-- ── Painel colapsável (visível sempre em desktop, colapsado em mobile) ── -->
+        <div class="header-collapsible" id="header-collapsible">
+            <div class="header-row">
+                <div>
+                    <div class="header-title">Erros de Português da <span>Atualidade</span><br>segundo Sacconi</div>
+                    <div class="header-sub">Baseado em Luiz Antonio Sacconi · Norma culta · Acadêmico · Ficção · 400
+                        entradas</div>
+                </div>
+                <div class="header-right">
+                    <div class="stats-bar">
+                        <div class="stat">
+                            <div class="stat-number" id="shown-count">200</div>
+                            <div class="stat-label">Exibindo</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="quiz-seen">0</div>
+                            <div class="stat-label">Quiz visto</div>
+                        </div>
                     </div>
-                    <div class="stat">
-                        <div class="stat-number" id="quiz-seen">0</div>
-                        <div class="stat-label">Quiz visto</div>
+                    <div class="theme-switcher">
+                        <button class="theme-btn" id="tbtn-light" onclick="setTheme('light')">☀ Claro</button>
+                        <button class="theme-btn" id="tbtn-dark" onclick="setTheme('dark')">☾ Escuro</button>
+                        <button class="theme-btn active" id="tbtn-system" onclick="setTheme('system')">⊙ Sistema</button>
                     </div>
                 </div>
-                <div class="theme-switcher">
-                    <button class="theme-btn" id="tbtn-light" onclick="setTheme('light')">☀ Claro</button>
-                    <button class="theme-btn" id="tbtn-dark" onclick="setTheme('dark')">☾ Escuro</button>
-                    <button class="theme-btn active" id="tbtn-system" onclick="setTheme('system')">⊙ Sistema</button>
+            </div>
+            <div class="controls">
+                <button class="mode-btn active" onclick="setMode('browse'); closeMobileHeaderIfMobile()" id="btn-browse">⊞ Explorar</button>
+                <button class="mode-btn" onclick="setMode('quiz'); closeMobileHeaderIfMobile()" id="btn-quiz">◎ Quiz</button>
+                <button class="mode-btn" onclick="setMode('stats'); closeMobileHeaderIfMobile()" id="btn-stats">▦ Categorias</button>
+                <button class="mode-btn" onclick="setMode('acad'); closeMobileHeaderIfMobile()" id="btn-acad">✦ Acadêmico</button>
+                <button class="mode-btn" onclick="setMode('ficc'); closeMobileHeaderIfMobile()" id="btn-ficc">✧ Ficção</button>
+                <div class="search-wrap">
+                    <span class="search-icon">⌕</span>
+                    <input type="text" id="search-input" placeholder="Buscar erro, categoria, correção…"
+                        oninput="handleSearch(this.value)">
                 </div>
+                <span class="result-count" id="result-count">200 resultados</span>
             </div>
+            <div class="cat-filters" id="cat-filters"></div>
         </div>
-        <div class="controls">
-            <button class="mode-btn active" onclick="setMode('browse')" id="btn-browse">⊞ Explorar</button>
-            <button class="mode-btn" onclick="setMode('quiz')" id="btn-quiz">◎ Quiz</button>
-            <button class="mode-btn" onclick="setMode('stats')" id="btn-stats">▦ Categorias</button>
-            <button class="mode-btn" onclick="setMode('acad')" id="btn-acad">✦ Acadêmico</button>
-            <button class="mode-btn" onclick="setMode('ficc')" id="btn-ficc">✧ Ficção</button>
-            <div class="search-wrap">
-                <span class="search-icon">⌕</span>
-                <input type="text" id="search-input" placeholder="Buscar erro, categoria, correção…"
-                    oninput="handleSearch(this.value)">
-            </div>
-            <span class="result-count" id="result-count">200 resultados</span>
-        </div>
-        <div class="cat-filters" id="cat-filters"></div>
     </header>
 
     <main>
@@ -1422,6 +1509,37 @@
                 if (btn) btn.classList.toggle('active', k === saved);
             });
         })();
+
+        // ─── MOBILE HAMBURGER ────────────────────────────────────────────────────────
+        function isMobile() {
+            return window.innerWidth <= 600;
+        }
+
+        function toggleMobileHeader() {
+            const panel = document.getElementById('header-collapsible');
+            const btn   = document.getElementById('hamburger-btn');
+            const open  = panel.classList.toggle('expanded');
+            btn.setAttribute('aria-expanded', open);
+            btn.textContent = open ? '✕' : '☰';
+        }
+
+        function closeMobileHeaderIfMobile() {
+            if (!isMobile()) return;
+            const panel = document.getElementById('header-collapsible');
+            const btn   = document.getElementById('hamburger-btn');
+            panel.classList.remove('expanded');
+            btn.setAttribute('aria-expanded', 'false');
+            btn.textContent = '☰';
+        }
+
+        // Close panel when tapping outside (on body) in mobile
+        document.addEventListener('click', function (e) {
+            if (!isMobile()) return;
+            const header = document.querySelector('header');
+            if (!header.contains(e.target)) {
+                closeMobileHeaderIfMobile();
+            }
+        });
     </script>
 
     <footer>
