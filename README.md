@@ -10,7 +10,7 @@ Este pesquisador, inicialmente atraído pelas capacidades de codificação da IA
 2. **Fascínio pela automação** — usar ferramentas como Deep Research do Google Gemini para transformar ideias e pesquisas em páginas web interativas.
 3. **Liberdade criativa** — poder explorar virtualmente qualquer ideia, qualquer lampejo de curiosidade, sem julgamento de qualidade ou veracidade absoluta.
 
-> **Importante**: Os conteúdos aqui apresentados **não são avaliados quanto à qualidade ou veracidade dos fatos**, nem são atestados pelo autor. Trata-se de um **experimento metodológico** sobre o uso de IA para exploração de ideias.
+> **Importante**: Os conteúdos aqui apresentados **não são avaliados quanto à qualidade ou veracidade dos fatos**, posto que foram gerados com recursos experimentais de pesquisa com IA, e nem são atestados pelo autor. Trata-se de um **experimento metodológico** sobre o uso de IA para exploração de ideias, pesquisa e criação de páginas HTML standalone.
 
 ## 🔬 Metodologia
 
@@ -96,7 +96,7 @@ Este script é o coração do sistema de atualização. Ele:
     ```
 3.  As alterações serão copiadas para `projects/` e refletidas no site.
 
-### 4. Trabalhando em Múltiplos Dispositivos (Importante!)
+### 4. Trabalhando em Múltiplos Dispositivos (Importante)
 
 > **Por que isso importa?** A pasta `CORPUS/` é ignorada pelo Git (ver `.gitignore`). Isso significa que ela **não é sincronizada** entre máquinas via `git pull`. Se você clonar o repositório em um novo computador, o `CORPUS/` estará presente (como pasta vazia visível pelo `.gitkeep`) — mas sem conteúdo. Rodar o sync sem restaurar primeiro **apagaria todos os projetos públicos**.
 

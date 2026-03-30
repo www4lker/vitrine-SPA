@@ -12,7 +12,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "abolition-work",
@@ -29,7 +29,7 @@
       "Metodologia & Ferramentas",
       "Sociedade & Futuro"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "ai-2027",
@@ -44,7 +44,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "AI-ECCO",
@@ -61,7 +61,7 @@
       "Inteligência Artificial",
       "Sociedade & Futuro"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "ANEXADO-PROMPT2",
@@ -78,7 +78,7 @@
       "NotebookLM & Prompts",
       "Humanidades Digitais"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "auditoria-git",
@@ -95,7 +95,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "autocompaixao",
@@ -110,7 +110,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "best-books-2025",
@@ -125,7 +125,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "bike-cba",
@@ -140,7 +140,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "bohm-krishnamurti",
@@ -155,7 +155,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "BREATHWORK-W",
@@ -170,7 +170,7 @@
     "concepts": [
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "cannabis-cold-turkey",
@@ -185,7 +185,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "cannabis-et-motivacao",
@@ -200,7 +200,7 @@
     "concepts": [
       "Neurociência & Psicologia"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "chants-of-seenar",
@@ -215,7 +215,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "chequelista-nootropicos",
@@ -230,7 +230,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "cognitive-freedom-and-ia",
@@ -245,7 +245,22 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
+  },
+  {
+    "id": "comprar-primeiro-imovel",
+    "title": "Como comprar uma casa hoje?",
+    "description": "Experimento: Como comprar uma casa hoje?",
+    "folderName": "comprar-primeiro-imovel",
+    "entryFile": "index.html",
+    "tags": [
+      "Outros Experimentos"
+    ],
+    "emoji": "🔬",
+    "concepts": [
+      "Outros Experimentos"
+    ],
+    "date": "2026-03-30"
   },
   {
     "id": "curadoria-livros",
@@ -260,7 +275,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "cvv",
@@ -275,7 +290,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "DETECTOR-DE-PADROES",
@@ -290,7 +305,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "escrever-com-ia-pesquisa",
@@ -307,7 +322,7 @@
       "Neurociência & Psicologia",
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "flashcards-notebooklm",
@@ -326,7 +341,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "geertz-ia",
@@ -343,7 +358,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "historiagit",
@@ -358,7 +373,7 @@
     "concepts": [
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "humanidades-digitais",
@@ -373,7 +388,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "ia-e-neurodivergencia",
@@ -392,7 +407,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "ia-e-vc",
@@ -409,7 +424,7 @@
       "Inteligência Artificial",
       "Sociedade & Futuro"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "INFOGRAFICOS",
@@ -424,7 +439,7 @@
     "concepts": [
       "NotebookLM & Prompts"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "l-tirosina",
@@ -439,7 +454,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "left-hand-git",
@@ -456,7 +471,7 @@
       "Inteligência Artificial",
       "Humanidades Digitais"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "manual-integrado-tecnicas-regulacao-emocional",
@@ -471,7 +486,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "microficcao",
@@ -486,7 +501,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "moutainhead-analise",
@@ -503,7 +518,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "notebooklm-academico",
@@ -520,7 +535,7 @@
       "NotebookLM & Prompts",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "notebooklm-can-quote",
@@ -539,7 +554,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "obsidian-mcp",
@@ -556,7 +571,7 @@
       "Inteligência Artificial",
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "ONE-TAB-ANALYSIS",
@@ -571,7 +586,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "padroes-respiratorios",
@@ -586,7 +601,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "portugues-guia",
@@ -601,7 +616,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "procrastinacao-academica",
@@ -616,7 +631,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "progresso-pesquisa",
@@ -631,7 +646,7 @@
     "concepts": [
       "Inteligência Artificial"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "PROMPT-GENERATOR-UPDATE",
@@ -646,7 +661,7 @@
     "concepts": [
       "NotebookLM & Prompts"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "prompt-relatorios",
@@ -661,7 +676,7 @@
     "concepts": [
       "NotebookLM & Prompts"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "rock-en-argentina-deep-research",
@@ -676,7 +691,7 @@
     "concepts": [
       "Outros Experimentos"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "roda-emocoes",
@@ -691,7 +706,7 @@
     "concepts": [
       "Metodologia & Ferramentas"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "supercolonias",
@@ -706,7 +721,7 @@
     "concepts": [
       "Sociedade & Futuro"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   },
   {
     "id": "work-life-balance",
@@ -721,6 +736,6 @@
     "concepts": [
       "Sociedade & Futuro"
     ],
-    "date": "2026-03-21"
+    "date": "2026-03-30"
   }
 ]

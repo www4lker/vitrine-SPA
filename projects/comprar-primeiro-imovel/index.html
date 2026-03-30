@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Como comprar uma casa hoje?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FAF6F0;
+            --bg-warm: #EFE7DB;
+            --accent: #C8502E;
+            --accent-dark: #9E3A1C;
+            --accent-light: #FFF0EB;
+            --text: #1C1917;
+            --text-muted: #6B5F58;
+            --border: #DDD3C8;
+            --card-bg: #FFFFFF;
+            --green-bg: #EEF7EE;
+            --green-text: #2E6B2E;
+            --blue-bg: #EEF3FA;
+            --blue-text: #1A5197;
+            --yellow-bg: #FFF9E6;
+            --yellow-text: #7A5C00;
+            --red-bg: #FFEEEA;
+            --red-text: #8B2214;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+        }
+
+        /* ── NAV ────────────────────────────────── */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-inner {
+            max-width: 960px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 0 1.25rem;
+        }
+
+        .nav-inner::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-brand {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1rem;
+            color: var(--accent);
+            white-space: nowrap;
+            padding: 0.9rem 0;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+            border-right: 1px solid var(--border);
+            padding-right: 1.5rem;
+        }
+
+        nav a {
+            display: block;
+            padding: 0.85rem 0.9rem;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: color 0.2s, border-color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        /* ── HERO ───────────────────────────────── */
+        .hero {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 5.5rem 1.5rem 4rem;
+        }
+
+        .pill {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.9rem;
+            margin-bottom: 1.75rem;
+        }
+
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.6rem, 6.5vw, 4.8rem);
+            line-height: 1.04;
+            color: var(--text);
+            margin-bottom: 1.75rem;
+            max-width: 760px;
+        }
+
+        .hero-lead {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 580px;
+            line-height: 1.8;
+            font-weight: 300;
+            margin-bottom: 3rem;
+        }
+
+        .hero-lead strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            flex-wrap: wrap;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-num {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.2rem;
+            color: var(--accent);
+            line-height: 1;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.35rem;
+            max-width: 130px;
+            line-height: 1.4;
+            display: block;
+        }
+
+        /* ── SECTION SHELL ──────────────────────── */
+        section {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 4.5rem 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-tag {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(1.9rem, 4vw, 2.9rem);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .section-lead {
+            font-size: 1rem;
+            color: var(--text-muted);
+            max-width: 640px;
+            line-height: 1.75;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        .section-lead strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.25rem;
+            margin-bottom: 0.6rem;
+            color: var(--text);
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 0.9rem;
+            max-width: 680px;
+            line-height: 1.7;
+        }
+
+        p strong {
+            color: var(--text);
+        }
+
+        /* ── NOTICE / CALLOUT ───────────────────── */
+        .notice {
+            border-left: 3px solid var(--accent);
+            background: var(--accent-light);
+            padding: 1.1rem 1.4rem;
+            margin: 2rem 0;
+        }
+
+        .notice p {
+            color: var(--text);
+            font-size: 0.88rem;
+            margin: 0;
+            max-width: none;
+        }
+
+        .notice-warn {
+            border-left-color: #E6A817;
+            background: var(--yellow-bg);
+        }
+
+        /* ── COST TABLE ─────────────────────────── */
+        .cost-wrap {
+            overflow-x: auto;
+            margin-top: 2.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            min-width: 500px;
+        }
+
+        thead th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            background: var(--bg-warm);
+            font-weight: 600;
+            font-size: 0.7rem;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        tbody td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            color: var(--text-muted);
+        }
+
+        tbody td:first-child {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        tbody td:nth-child(2) {
+            font-family: 'DM Serif Display', serif;
+            color: var(--accent);
+            font-size: 1.05rem;
+        }
+
+        .row-total td {
+            background: var(--accent-light);
+            border-top: 2px solid var(--accent);
+            font-weight: 600;
+            color: var(--text) !important;
+        }
+
+        .row-total td:nth-child(2) {
+            font-size: 1.2rem !important;
+        }
+
+        .cost-note {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+            font-style: italic;
+        }
+
+        /* ── MODALITY CARDS ─────────────────────── */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .card-green::before {
+            background: var(--green-text);
+        }
+
+        .card-blue::before {
+            background: var(--blue-text);
+        }
+
+        .card-yellow::before {
+            background: #C69000;
+        }
+
+        .card-red::before {
+            background: var(--red-text);
+        }
+
+        .card-tag {
+            display: inline-block;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            margin-bottom: 1rem;
+            border-radius: 2px;
+        }
+
+        .tag-green {
+            background: var(--green-bg);
+            color: var(--green-text);
+        }
+
+        .tag-blue {
+            background: var(--blue-bg);
+            color: var(--blue-text);
+        }
+
+        .tag-yellow {
+            background: var(--yellow-bg);
+            color: var(--yellow-text);
+        }
+
+        .tag-red {
+            background: var(--red-bg);
+            color: var(--red-text);
+        }
+
+        .card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .card p {
+            font-size: 0.87rem;
+            margin-bottom: 0.6rem;
+            max-width: none;
+        }
+
+        .card-pros-cons {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .card-pros-cons ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .card-pros-cons li {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            padding-left: 1.25rem;
+            position: relative;
+        }
+
+        .card-pros-cons li::before {
+            content: attr(data-icon);
+            position: absolute;
+            left: 0;
+        }
+
+        /* ── MCMV FAIXAS ────────────────────────── */
+        .faixas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2.5rem;
+        }
+
+        .faixa {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+
+        .faixa-label {
+            font-size: 0.62rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 0.6rem;
+            display: block;
+        }
+
+        .f1 {
+            border-top: 3px solid #2E6B2E;
+        }
+
+        .f1 .faixa-label {
+            color: #2E6B2E;
+        }
+
+        .f2 {
+            border-top: 3px solid #1A5197;
+        }
+
+        .f2 .faixa-label {
+            color: #1A5197;
+        }
+
+        .f3 {
+            border-top: 3px solid #7A5C00;
+        }
+
+        .f3 .faixa-label {
+            color: #7A5C00;
+        }
+
+        .faixa h3 {
+            font-size: 1.05rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .faixa p {
+            font-size: 0.85rem;
+            margin: 0;
+            max-width: none;
+        }
+
+        .faixa-detail {
+            margin-top: 0.85rem;
+            padding-top: 0.85rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .mcmv-rules {
+            margin-top: 2rem;
+            background: var(--bg-warm);
+            padding: 1.5rem;
+        }
+
+        .mcmv-rules h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 600;
+        }
+
+        .mcmv-rules ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .mcmv-rules li {
+            font-size: 0.87rem;
+            color: var(--text-muted);
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .mcmv-rules li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ── VERDADE (truth items) ──────────────── */
+        .truths {
+            display: flex;
+            flex-direction: column;
+            margin-top: 2.5rem;
+        }
+
+        .truth {
+            display: grid;
+            grid-template-columns: 3rem 1fr;
+            gap: 1.5rem;
+            padding: 2.25rem 0;
+            border-bottom: 1px solid var(--border);
+            align-items: start;
+        }
+
+        .truth-n {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.4rem;
+            color: var(--bg-warm);
+            line-height: 1;
+        }
+
+        .truth-body h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .truth-body p {
+            font-size: 0.9rem;
+            margin: 0;
+            max-width: 620px;
+        }
+
+        .truth-body .highlight-line {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--accent);
+            margin-top: 0.6rem;
+            display: block;
+        }
+
+        /* ── PROCESS STEPS ──────────────────────── */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            margin-top: 2.5rem;
+        }
+
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.75rem 0;
+            border-bottom: 1px solid var(--border);
+            align-items: flex-start;
+        }
+
+        .step-n {
+            width: 2.2rem;
+            height: 2.2rem;
+            background: var(--accent);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .step-body h3 {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .step-body p {
+            font-size: 0.87rem;
+            margin: 0;
+            max-width: 620px;
+        }
+
+        /* ── FOOTER ─────────────────────────────── */
+        footer {
+            border-top: 1px solid var(--border);
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        footer h3 {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-weight: 600;
+        }
+
+        footer p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            max-width: none;
+            line-height: 1.7;
+            margin-bottom: 0.5rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* ── REVEAL ANIMATION ───────────────────── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── RESPONSIVE ─────────────────────────── */
+        @media (max-width: 640px) {
+            .hero {
+                padding: 3.5rem 1.25rem 3rem;
+            }
+
+            section {
+                padding: 3.5rem 1.25rem;
+            }
+
+            .hero-stats {
+                gap: 1.75rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            nav a {
+                padding: 0.8rem 0.7rem;
+            }
+
+            .truth {
+                grid-template-columns: 2.5rem 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── NAV ─────────────────────────────────────────── -->
+    <nav>
+        <div class="nav-inner">
+            <span class="nav-brand">Casa Própria</span>
+            <a href="#custos">Quanto custa</a>
+            <a href="#modalidades">Como comprar</a>
+            <a href="#mcmv">Ajuda do governo</a>
+            <a href="#verdade">O que ninguém conta</a>
+            <a href="#processo">Passo a passo</a>
+        </div>
+    </nav>
+
+    <!-- ── HERO ────────────────────────────────────────── -->
+    <div class="hero">
+        <span class="pill">Guia em linguagem simples · 2026</span>
+        <h1>Como comprar<br><em>uma casa hoje?</em></h1>
+        <p class="hero-lead">
+            Você não precisa nascer sabendo. <strong>Ninguém nasce assim.</strong>
+            Este guia foi feito para quem nunca teve ninguém para explicar —
+            sem jargão de banco, sem letras miúdas escondidas.
+            Só o que você precisa saber.
+        </p>
+        <div class="hero-stats">
+            <div>
+                <span class="stat-num">R$&nbsp;9.611</span>
+                <span class="stat-label">preço médio do m² residencial em 56 cidades (jan/2026)</span>
+            </div>
+            <div>
+                <span class="stat-num">5,97 mi</span>
+                <span class="stat-label">moradias em déficit no Brasil hoje</span>
+            </div>
+            <div>
+                <span class="stat-num">14,75%</span>
+                <span class="stat-label">taxa Selic em março/2026 — afeta diretamente seu financiamento</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── SEÇÃO 1: CUSTOS ──────────────────────────────── -->
+    <section id="custos" class="reveal">
+        <span class="section-tag">01 · Quanto dinheiro preciso?</span>
+        <h2>O preço do imóvel<br>não é tudo que você vai pagar</h2>
+        <p class="section-lead">
+            Antes de qualquer sonho, é preciso ver os números com clareza.
+            Comprar uma casa tem custos que aparecem <strong>antes de você morar</strong> lá —
+            e que muita gente descobre tarde demais.
+        </p>
+
+        <div class="notice">
+            <p><strong>Regra prática do mercado:</strong> o valor da parcela mensal não deve comprometer mais de 35% da
+                sua renda bruta mensal. Isso não é lei — é prudência. Se você ganha R$&nbsp;5.000, a parcela máxima
+                razoável é R$&nbsp;1.750.</p>
+        </div>
+
+        <p>O quadro abaixo usa um imóvel de <strong>R$&nbsp;300.000</strong> como exemplo. Ajuste mentalmente para o
+            valor que você está buscando.</p>
+
+        <div class="cost-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Custo</th>
+                        <th>Valor estimado</th>
+                        <th>O que é</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Entrada (20%)</td>
+                        <td>R$&nbsp;60.000</td>
+                        <td>A maioria dos bancos exige de 10% a 30% do valor do imóvel à vista antes de financiar o
+                            resto.</td>
+                    </tr>
+                    <tr>
+                        <td>ITBI</td>
+                        <td>R$&nbsp;7.500<br><small style="font-size:0.75rem;color:var(--text-muted)">(2,5% — varia por
+                                cidade)</small></td>
+                        <td>Imposto municipal obrigatório pago na hora da compra. Varia entre 2% e 4% conforme o
+                            município. Não tem como fugir.</td>
+                    </tr>
+                    <tr>
+                        <td>Registro em cartório</td>
+                        <td>~&nbsp;R$&nbsp;3.000</td>
+                        <td>Sem isso, você não é oficialmente dono. Cada estado tem uma tabela de custos. É quem coloca
+                            seu nome no imóvel de verdade.</td>
+                    </tr>
+                    <tr>
+                        <td>Taxas bancárias</td>
+                        <td>~&nbsp;R$&nbsp;3.500</td>
+                        <td>Avaliação do imóvel, abertura de crédito, seguro obrigatório e outras tarifas do banco que
+                            financia.</td>
+                    </tr>
+                    <tr class="row-total">
+                        <td>Total inicial (fora o financiamento)</td>
+                        <td>~&nbsp;R$&nbsp;74.000</td>
+                        <td>É o dinheiro que você precisa ter disponível antes de fechar o negócio — além do que você
+                            vai financiar.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="cost-note">* Valores aproximados. ITBI e taxas de cartório variam muito por estado e município. Sempre
+            peça a simulação completa ao banco antes de assinar qualquer documento.</p>
+
+        <div class="notice notice-warn" style="margin-top:2rem">
+            <p><strong>Não esqueça os custos mensais depois que você se mudar:</strong> condomínio (média de
+                R$&nbsp;516/mês em 2026 em edifícios comuns), IPTU, seguro residencial e eventuais reformas. A parcela
+                do financiamento é só uma parte do custo real de ser dono.</p>
+        </div>
+    </section>
+
+    <!-- ── SEÇÃO 2: MODALIDADES ─────────────────────────── -->
+    <section id="modalidades" class="reveal">
+        <span class="section-tag">02 · Como posso comprar</span>
+        <h2>Cada jeito de comprar<br>tem suas regras</h2>
+        <p class="section-lead">
+            Não existe uma única forma de comprar uma casa. As quatro principais têm
+            perfis diferentes — de urgência, de risco, de renda. Entenda qual faz sentido
+            para a sua situação <strong>antes de ir a um banco ou a um leilão.</strong>
+        </p>
+
+        <div class="cards">
+            <!-- Financiamento -->
+            <div class="card card-blue">
+                <span class="card-tag tag-blue">Mais comum</span>
+                <h3>Financiamento bancário</h3>
+                <p>Você dá a entrada, o banco paga o resto e você devolve em parcelas mensais por até 30 anos — com
+                    juros. Em 2026, as taxas partem de cerca de <strong>11,2% ao ano + TR</strong> na Caixa, chegando a
+                    mais de 12,5% em bancos privados.</p>
+                <div class="card-pros-cons">
+                    <ul>
+                        <li data-icon="✓">Você pode entrar hoje, com o que tem agora</li>
+                        <li data-icon="✓">Prazos longos reduzem a parcela mensal</li>
+                        <li data-icon="✗">Juros encarecem muito o custo total</li>
+                        <li data-icon="✗">O imóvel fica alienado até quitar (veja seção 4)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Consórcio -->
+            <div class="card card-green">
+                <span class="card-tag tag-green">Para quem tem paciência</span>
+                <h3>Consórcio</h3>
+                <p>Um grupo de pessoas "poupa junto". De tempos em tempos, alguém é sorteado e recebe o crédito para
+                    comprar. Ou você dá um lance maior para antecipar. <strong>Não tem juros, mas tem taxa de
+                        administração</strong> (normalmente 15–20% do valor total parcelados nas mensalidades).</p>
+                <div class="card-pros-cons">
+                    <ul>
+                        <li data-icon="✓">Custo total muito menor que financiamento</li>
+                        <li data-icon="✓">Disciplina de poupança forçada</li>
+                        <li data-icon="✗">Pode demorar anos até ser contemplado</li>
+                        <li data-icon="✗">Não serve para quem precisa de casa agora</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Leilão -->
+            <div class="card card-yellow">
+                <span class="card-tag tag-yellow">Para quem pesquisa muito</span>
+                <h3>Leilão</h3>
+                <p>Imóveis retomados por dívidas são vendidos com desconto — às vezes 30% a 50% abaixo do mercado. Mas
+                    podem vir com <strong>dívidas do antigo dono</strong> (IPTU atrasado, condomínio devendo). Exige
+                    pesquisa cuidadosa e idealmente um advogado.</p>
+                <div class="card-pros-cons">
+                    <ul>
+                        <li data-icon="✓">Preços bem abaixo do mercado são reais</li>
+                        <li data-icon="✗">Risco de dívidas ocultas e pendências jurídicas</li>
+                        <li data-icon="✗">Imóvel pode estar ocupado, gerando custo extra</li>
+                        <li data-icon="✗">Não recomendado sem orientação especializada</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Na planta vs pronto -->
+            <div class="card card-red">
+                <span class="card-tag tag-red">Atenção</span>
+                <h3>Na planta vs. pronto</h3>
+                <p>Imóvel <strong>na planta</strong> costuma ser mais barato e com condições de pagamento direto com a
+                    construtora — mas você espera anos e pode ter surpresas na entrega. Imóvel <strong>pronto</strong> é
+                    o que você vê: você avalia antes de comprar, mas paga mais.</p>
+                <div class="card-pros-cons">
+                    <ul>
+                        <li data-icon="✓">Na planta: preço menor, pagamento parcelado antes da entrega</li>
+                        <li data-icon="✓">Pronto: transparência — você sabe o que está comprando</li>
+                        <li data-icon="✗">Na planta: sempre consulte o registro da incorporação no cartório</li>
+                        <li data-icon="✗">Na planta: gastos com acabamento após entrega são comuns</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="notice" style="margin-top:2.5rem">
+            <p><strong>Em qualquer modalidade, vale contratar um corretor de imóveis?</strong> Sim, segundo
+                especialistas — mesmo que não seja obrigatório. O corretor precisa ter registro no CRECI (Conselho
+                Regional de Corretores de Imóveis). Ele pode identificar problemas na documentação que você dificilmente
+                veria sozinho.</p>
+        </div>
+    </section>
+
+    <!-- ── SEÇÃO 3: MCMV ─────────────────────────────────── -->
+    <section id="mcmv" class="reveal">
+        <span class="section-tag">03 · Ajuda do governo</span>
+        <h2>Minha Casa, Minha Vida:<br>quem tem direito?</h2>
+        <p class="section-lead">
+            O programa federal pode subsidiar parte do valor do imóvel e oferecer
+            juros muito menores que o mercado. Em 2026, representa
+            <strong>52% de todos os lançamentos imobiliários</strong> do país.
+            Mas tem regras.
+        </p>
+
+        <div class="faixas">
+            <div class="faixa f1">
+                <span class="faixa-label">Faixa 1 — Maior subsídio</span>
+                <h3>Renda familiar<br>até R$&nbsp;3.200</h3>
+                <div class="faixa-detail">
+                    Imóveis de até <strong>R$&nbsp;275.000</strong> (novas regras de março/2026).
+                    Juros a partir de 4% ao ano com subsídio direto do governo.
+                    É a faixa com mais apoio: parte do valor pode ser uma doação, não dívida.
+                </div>
+            </div>
+            <div class="faixa f2">
+                <span class="faixa-label">Faixa 2 — Subsídio parcial</span>
+                <h3>Renda familiar<br>de R$&nbsp;3.201 a R$&nbsp;8.000</h3>
+                <div class="faixa-detail">
+                    Juros entre 5% e 7% ao ano, abaixo do mercado.
+                    Subsídio menor que a Faixa 1, mas ainda é vantajoso frente
+                    a um financiamento comum de banco privado.
+                </div>
+            </div>
+            <div class="faixa f3">
+                <span class="faixa-label">Faixa 3 — Classe média</span>
+                <h3>Renda familiar<br>de R$&nbsp;8.001 a R$&nbsp;12.000</h3>
+                <div class="faixa-detail">
+                    Juros em torno de 8,16% ao ano + TR. Sem subsídio direto, mas
+                    com acesso ao FGTS para entrada ou amortização.
+                    Imóveis de até R$&nbsp;500.000.
+                </div>
+            </div>
+        </div>
+
+        <div class="mcmv-rules">
+            <h3>Para se inscrever, você não pode:</h3>
+            <ul>
+                <li>Ter outro imóvel registrado em seu nome</li>
+                <li>Participar de outro programa habitacional público</li>
+                <li>Ter renda familiar acima do limite da faixa em que se inscrever</li>
+                <li>Ter recebido benefício do MCMV ou equivalente antes</li>
+            </ul>
+        </div>
+
+        <div class="notice notice-warn" style="margin-top:2rem">
+            <p><strong>Cuidado com a localização:</strong> muitos conjuntos do MCMV ficam em áreas periféricas distantes
+                do emprego, com transporte precário. A casa pode ser boa, mas pesquise a região com o mesmo cuidado que
+                pesquisa o imóvel. Distância virou um custo invisível que as simulações bancárias não mostram.</p>
+        </div>
+    </section>
+
+    <!-- ── SEÇÃO 4: VERDADE ─────────────────────────────── -->
+    <section id="verdade" class="reveal">
+        <span class="section-tag">04 · O que ninguém explica</span>
+        <h2>Cinco coisas que deveriam<br>estar no contrato — e não estão</h2>
+        <p class="section-lead">
+            Os guias de banco te ensinam a calcular a parcela.
+            Raramente te explicam o que está por baixo dos termos.
+            Aqui estão as coisas que muita gente só descobre depois de assinar.
+        </p>
+
+        <div class="truths">
+            <div class="truth">
+                <div class="truth-n">01</div>
+                <div class="truth-body">
+                    <h3>Enquanto você paga, o banco é o dono legal</h3>
+                    <p>No financiamento imobiliário brasileiro, o imóvel fica em <em>alienação fiduciária</em>: a
+                        propriedade legal é do banco até você quitar tudo. Você tem a posse — mora lá — mas se deixar de
+                        pagar, o banco pode retomar o imóvel em meses, sem depender de decisão judicial longa. É mais
+                        rápido do que a maioria das pessoas imagina.</p>
+                    <span class="highlight-line">→ Não é detalhe. É o ponto central de qualquer financiamento.</span>
+                </div>
+            </div>
+
+            <div class="truth">
+                <div class="truth-n">02</div>
+                <div class="truth-body">
+                    <h3>A parcela é só uma fração do que você vai pagar por mês</h3>
+                    <p>Some: parcela do financiamento + condomínio + IPTU + seguro obrigatório embutido no contrato +
+                        fundo de reserva. Em um apartamento simples, o custo mensal real pode ser 40% a 60% maior que a
+                        parcela do financiamento. Peça uma estimativa de todos esses itens antes de fechar.</p>
+                    <span class="highlight-line">→ Pergunte ao banco qual é o CET — Custo Efetivo Total. É o número
+                        honesto.</span>
+                </div>
+            </div>
+
+            <div class="truth">
+                <div class="truth-n">03</div>
+                <div class="truth-body">
+                    <h3>30 anos é uma vida inteira de compromisso</h3>
+                    <p>Em 30 anos: empregos mudam, cidades mudam, famílias crescem e diminuem, crises econômicas
+                        aparecem. Um financiamento longo é uma aposta sobre sua vida futura. Isso não significa não
+                        fazer — significa fazer com consciência. Amortize (pague a mais) sempre que puder, especialmente
+                        nos primeiros anos, quando os juros pesam mais.</p>
+                    <span class="highlight-line">→ Cada real extra aplicado hoje reduz anos de dívida lá na
+                        frente.</span>
+                </div>
+            </div>
+
+            <div class="truth">
+                <div class="truth-n">04</div>
+                <div class="truth-body">
+                    <h3>Os 35% de renda são uma regra de banco — não da natureza</h3>
+                    <p>Esse limite foi criado pelo mercado financeiro para proteger o banco, não necessariamente você.
+                        Para quem tem renda informal, por conta própria ou variável — entregadores, autônomos,
+                        trabalhadores de plataformas — comprometer 35% de uma renda instável é um risco muito maior do
+                        que para quem tem salário fixo. O número precisa fazer sentido para <em>sua</em> realidade
+                        específica.</p>
+                    <span class="highlight-line">→ Simule o que acontece com sua parcela se sua renda cair 30%.</span>
+                </div>
+            </div>
+
+            <div class="truth">
+                <div class="truth-n">05</div>
+                <div class="truth-body">
+                    <h3>Cartório não é burocracia — é o que faz você ser dono de verdade</h3>
+                    <p>Pagar o imóvel e morar nele não basta. Sem o registro no Cartório de Registro de Imóveis, você
+                        não é o proprietário legal. O registro é o que impede que o vendedor venda o mesmo imóvel para
+                        outra pessoa — o que acontece. A segurança jurídica tem um custo, mas é o custo que transforma
+                        posse em propriedade.</p>
+                    <span class="highlight-line">→ Nunca feche uma compra sem confirmar que o imóvel está registrado no
+                        seu nome.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── SEÇÃO 5: PROCESSO ─────────────────────────────── -->
+    <section id="processo" class="reveal">
+        <span class="section-tag">05 · Passo a passo</span>
+        <h2>Como o processo funciona<br>na prática</h2>
+        <p class="section-lead">
+            No financiamento bancário — a rota mais comum — são estas as etapas.
+            Cada uma tem seu tempo. Não existe atalho para os passos burocráticos.
+        </p>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-n">1</div>
+                <div class="step-body">
+                    <h3>Limpe seu histórico de crédito</h3>
+                    <p>Consulte o SPC e o Serasa. Dívidas em aberto travam o processo. Corrija o que for possível antes
+                        de pedir financiamento. Bancos vão olhar seu CPF.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-n">2</div>
+                <div class="step-body">
+                    <h3>Calcule seu orçamento real</h3>
+                    <p>Inclua entrada + ITBI + cartório + taxas bancárias. Não use para isso dinheiro que você vai
+                        precisar para emergências. A reserva de emergência precisa sobreviver à compra.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-n">3</div>
+                <div class="step-body">
+                    <h3>Escolha a modalidade</h3>
+                    <p>Financiamento se precisar do imóvel logo. Consórcio se puder esperar. MCMV se sua renda se
+                        encaixar. Pesquise simulações em pelo menos três bancos — as taxas variam.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-n">4</div>
+                <div class="step-body">
+                    <h3>Escolha o imóvel com cuidado</h3>
+                    <p>Visite mais de uma vez, em horários diferentes. Pesquise a região: transporte, serviços,
+                        vizinhança. Para imóvel na planta, consulte o registro da incorporação no cartório.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-n">5</div>
+                <div class="step-body">
+                    <h3>Análise de crédito, imóvel e jurídica</h3>
+                    <p>O banco analisa você (crédito), o imóvel (vale o que pedem?) e os documentos (certidões,
+                        pendências). Esse processo pode levar semanas. Mantenha os documentos organizados.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-n">6</div>
+                <div class="step-body">
+                    <h3>Contrato e registro</h3>
+                    <p>Com aprovação, assina-se o contrato. Depois, o documento vai ao Cartório de Registro de Imóveis.
+                        Só aí — com o registro em seu nome — a casa é legalmente sua.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="notice" style="margin-top:2.5rem">
+            <p><strong>Você pode amortizar a qualquer momento:</strong> pagar uma quantia extra que abate o saldo
+                devedor. Pode escolher reduzir o valor da parcela (mais fôlego mensal) ou reduzir o prazo total (mais
+                economia de juros). Use o FGTS se tiver saldo — é seu dinheiro e existe exatamente para isso.</p>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ────────────────────────────────────────── -->
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h3>Sobre este guia</h3>
+                <p>
+                    Feito para quem nunca teve ninguém para explicar. Inspirado
+                    <a href="https://www.nexojornal.com.br/servico/2026/03/28/leilao-da-casa-propria-como-comprar-casas-venda-de-imoveis"
+                        target="_blank" rel="noopener noreferrer">
+                        neste artigo do Nexo Jornal
+                    </a>.
+                    As informações são baseadas em dados públicos de 2026 (FipeZAP, Caixa, CBIC, FJP) e podem mudar com
+                    o tempo.
+                </p>
+                <p>
+                    Este guia não é consultoria financeira ou jurídica. Antes de assinar qualquer contrato,
+                    procure um profissional de sua confiança.
+                </p>
+            </div>
+            <div>
+                <h3>Fontes principais</h3>
+                <p>Índice <a href="https://www.fipezap.com.br" target="_blank" rel="noopener">FipeZAP</a> · <a
+                        href="https://www.caixa.gov.br" target="_blank" rel="noopener">Caixa Econômica Federal</a> · <a
+                        href="https://fjp.mg.gov.br" target="_blank" rel="noopener">Fundação João Pinheiro</a> (déficit
+                    habitacional) · <a href="https://cbic.org.br" target="_blank" rel="noopener">CBIC</a> (construção
+                    civil) · <a href="https://www.bcb.gov.br" target="_blank" rel="noopener">Banco Central</a> · <a
+                        href="https://www.gov.br/cidades" target="_blank" rel="noopener">Ministério das Cidades</a>
+                    (MCMV)</p>
+                <p style="margin-top:0.75rem">Para simular financiamentos: <a
+                        href="https://habitacao.caixa.gov.br/simulador" target="_blank" rel="noopener">Simulador
+                        Caixa</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Atualizado em março de 2026 · Dados do mercado mudam — confirme as taxas diretamente nas instituições
+                antes de tomar decisões.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.08 });
+        reveals.forEach(r => observer.observe(r));
+
+        // Nav active state on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a[href^="#"]');
+        const scrollSpy = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    navLinks.forEach(a => {
+                        a.style.color = '';
+                        a.style.borderBottomColor = '';
+                    });
+                    const active = document.querySelector(`nav a[href="#${e.target.id}"]`);
+                    if (active) {
+                        active.style.color = 'var(--accent)';
+                        active.style.borderBottomColor = 'var(--accent)';
+                    }
+                }
+            });
+        }, { threshold: 0.4 });
+        sections.forEach(s => scrollSpy.observe(s));
+    </script>
+</body>
+
+</html>
