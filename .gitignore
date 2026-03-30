@@ -17,6 +17,8 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Private Content
-CORPUS/*
-!CORPUS/README.md
+# Conteúdo privado — CORPUS/ é local e não sincronizado via Git.
+# A pasta em si é rastreada (via .gitkeep) para sinalizar sua existência.
+# Para restaurar o conteúdo: node scripts/restore-corpus.js
+CORPUS/**
+!CORPUS/.gitkeep

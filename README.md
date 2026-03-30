@@ -98,7 +98,7 @@ Este script é o coração do sistema de atualização. Ele:
 
 ### 4. Trabalhando em Múltiplos Dispositivos (Importante!)
 
-> **Por que isso importa?** A pasta `CORPUS/` é ignorada pelo Git (ver `.gitignore`). Isso significa que ela **não é sincronizada** entre máquinas via `git pull`. Se você clonar o repositório em um novo computador, o `CORPUS/` estará vazio — e rodar o sync apagaria todos os projetos públicos.
+> **Por que isso importa?** A pasta `CORPUS/` é ignorada pelo Git (ver `.gitignore`). Isso significa que ela **não é sincronizada** entre máquinas via `git pull`. Se você clonar o repositório em um novo computador, o `CORPUS/` estará presente (como pasta vazia visível pelo `.gitkeep`) — mas sem conteúdo. Rodar o sync sem restaurar primeiro **apagaria todos os projetos públicos**.
 
 **Ao configurar uma nova máquina, faça isso UMA vez antes de qualquer edição:**
 
@@ -107,8 +107,14 @@ Este script é o coração do sistema de atualização. Ele:
 git clone <url-do-repositorio>
 cd vitrine-SPA
 
-# 2. Reconstitua o CORPUS a partir dos arquivos públicos já existentes
-cp -r projects/* CORPUS/
+# 2. Reconstitua o CORPUS a partir dos arquivos públicos já rastreados
+node scripts/restore-corpus.js
+```
+
+O script copia todos os projetos de `projects/` → `CORPUS/`, sem sobrescrever pastas que já existam. Use `--force` para forçar sobrescrita:
+
+```bash
+node scripts/restore-corpus.js --force
 ```
 
 A partir daí, o fluxo normal de edição volta a funcionar: edite em `CORPUS/`, rode o sync, faça commit.
