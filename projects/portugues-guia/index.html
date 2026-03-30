@@ -1477,17 +1477,24 @@
         }
 
         // ─── STORAGE SAFE WRAPPER (survives sandboxed iframes) ───────────────────────
-        const safeStorage = {
-            get: function (key) {
-                try { return localStorage.getItem(key); } catch (e) { return null; }
-            },
-            set: function (key, val) {
-                try { localStorage.setItem(key, val); } catch (e) { /* silent */ }
-            },
-            remove: function (key) {
-                try { localStorage.removeItem(key); } catch (e) { /* silent */ }
+        // The DOMException is thrown by the window.localStorage GETTER itself,
+        // before any .getItem() call — so we must probe it once at startup.
+        const safeStorage = (function () {
+            var store;
+            try {
+                store = window.localStorage;       // may throw DOMException here
+                store.setItem('__probe__', '1');   // confirm read/write works
+                store.removeItem('__probe__');
+                return {
+                    get: function (k) { return store.getItem(k); },
+                    set: function (k, v) { store.setItem(k, v); },
+                    remove: function (k) { store.removeItem(k); }
+                };
+            } catch (e) {
+                // Sandboxed iframe or private-mode restriction — use in-memory no-op
+                return { get: function () { return null; }, set: function () {}, remove: function () {} };
             }
-        };
+        }());
 
         // ─── THEME ───────────────────────────────────────────────────────────────────
         function setTheme(t) {
