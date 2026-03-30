@@ -1476,15 +1476,28 @@
             document.getElementById("result-count").textContent = n + " resultado" + (n !== 1 ? "s" : "");
         }
 
+        // ─── STORAGE SAFE WRAPPER (survives sandboxed iframes) ───────────────────────
+        const safeStorage = {
+            get: function (key) {
+                try { return localStorage.getItem(key); } catch (e) { return null; }
+            },
+            set: function (key, val) {
+                try { localStorage.setItem(key, val); } catch (e) { /* silent */ }
+            },
+            remove: function (key) {
+                try { localStorage.removeItem(key); } catch (e) { /* silent */ }
+            }
+        };
+
         // ─── THEME ───────────────────────────────────────────────────────────────────
         function setTheme(t) {
             const root = document.documentElement;
             if (t === 'system') {
                 root.removeAttribute('data-theme');
-                localStorage.removeItem('theme');
+                safeStorage.remove('theme');
             } else {
                 root.setAttribute('data-theme', t);
-                localStorage.setItem('theme', t);
+                safeStorage.set('theme', t);
             }
             ['light', 'dark', 'system'].forEach(k => {
                 const btn = document.getElementById('tbtn-' + k);
@@ -1492,7 +1505,7 @@
             });
         }
         (function () {
-            const saved = localStorage.getItem('theme');
+            const saved = safeStorage.get('theme');
             if (saved === 'light' || saved === 'dark') {
                 document.documentElement.setAttribute('data-theme', saved);
                 // buttons not yet in DOM at this point; will be fixed after init
@@ -1503,7 +1516,7 @@
 
         // Apply saved theme button state after DOM ready
         (function () {
-            const saved = localStorage.getItem('theme') || 'system';
+            const saved = safeStorage.get('theme') || 'system';
             ['light', 'dark', 'system'].forEach(k => {
                 const btn = document.getElementById('tbtn-' + k);
                 if (btn) btn.classList.toggle('active', k === saved);
